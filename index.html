@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="doc_title">Student Voice Petition — Al-Nuzhum School</title>
+<meta name="description" content="A student initiative to improve school uniforms and offer wider canteen options. Sign and share the petition.">
+<meta name="theme-color" content="#0F1B33">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Student Proposal: Comfortable Uniforms & Wider Canteen Options">
+<meta property="og:description" content="Sign the proposal and share it with your classmates.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧵%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Noto+Kufi+Arabic:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { denim: { DEFAULT: '#1E2F57', deep: '#0F1B33', soft: '#55627F' }, chalk: '#EDF0F5', thread: '#E8A317', bad: '#C62F3B' },
+  fontFamily: { sans: ['Inter', '"IBM Plex Sans Arabic"', 'sans-serif'], display: ['Inter', '"Noto Kufi Arabic"', 'sans-serif'] }
+} } };
+</script>
+<style type="text/tailwindcss">
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 font-display text-sm font-bold transition active:scale-[.98] disabled:pointer-events-none disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-denim; }
+  .btn-main { @apply bg-thread text-denim-deep hover:brightness-95; }
+  .btn-line { @apply border border-denim/30 bg-white text-denim hover:border-denim; }
+  .field { @apply w-full rounded-lg border border-denim/25 bg-white px-4 py-3 text-denim-deep placeholder-denim-soft/70 transition focus:border-denim focus:outline-none focus:ring-2 focus:ring-thread; }
+}
+</style>
+<style>
+.tag::before { content: ""; position: absolute; top: 14px; left: 50%; margin-left: -8px; width: 16px; height: 16px; border-radius: 50%; background: #0F1B33; box-shadow: inset 0 2px 3px rgba(0,0,0,.5); }
+.seam { height: 6px; border-radius: 3px; background: repeating-linear-gradient(to right, rgba(30,47,87,.18) 0 10px, transparent 10px 16px); }
+.seam i { display: block; height: 100%; width: 0; background: repeating-linear-gradient(to right, #E8A317 0 10px, transparent 10px 16px); transition: width 1.4s cubic-bezier(.2,.7,.2,1); }
+html[dir="rtl"] .seam { background: repeating-linear-gradient(to left, rgba(30,47,87,.18) 0 10px, transparent 10px 16px); }
+html[dir="rtl"] .seam i { background: repeating-linear-gradient(to left, #E8A317 0 10px, transparent 10px 16px); }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8; }
+.dot[data-s=ok] { background: #34d399; } .dot[data-s=demo] { background: #E8A317; } .dot[data-s=err] { background: #f87171; }
+.field[aria-invalid=true] { border-color: #C62F3B; }
+#msg[data-t=err] { background: #fdecee; border-color: #C62F3B; color: #8f1d28; }
+#msg[data-t=ok] { background: #e6f6ef; border-color: #1F9D6B; color: #0f6a47; }
+.hp { position: absolute; left: -9999px; }
+@media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body class="bg-chalk font-sans text-denim-deep antialiased selection:bg-thread">
+<a href="#sign" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2" data-i18n="skip_link">Skip to signature form</a>
+<noscript><p class="bg-thread p-3 text-center text-sm">JavaScript is required for this site to work.</p></noscript>
+
+<!-- Top Bar -->
+<header class="bg-denim-deep text-white">
+  <div class="border-b border-white/10">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 text-xs text-white/70">
+      <span><b class="font-display text-sm text-white" data-i18n="brand_title">Student Voice</b> &nbsp;<span data-i18n="brand_school">Al-Nuzhum School</span></span>
+      <div class="flex items-center gap-4">
+        <span class="flex items-center gap-2"><i id="dot" class="dot"></i><span id="status">Connecting…</span></span>
+        <button id="menu-btn" type="button" class="rounded-lg bg-white/10 px-3 py-1 text-white hover:bg-white/20 transition"><i class="fa-solid fa-bars"></i> <span data-i18n="menu_btn">Menu</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 pb-12 pt-8 md:grid-cols-12 md:items-center">
+    <div class="md:col-span-7">
+      <h1 class="font-display text-3xl font-extrabold leading-snug sm:text-5xl sm:leading-tight" data-i18n="hero_title">Proposing more comfortable school uniforms and a wider canteen selection</h1>
+      <p class="mt-4 max-w-xl text-base leading-loose text-white/80" data-i18n="hero_sub">An independent student initiative created in collaboration and respect with school management. If you agree, sign and share with your peers.</p>
+    </div>
+    <section class="tag relative rounded-2xl bg-white px-6 pb-6 pt-12 text-denim-deep shadow-xl md:col-span-5" aria-label="Petition Status">
+      <dl class="space-y-2 text-sm">
+        <div class="flex justify-between border-b border-dashed border-denim/25 pb-2"><dt class="text-denim-soft" data-i18n="tag_current">Current Uniform Material</dt><dd class="font-bold line-through decoration-bad decoration-2">100% Polyester</dd></div>
+        <div class="flex justify-between pb-1"><dt class="text-denim-soft" data-i18n="tag_proposed">Our Proposal</dt><dd class="font-bold">100% Cotton</dd></div>
+      </dl>
+      <div class="mt-4 flex items-end justify-between">
+        <p id="count" class="font-display text-5xl font-extrabold leading-none">0</p>
+        <p class="text-sm text-denim-soft"><span data-i18n="signatures_of">signatures out of</span> <span id="goal">500</span></p>
+      </div>
+      <div id="bar-wrap" class="seam mt-3" role="progressbar" aria-label="Progress to goal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="bar"></i></div>
+      <p id="next" class="mt-2 min-h-[1.25rem] text-xs text-denim-soft"></p>
+      <p id="day" class="text-xs text-denim-soft"></p>
+      <a href="#sign" class="btn btn-main mt-4 w-full" data-i18n="sign_now">Sign Now</a>
+      <div class="mt-2 grid grid-cols-2 gap-2">
+        <button type="button" data-action="share" class="btn btn-line !py-2"><i class="fa-solid fa-share-nodes"></i><span data-i18n="share">Share</span></button>
+        <button type="button" data-action="copy" class="btn btn-line !py-2"><i class="fa-regular fa-copy"></i><span data-i18n="copy_link">Copy Link</span></button>
+      </div>
+    </section>
+  </div>
+</header>
+
+<!-- Drawer Sidebar -->
+<div id="sidebar-overlay" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden transition-opacity opacity-0"></div>
+<aside id="sidebar" class="fixed inset-y-0 ltr:right-0 rtl:left-0 z-50 w-80 max-w-full bg-white shadow-2xl p-6 flex flex-col justify-between translate-x-full rtl:-translate-x-full transition-transform duration-300">
+  <div>
+    <div class="flex items-center justify-between border-b border-denim/15 pb-4">
+      <h2 class="font-display text-lg font-extrabold text-denim-deep" data-i18n="menu_title">Menu & Settings</h2>
+      <button id="close-menu" type="button" class="rounded-lg p-2 text-denim-soft hover:bg-chalk transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+    </div>
+    
+    <nav class="mt-6 space-y-4">
+      <!-- Language Switcher -->
+      <div class="rounded-xl border border-denim/15 p-4 bg-chalk/50">
+        <label for="lang-select" class="block text-xs font-bold text-denim-soft mb-2"><i class="fa-solid fa-globe"></i> <span data-i18n="lang_label">Language / اللغة</span></label>
+        <select id="lang-select" class="field !py-2 text-sm">
+          <option value="en" selected>English (الإنجليزية)</option>
+          <option value="ar">العربية (Arabic)</option>
+        </select>
+      </div>
+
+      <div class="space-y-2 pt-2">
+        <h3 class="text-xs font-bold text-denim-soft px-1" data-i18n="important_links">Important Links</h3>
+        <a href="privacy.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-denim hover:bg-chalk transition"><i class="fa-solid fa-shield-halved w-5"></i><span data-i18n="link_privacy">Privacy & Security</span></a>
+        <a href="why.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-denim hover:bg-chalk transition"><i class="fa-solid fa-circle-question w-5"></i><span data-i18n="link_why">Why We Started</span></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="border-t border-denim/15 pt-4 text-xs text-denim-soft text-center">
+    <p>Student Voice © <span id="year-sidebar"></span></p>
+  </div>
+</aside>
+
+<main class="mx-auto grid max-w-6xl gap-x-10 gap-y-10 px-4 py-10 lg:grid-cols-12">
+  <section class="lg:col-span-7">
+    <h2 class="font-display text-2xl font-extrabold" data-i18n="why_title">Why are we proposing this change?</h2>
+    <p class="mt-3 max-w-prose leading-loose" data-i18n="why_desc">We spend over 35 hours weekly at school. The current uniform synthetic polyester fabric causes excessive heat, perspiration, and skin irritation while restricting movement during daily routine activities. Additionally, canteen choices are limited, and we hope to expand them.</p>
+    <p class="mt-4 ltr:border-l-4 rtl:border-r-4 ltr:pl-4 rtl:pr-4 border-thread font-semibold leading-loose" data-i18n="respect_note">We deeply respect Al-Nuzhum School and its leadership, presenting this proposal in a spirit of constructive cooperation.</p>
+    <h3 class="mt-8 font-display text-lg font-bold" data-i18n="proposals_heading">What We Propose</h3>
+    <ul class="mt-3 divide-y divide-denim/15 border-y border-denim/15">
+      <li class="flex gap-3 py-3"><i class="fa-solid fa-shirt mt-1 w-5 text-denim"></i><div><b data-i18n="p1_title">Breathable Cotton Fabric</b><p class="text-sm text-denim-soft" data-i18n="p1_desc">Natural fabric that breathes and suits our climate.</p></div></li>
+      <li class="flex gap-3 py-3"><i class="fa-solid fa-ruler-combined mt-1 w-5 text-denim"></i><div><b data-i18n="p2_title">Flexible Fit</b><p class="text-sm text-denim-soft" data-i18n="p2_desc">Practical ergonomic design allowing free movement throughout the day.</p></div></li>
+      <li class="flex gap-3 py-3"><i class="fa-solid fa-palette mt-1 w-5 text-denim"></i><div><b data-i18n="p3_title">Balanced Colors</b><p class="text-sm text-denim-soft" data-i18n="p3_desc">Consistent and neat overall visual appearance.</p></div></li>
+      <li class="flex gap-3 py-3"><i class="fa-solid fa-apple-whole mt-1 w-5 text-denim"></i><div><b data-i18n="p4_title">Diverse Canteen Menu</b><p class="text-sm text-denim-soft" data-i18n="p4_desc">Broader food options including healthier choices.</p></div></li>
+    </ul>
+  </section>
+
+  <aside class="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1">
+    <div id="sign" class="scroll-mt-4 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-8 lg:sticky lg:top-6">
+      <p id="closed" class="hidden rounded-lg bg-denim/10 p-4 text-center text-sm font-semibold leading-loose" data-i18n="closed_msg">The petition has ended and signature collection is closed. Thank you to everyone who participated.</p>
+      
+      <div id="thanks" class="hidden py-4 text-center">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-2xl text-emerald-700"><i class="fa-solid fa-check"></i></div>
+        <h2 class="font-display text-2xl font-extrabold" data-i18n="thanks_title">Thank you! Your voice was heard</h2>
+        <p class="mt-2 text-sm leading-relaxed text-denim-soft" data-i18n="thanks_desc">Your signature has been registered. Every voice brings us closer to our goal. Share the petition with your classmates.</p>
+        <button type="button" data-action="share" class="btn btn-main mt-5 w-full"><i class="fa-solid fa-share-nodes"></i><span data-i18n="share_petition">Share Petition</span></button>
+      </div>
+
+      <form id="form" novalidate class="space-y-4">
+        <div>
+          <h2 class="font-display text-2xl font-extrabold" data-i18n="form_title">Sign the Petition</h2>
+          <p class="mt-1 text-sm text-denim-soft" data-i18n="form_sub">Enter at least your first and last name, then select your grade.</p>
+        </div>
+        <div>
+          <label for="name" class="mb-1.5 block text-sm font-semibold" data-i18n="label_name">Full Name</label>
+          <input id="name" class="field" required minlength="2" maxlength="60" autocomplete="name" placeholder="e.g. Yousef Ahmed">
+        </div>
+        <div>
+          <label for="grade" class="mb-1.5 block text-sm font-semibold" data-i18n="label_grade">Grade</label>
+          <select id="grade" class="field" required></select>
+        </div>
+        
+        <label class="flex cursor-pointer items-start gap-3">
+          <span class="relative mt-0.5 shrink-0">
+            <input id="anon" type="checkbox" role="switch" class="peer sr-only">
+            <span class="block h-6 w-11 rounded-full bg-denim/25 transition peer-checked:bg-denim peer-focus-visible:ring-2 peer-focus-visible:ring-thread"></span>
+            <span class="absolute ltr:left-1 rtl:right-1 top-1 h-4 w-4 rounded-full bg-white shadow transition ltr:peer-checked:translate-x-5 rtl:peer-checked:-translate-x-5"></span>
+          </span>
+          <span><b class="text-sm" data-i18n="label_hide">Hide my name</b><span class="block text-xs text-denim-soft" data-i18n="hide_desc">Your vote is counted without displaying your name on the public list.</span></span>
+        </label>
+
+        <label class="flex cursor-pointer items-start gap-3 rounded-lg border border-denim/20 p-3 bg-chalk/40">
+          <input id="parent_consent" type="checkbox" required class="mt-1 h-4 w-4 rounded border-denim/35 text-denim focus:ring-thread">
+          <span class="text-xs leading-relaxed"><b data-i18n="parent_title">Parental Consent:</b> <span data-i18n="parent_desc">I confirm that this vote is submitted with the knowledge and consent of my parent/guardian.</span></span>
+        </label>
+
+        <input id="hp" class="hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p id="msg" role="alert" class="hidden rounded-lg border px-3 py-2 text-sm"></p>
+        <button id="submit" type="submit" class="btn btn-main w-full py-4 text-base"><i class="fa-solid fa-signature"></i><span data-i18n="btn_submit">Sign Petition</span></button>
+        <p class="text-center text-xs leading-relaxed text-denim-soft" data-i18n="privacy_footnote">We only save name and grade. The public list shows your first name and last initial, or "Anonymous" if hidden.</p>
+      </form>
+    </div>
+  </aside>
+
+  <section class="lg:col-span-7" aria-labelledby="wall-h">
+    <div class="flex items-center justify-between gap-3">
+      <h2 id="wall-h" class="font-display text-2xl font-extrabold" data-i18n="wall_title">Recent Signatures</h2>
+      <button type="button" data-action="refresh" class="btn btn-line !px-3 !py-1.5 text-xs" aria-label="Refresh list"><i class="fa-solid fa-rotate"></i><span data-i18n="refresh">Refresh</span></button>
+    </div>
+    <ol id="list" class="mt-4 divide-y divide-denim/15 overflow-hidden rounded-xl border border-denim/15 bg-white" aria-busy="true"></ol>
+    <div id="more" class="mt-4 hidden text-center"><button type="button" data-action="more" class="btn btn-line" data-i18n="show_more">Show More</button></div>
+  </section>
+</main>
+
+<footer class="border-t border-denim/15 py-8 text-center text-xs leading-loose text-denim-soft">
+  <p><span data-i18n="footer_text">An independent student initiative to present a proposal; not an official entity and does not represent the school.</span> © <span id="year"></span></p>
+</footer>
+<div id="toasts" class="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex flex-col items-center gap-2 px-4" role="status"></div>
+
+<script>
+(() => {
+'use strict';
+
+const CONFIG = {
+  SUPABASE_URL: 'https://bycyaaevyeezokivlnza.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_z6-RjAxi7vFhVmVVzL6Dow_ov98VU3p', 
+  RPC_SIGN: 'sign_petition', RPC_STATS: 'petition_stats', RPC_LIST: 'recent_signatures',
+  GRADE_MIN: 1, GRADE_MAX: 10,
+  MILESTONES: [0.2, 0.5, 1], PAGE_SIZE: 10, 
+  SHARE_TEXT: 'Sign our student petition: Comfortable uniform & expanded canteen selection!'
+};
+
+// ---------- نظام الترجمة (i18n) ----------
+const I18N = {
+  en: {
+    doc_title: "Student Voice Petition — Al-Nuzhum School",
+    skip_link: "Skip to signature form",
+    brand_title: "Student Voice",
+    brand_school: "Al-Nuzhum School",
+    connecting: "Connecting…",
+    connected: "Connected",
+    demo_mode: "Demo Mode",
+    connection_err: "Connection Error",
+    menu_btn: "Menu",
+    hero_title: "Proposing more comfortable school uniforms and a wider canteen selection",
+    hero_sub: "An independent student initiative created in collaboration and respect with school management. If you agree, sign and share with your peers.",
+    tag_current: "Current Uniform Material",
+    tag_proposed: "Our Proposal",
+    signatures_of: "signatures out of",
+    sign_now: "Sign Now",
+    share: "Share",
+    copy_link: "Copy Link",
+    menu_title: "Menu & Settings",
+    lang_label: "Language / اللغة",
+    important_links: "Important Links",
+    link_privacy: "Privacy & Security",
+    link_why: "Why We Started",
+    why_title: "Why are we proposing this change?",
+    why_desc: "We spend over 35 hours weekly at school. The current uniform synthetic polyester fabric causes excessive heat, perspiration, and skin irritation while restricting movement during daily routine activities. Additionally, canteen choices are limited, and we hope to expand them.",
+    respect_note: "We deeply respect Al-Nuzhum School and its leadership, presenting this proposal in a spirit of constructive cooperation.",
+    proposals_heading: "What We Propose",
+    p1_title: "Breathable Cotton Fabric",
+    p1_desc: "Natural fabric that breathes and suits our climate.",
+    p2_title: "Flexible Fit",
+    p2_desc: "Practical ergonomic design allowing free movement throughout the day.",
+    p3_title: "Balanced Colors",
+    p3_desc: "Consistent and neat overall visual appearance.",
+    p4_title: "Diverse Canteen Menu",
+    p4_desc: "Broader food options including healthier choices.",
+    closed_msg: "The petition has ended and signature collection is closed. Thank you to everyone who participated.",
+    thanks_title: "Thank you! Your voice was heard",
+    thanks_desc: "Your signature has been registered. Every voice brings us closer to our goal. Share the petition with your classmates.",
+    share_petition: "Share Petition",
+    form_title: "Sign the Petition",
+    form_sub: "Enter at least your first and last name, then select your grade.",
+    label_name: "Full Name",
+    placeholder_name: "e.g. Yousef Ahmed",
+    label_grade: "Grade",
+    select_grade_default: "Select your grade",
+    label_hide: "Hide my name",
+    hide_desc: "Your vote is counted without displaying your name on the public list.",
+    parent_title: "Parental Consent:",
+    parent_desc: "I confirm that this vote is submitted with the knowledge and consent of my parent/guardian.",
+    btn_submit: "Sign Petition",
+    sending: "Sending…",
+    privacy_footnote: "We only save name and grade. The public list shows your first name and last initial, or \"Anonymous\" if hidden.",
+    wall_title: "Recent Signatures",
+    refresh: "Refresh",
+    show_more: "Show More",
+    footer_text: "An independent student initiative to present a proposal; not an official entity and does not represent the school.",
+    anonymous: "Anonymous",
+    grade_prefix: "Grade ",
+    no_signatures: "No signatures yet",
+    be_first: "Be the first to sign the petition.",
+    retry: "Retry",
+    err_load: "Failed to load signatures",
+    check_conn: "Check your connection.",
+    next_goal: "Next goal is {goal}, {rem} remaining.",
+    goal_passed: "Goal reached! Thank you for every vote.",
+    last_24h: "Last 24h: +{count}",
+    copied: "Link copied!",
+    signed_already: "You have already signed from this browser.",
+    err_name: "Invalid name: Enter at least first and last name without numbers or symbols.",
+    err_grade: "Please select a valid grade.",
+    err_consent: "Parental consent is required to submit your vote.",
+    err_rate: "Too many attempts from this network. Please wait a moment.",
+    err_general: "Failed to submit signature. Please try again shortly.",
+    grades: ['', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade', '7th Grade', '8th Grade', '9th Grade', '10th Grade']
+  },
+  ar: {
+    doc_title: "عريضة صوت الطالب — مدرسة النظم",
+    skip_link: "انتقل إلى نموذج التوقيع",
+    brand_title: "صوت الطالب",
+    brand_school: "مدرسة النظم",
+    connecting: "جارٍ الاتصال…",
+    connected: "متصل",
+    demo_mode: "وضع تجريبي",
+    connection_err: "تعذّر الاتصال",
+    menu_btn: "القائمة",
+    hero_title: "نقترح زيًّا مدرسيًا أكثر راحة، ومقصفًا بخيارات أوسع",
+    hero_sub: "مبادرة طلابية فردية نقدّمها بروح التعاون مع إدارة المدرسة. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.",
+    tag_current: "تركيب الزي الحالي",
+    tag_proposed: "ما نقترحه",
+    signatures_of: "توقيع من أصل",
+    sign_now: "وقّع الآن",
+    share: "شارك",
+    copy_link: "انسخ الرابط",
+    menu_title: "خيارات وقائمة الموقع",
+    lang_label: "Language / اللغة",
+    important_links: "روابط هامة",
+    link_privacy: "الخصوصية والأمان",
+    link_why: "لماذا بدأنا؟",
+    why_title: "لماذا نقترح هذا التغيير؟",
+    why_desc: "نقضي أكثر من 35 ساعة أسبوعيًا في المدرسة. الزي الحالي من ألياف البوليستر غير التنفسية، وقد يسبّب حرارة مرهقة وروائح وتهيّجًا في الجلد، ويقيّد الحركة أثناء الأنشطة اليومية. كما أن خيارات المقصف محدودة، ونتمنى تنويعها.",
+    respect_note: "نحترم جهود مدرسة النظم وإدارتها، ونقدّم هذا الاقتراح بروح التعاون لا المواجهة.",
+    proposals_heading: "ما نقترحه",
+    p1_title: "خامة قطنية",
+    p1_desc: "نسيج طبيعي يتنفّس ويناسب مناخنا الدافئ.",
+    p2_title: "قصّة مرنة",
+    p2_desc: "تصميم عملي يتيح حرية الحركة طوال اليوم.",
+    p3_title: "ألوان هادئة",
+    p3_desc: "مظهر متناسق ومرتّب.",
+    p4_title: "مقصف متنوّع",
+    p4_desc: "خيارات أوسع، بينها خيارات صحية.",
+    closed_msg: "انتهى جمع التواقيع وأُغلقت العريضة. شكرًا لكل من شارك.",
+    thanks_title: "شكرًا، وصل صوتك",
+    thanks_desc: "تم تسجيل توقيعك بنجاح. كل صوت جديد يقرّبنا من الهدف. شارك العريضة مع زملائك.",
+    share_petition: "شارك العريضة",
+    form_title: "وقّع على العريضة",
+    form_sub: "اكتب اسمك الثنائي على الأقل واختر صفّك.",
+    label_name: "الاسم الكامل",
+    placeholder_name: "مثال: يوسف أحمد",
+    label_grade: "الصف",
+    select_grade_default: "اختر صفّك",
+    label_hide: "إخفاء اسمي",
+    hide_desc: "يُحتسب صوتك دون ظهور اسمك في القائمة العامة.",
+    parent_title: "موافقة ولي الأمر:",
+    parent_desc: "أؤكد أن هذا التصويت يتم بعلم وموافقة ولي الأمر أو بوجوده.",
+    btn_submit: "أوقّع على العريضة",
+    sending: "جارٍ الإرسال…",
+    privacy_footnote: "نحفظ الاسم والصف فقط. يظهر في القائمة اسمك الأول وحرف من عائلتك، أو «مجهول» إن فعّلت إخفاء الاسم.",
+    wall_title: "من وقّعوا حتى الآن",
+    refresh: "تحديث",
+    show_more: "عرض المزيد",
+    footer_text: "مبادرة طلابية فردية لتقديم اقتراح، وهي ليست جهة رسمية ولا تمثّل المدرسة.",
+    anonymous: "مجهول",
+    grade_prefix: "الصف ",
+    no_signatures: "لا توجد تواقيع بعد",
+    be_first: "كن أول من يوقّع على العريضة.",
+    retry: "إعادة المحاولة",
+    err_load: "تعذّر تحميل التواقيع",
+    check_conn: "تحقق من الاتصال ثم حاول مجددًا.",
+    next_goal: "الهدف القادم {goal}، ويتبقى {rem}.",
+    goal_passed: "تجاوزنا الهدف، شكرًا لكل صوت.",
+    last_24h: "آخر 24 ساعة: +{count}",
+    copied: "تم نسخ الرابط",
+    signed_already: "لقد قمت بالتوقيع مسبقًا من هذا المتصفح.",
+    err_name: "الاسم غير مقبول: اكتب اسمك الثنائي بدون أرقام أو رموز.",
+    err_grade: "اختر صفًّا صحيحًا.",
+    err_consent: "يجب الموافقة على علم ولي الأمر لإتمام التصويت.",
+    err_rate: "محاولات كثيرة من هذه الشبكة. انتظر قليلًا.",
+    err_general: "تعذّر إرسال التوقيع. حاول مجددًا بعد قليل.",
+    grades: ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر']
+  }
+};
+
+let currentLang = store.get('petition:lang') || 'en';
+
+function t(key, params = {}) {
+  let text = I18N[currentLang]?.[key] || I18N['en']?.[key] || key;
+  Object.keys(params).forEach(p => { text = text.replace(`{${p}}`, params[p]); });
+  return text;
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  store.set('petition:lang', lang);
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (I18N[lang][k]) el.textContent = I18N[lang][k];
+  });
+  
+  $('#name').placeholder = t('placeholder_name');
+  populateGrades();
+  if (state.lastStats) setStats(state.lastStats);
+  refresh({ silent: true });
+}
+
+// ---------- أدوات ----------
+const $ = (s) => document.querySelector(s);
+const el = (tag, cls = '', text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const fmt = (n) => Number(n).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
+const clean = (s) => String(s || '').replace(/\s+/g, ' ').trim();
+function storeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+function storeSet(k, v) { try { localStorage.setItem(k, v); } catch {} }
+const store = { get: storeGet, set: storeSet };
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const configured = !CONFIG.SUPABASE_URL.startsWith('YOUR_') && !CONFIG.SUPABASE_ANON_KEY.startsWith('YOUR_');
+const db = configured && window.supabase ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, { auth: { persistSession: false } }) : null;
+const need = () => { if (!db) throw new Error('Failed to load Supabase SDK'); return db; };
+const state = { limit: CONFIG.PAGE_SIZE, count: 0, busy: false, open: true, thanks: false, lastStats: null };
+
+const demo = { base: 75, list: [
+  { display_name: 'Khaled M.', grade: 9, created_at: new Date(Date.now() - 40 * 6e4).toISOString() },
+  { display_name: t('anonymous'), grade: 10, created_at: new Date(Date.now() - 190 * 6e4).toISOString() }
+] };
+
+async function fetchStats() {
+  if (!configured) return { total: demo.base + demo.list.length, goal: 500, is_open: true, last_24h: demo.list.length };
+  const { data, error } = await need().rpc(CONFIG.RPC_STATS);
+  if (error) throw error;
+  return data;
+}
+async function fetchList(limit) {
+  if (!configured) return demo.list.slice(0, limit);
+  const { data, error } = await need().rpc(CONFIG.RPC_LIST, { lim: Math.min(limit, 50) });
+  if (error) throw error;
+  return data || [];
+}
+async function signPetition(v) {
+  if (!configured) {
+    await new Promise((r) => setTimeout(r, 600));
+    const w = v.name.split(' ');
+    demo.list.unshift({ display_name: v.hide ? t('anonymous') : `${w[0]} ${w[w.length - 1][0]}.`, grade: v.grade, created_at: new Date().toISOString() });
+    return { status: 'ok' };
+  }
+  const { data, error } = await need().rpc(CONFIG.RPC_SIGN, { 
+    p_name: v.name, 
+    p_grade: v.grade, 
+    p_hide_name: v.hide,
+    p_parent_consent: v.parent_consent 
+  });
+  if (error) throw error;
+  return data || {};
+}
+
+function ago(iso) {
+  const d = new Date(iso); if (isNaN(d)) return '';
+  const s = (d - Date.now()) / 1000, a = Math.abs(s);
+  const rtf = new Intl.RelativeTimeFormat(currentLang, { numeric: 'auto' });
+  if (a < 60) return currentLang === 'ar' ? 'الآن' : 'just now';
+  if (a < 3600) return rtf.format(Math.round(s / 60), 'minute');
+  if (a < 86400) return rtf.format(Math.round(s / 3600), 'hour');
+  if (a < 604800) return rtf.format(Math.round(s / 86400), 'day');
+  return d.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function setStatus(s) {
+  $('#dot').dataset.s = s;
+  $('#status').textContent = { ok: t('connected'), demo: t('demo_mode'), err: t('connection_err') }[s];
+}
+
+const gradeLabel = (g) => {
+  const list = I18N[currentLang].grades;
+  return list[g] ? (currentLang === 'ar' ? 'الصف ' + list[g] : list[g]) : (t('grade_prefix') + g);
+};
+
+function populateGrades() {
+  const sel = $('#grade');
+  const val = sel.value;
+  sel.replaceChildren(
+    new Option(t('select_grade_default'), ''), 
+    ...Array.from({ length: CONFIG.GRADE_MAX - CONFIG.GRADE_MIN + 1 }, (_, i) => new Option(gradeLabel(CONFIG.GRADE_MIN + i), CONFIG.GRADE_MIN + i))
+  );
+  sel.value = val;
+}
+
+function setStats(s) {
+  state.lastStats = s;
+  const n = Number(s.total) || 0, goal = Number(s.goal) || 500, node = $('#count'), from = state.count;
+  state.count = n; state.open = s.is_open !== false; panel();
+  const pct = Math.min(100, Math.round((n / goal) * 100));
+  $('#goal').textContent = fmt(goal);
+  $('#bar').style.width = pct + '%';
+  $('#bar-wrap').setAttribute('aria-valuenow', pct);
+  const next = CONFIG.MILESTONES.map((f) => Math.round(goal * f)).find((m) => m > n);
+  $('#next').textContent = next ? t('next_goal', { goal: fmt(next), rem: fmt(next - n) }) : t('goal_passed');
+  $('#day').textContent = s.last_24h > 0 ? t('last_24h', { count: fmt(s.last_24h) }) : '';
+  if (reduceMotion || from === n) { node.textContent = fmt(n); return; }
+  const t0 = performance.now();
+  (function step(t) {
+    const p = Math.min((t - t0) / 900, 1);
+    node.textContent = fmt(Math.round(from + (n - from) * (1 - Math.pow(1 - p, 3))));
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+function row(sig) {
+  const isAnon = sig.display_name === 'مجهول' || sig.display_name === 'Anonymous';
+  const displayName = isAnon ? t('anonymous') : sig.display_name;
+  const li = el('li', 'px-4 py-3');
+  const top = el('div', 'flex items-baseline justify-between gap-3');
+  top.append(
+    el('span', isAnon ? 'italic text-denim-soft' : 'font-bold', displayName),
+    el('span', 'shrink-0 rounded border border-denim/20 px-2 py-0.5 text-xs text-denim-soft', gradeLabel(sig.grade))
+  );
+  const timeEl = el('time', 'mt-1 block text-xs text-denim-soft', ago(sig.created_at));
+  timeEl.dateTime = sig.created_at;
+  li.append(top, timeEl);
+  return li;
+}
+
+function message(title, body, retry) {
+  const li = el('li', 'px-4 py-8 text-center');
+  li.append(el('p', 'font-display font-bold', title), el('p', 'mt-1 text-sm text-denim-soft', body));
+  if (retry) { const b = el('button', 'btn btn-line mt-4', t('retry')); b.type = 'button'; b.dataset.action = 'refresh'; li.append(b); }
+  return li;
+}
+
+function renderList(rows) {
+  const list = $('#list');
+  list.setAttribute('aria-busy', 'false');
+  list.replaceChildren(...(rows.length ? rows.map(row) : [message(t('no_signatures'), t('be_first'))]));
+  $('#more').classList.toggle('hidden', rows.length < state.limit || state.limit >= 50);
+}
+
+function renderSkeleton() {
+  $('#list').replaceChildren(...Array.from({ length: 4 }, () => {
+    const li = el('li', 'animate-pulse space-y-2 px-4 py-4');
+    li.innerHTML = '<div class="h-4 w-1/3 rounded bg-denim/15"></div><div class="h-3 w-2/3 rounded bg-denim/10"></div>';
+    return li;
+  }));
+}
+
+async function refresh({ silent = false } = {}) {
+  if (state.busy) return;
+  state.busy = true;
+  const [c, l] = await Promise.allSettled([fetchStats(), fetchList(state.limit)]);
+  state.busy = false;
+  [c, l].forEach((r) => r.status === 'rejected' && console.error(r.reason));
+  if (c.status === 'fulfilled') setStats(c.value);
+  if (l.status === 'fulfilled') renderList(l.value);
+  else if (!silent) { $('#list').replaceChildren(message(t('err_load'), t('check_conn'), true)); $('#more').classList.add('hidden'); }
+  const ok = c.status === 'fulfilled' || l.status === 'fulfilled';
+  setStatus(!configured ? 'demo' : ok ? 'ok' : 'err');
+}
+
+const form = $('#form'), msg = $('#msg'), submitBtn = $('#submit');
+const say = (text, type) => { msg.textContent = text; msg.dataset.t = type || ''; msg.classList.toggle('hidden', !text); };
+function panel() {
+  $('#closed').classList.toggle('hidden', state.open);
+  $('#thanks').classList.toggle('hidden', !(state.open && state.thanks));
+  form.classList.toggle('hidden', !(state.open && !state.thanks));
+}
+const showThanks = (on) => { state.thanks = on; panel(); };
+function setBusy(b) {
+  submitBtn.disabled = b;
+  submitBtn.querySelector('span').textContent = b ? t('sending') : t('btn_submit');
+  submitBtn.querySelector('i').className = b ? 'fa-solid fa-circle-notch animate-spin' : 'fa-solid fa-signature';
+}
+
+const BAD_NAME = /[0-9\u0660-\u0669\u06F0-\u06F9<>{}|\\^`@\/:;=+*#$%&~_"()!?,]/;
+function validate(v) {
+  if (v.name.split(' ').length < 2 || v.name.length < 4 || v.name.length > 60 || BAD_NAME.test(v.name)) return ['name', t('err_name')];
+  if (!(v.grade >= CONFIG.GRADE_MIN && v.grade <= CONFIG.GRADE_MAX)) return ['grade', t('err_grade')];
+  if (!v.parent_consent) return ['parent_consent', t('err_consent')];
+  return null;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  form.querySelectorAll('[aria-invalid]').forEach((n) => n.removeAttribute('aria-invalid'));
+  
+  if (store.get('petition:signed')) {
+    showThanks(true);
+    return say(t('signed_already'), 'err');
+  }
+
+  const v = { 
+    name: clean($('#name').value), 
+    grade: Number($('#grade').value), 
+    hide: $('#anon').checked,
+    parent_consent: $('#parent_consent').checked
+  };
+
+  const bad = validate(v);
+  if (bad) { const f = $('#' + bad[0]); if(f) f.setAttribute('aria-invalid', 'true'); return say(bad[1], 'err'); }
+  if ($('#hp').value) { showThanks(true); return; }
+
+  setBusy(true); say('');
+  try {
+    const res = await signPetition(v);
+    if (res.status === 'closed') { state.open = false; panel(); return; }
+    if (res.status !== 'ok') {
+      const errMap = { invalid_name: t('err_name'), invalid_grade: t('err_grade'), invalid_consent: t('err_consent'), rate_limited: t('err_rate') };
+      return say(errMap[res.status] || t('err_general'), 'err');
+    }
+    
+    store.set('petition:signed', '1');
+    form.reset();
+    showThanks(true);
+    $('#sign').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    refresh({ silent: true });
+  } catch (err) {
+    console.error(err);
+    say(t('err_general'), 'err');
+  } finally { setBusy(false); }
+});
+
+// Sidebar & Lang logic
+const sidebar = $('#sidebar'), overlay = $('#sidebar-overlay');
+const toggleMenu = (open) => {
+  const isRtl = currentLang === 'ar';
+  sidebar.classList.toggle(isRtl ? '-translate-x-full' : 'translate-x-full', !open);
+  overlay.classList.toggle('hidden', !open);
+  setTimeout(() => overlay.classList.toggle('opacity-0', !open), 10);
+};
+$('#menu-btn').addEventListener('click', () => toggleMenu(true));
+$('#close-menu').addEventListener('click', () => toggleMenu(false));
+overlay.addEventListener('click', () => toggleMenu(false));
+
+$('#lang-select').value = currentLang;
+$('#lang-select').addEventListener('change', (e) => {
+  setLanguage(e.target.value);
+});
+
+const pageUrl = () => location.href.split('#')[0];
+function toast(text) {
+  const tNode = el('div', 'rounded-xl bg-denim-deep px-4 py-2 text-sm text-white shadow-xl', text);
+  $('#toasts').append(tNode); setTimeout(() => tNode.remove(), 2800);
+}
+const actions = {
+  share: async () => {
+    if (navigator.share) { try { await navigator.share({ title: document.title, text: CONFIG.SHARE_TEXT, url: pageUrl() }); } catch {} return; }
+    window.open('https://wa.me/?text=' + encodeURIComponent(CONFIG.SHARE_TEXT + '\n' + pageUrl()), '_blank', 'noopener');
+  },
+  copy: async () => {
+    try { await navigator.clipboard.writeText(pageUrl()); toast(t('copied')); }
+    catch { toast('Failed to copy.'); }
+  },
+  more: () => { state.limit += CONFIG.PAGE_SIZE; refresh(); },
+  refresh: () => refresh()
+};
+document.addEventListener('click', (e) => { const a = e.target.closest('[data-action]'); if (a) actions[a.dataset.action]?.(); });
+
+// Initialization
+const currentYear = new Date().getFullYear();
+$('#year').textContent = currentYear;
+$('#year-sidebar').textContent = currentYear;
+
+setLanguage(currentLang);
+if (store.get('petition:signed')) showThanks(true);
+renderSkeleton();
+refresh();
+setInterval(() => { if (!document.hidden) refresh({ silent: true }); }, 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh({ silent: true }); });
+})();
+</script>
+</body>
+</html>
