@@ -40,7 +40,7 @@ tailwind.config = { theme: { extend: {
 html[dir="rtl"] .seam { background: repeating-linear-gradient(to left, rgba(30,47,87,.18) 0 10px, transparent 10px 16px); }
 html[dir="rtl"] .seam i { background: repeating-linear-gradient(to left, #E8A317 0 10px, transparent 10px 16px); }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8; }
-.dot[data-s=ok] { background: #34d399; } .dot[data-s=demo] { background: #E8A317; } .dot[data-s=err] { background: #f87171; }
+.dot[data-s=ok] { background: #34d399; } .dot[data-s=err] { background: #f87171; }
 .field[aria-invalid=true] { border-color: #C62F3B; }
 input[type=checkbox][aria-invalid=true] { outline: 2px solid #C62F3B; outline-offset: 2px; }
 #msg[data-t=err] { background: #fdecee; border-color: #C62F3B; color: #8f1d28; }
@@ -50,7 +50,7 @@ input[type=checkbox][aria-invalid=true] { outline: 2px solid #C62F3B; outline-of
 .switch-thumb { inset-inline-start: .25rem; }
 .switch input:checked ~ .switch-thumb { transform: translateX(1.25rem); }
 html[dir="rtl"] .switch input:checked ~ .switch-thumb { transform: translateX(-1.25rem); }
-#sidebar { --d: 1; position: fixed; inset-block: 0; inset-inline-end: 0; width: 22rem; max-width: 100%; transform: translateX(calc(var(--d) * 100%)); visibility: hidden; transition: transform .3s ease, visibility 0s linear .3s; }
+#sidebar { --d: 1; position: fixed; inset-block: 0; inset-inline-end: 0; width: 20rem; max-width: 100%; transform: translateX(calc(var(--d) * 100%)); visibility: hidden; transition: transform .3s ease, visibility 0s linear .3s; }
 html[dir="rtl"] #sidebar { --d: -1; }
 #sidebar.open { transform: none; visibility: visible; transition: transform .3s ease, visibility 0s; }
 #sidebar-overlay, #qr-modal { opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility 0s linear .25s; }
@@ -71,28 +71,26 @@ html.no-scroll { overflow: hidden; }
 <a href="#sign" class="sr-only focus:not-sr-only focus:fixed focus:start-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:shadow-lg" data-i18n="skip_link">انتقل إلى نموذج التوقيع</a>
 <noscript><p class="bg-thread p-3 text-center text-sm font-bold">يحتاج الموقع إلى تفعيل جافاسكربت ليعمل. / JavaScript is required for this site to work.</p></noscript>
 
-<!-- Top Bar & Hero -->
+<!-- Top Bar -->
 <header class="bg-denim-deep text-white">
   <div class="border-b border-white/10">
     <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3 text-xs text-white/75">
-      <div class="flex items-center gap-2">
+      <button type="button" data-page="home" class="flex items-center gap-2 text-start focus:outline-none">
         <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-thread/20 text-thread"><i class="fa-solid fa-scroll" aria-hidden="true"></i></span>
         <span><b class="font-display text-sm text-white" data-i18n="brand_title">صوت الطالب</b> &nbsp;<span class="hidden sm:inline" data-i18n="brand_school">مدرسة النظم الحديثة الخاصة</span></span>
-      </div>
+      </button>
       <div class="flex items-center gap-2 sm:gap-3">
         <span class="flex items-center gap-1.5 rounded-full bg-white/5 px-2.5 py-1"><i id="dot" class="dot" aria-hidden="true"></i><span id="status">جارٍ الاتصال…</span></span>
-        <button id="follow-btn" type="button" data-action="follow" class="rounded-lg bg-white/10 px-2.5 py-1 text-white transition hover:bg-white/20" aria-pressed="false">
-          <i id="follow-icon" class="fa-regular fa-bell" aria-hidden="true"></i> <span id="follow-label" data-i18n="follow_btn">متابعة</span>
-        </button>
         <button id="lang-quick" type="button" data-action="toggle-lang" class="rounded-lg bg-white/10 px-2.5 py-1 font-bold text-white transition hover:bg-white/20" aria-label="Change Language">EN</button>
         <button id="menu-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="sidebar" class="rounded-lg bg-white/10 px-3 py-1 text-white transition hover:bg-white/20"><i class="fa-solid fa-bars" aria-hidden="true"></i> <span data-i18n="menu_btn">القائمة</span></button>
       </div>
     </div>
   </div>
 
-  <div class="mx-auto grid max-w-6xl gap-8 px-4 pb-12 pt-8 md:grid-cols-12 md:items-center">
+  <!-- Hero Section (Shown on Home Page) -->
+  <div id="hero-sec" class="mx-auto grid max-w-6xl gap-8 px-4 pb-10 pt-8 md:grid-cols-12 md:items-center">
     <div class="md:col-span-7">
-      <div class="mb-4 flex flex-wrap items-center gap-2">
+      <div class="mb-3 flex flex-wrap items-center gap-2">
         <span id="lifecycle-badge" class="badge bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
           <i class="fa-solid fa-circle-dot text-[10px]" aria-hidden="true"></i>
           <span id="lifecycle-text">مفتوحة لجمع التواقيع</span>
@@ -105,8 +103,8 @@ html.no-scroll { overflow: hidden; }
       <h1 class="font-display text-3xl font-extrabold leading-snug sm:text-5xl sm:leading-tight" data-i18n="hero_title">نقترح زيًّا مدرسيًا بخامة أفضل، ومقصفًا فيه وجبات حقيقية</h1>
       <p class="mt-4 max-w-xl text-base leading-loose text-white/80" data-i18n="hero_sub">مبادرة طلابية في مدرسة النظم الحديثة الخاصة، نقدّمها بروح التعاون مع الإدارة. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.</p>
 
-      <!-- Petition Lifecycle Stepper -->
-      <div class="mt-6 rounded-xl border border-white/15 bg-white/5 p-4 backdrop-blur-sm">
+      <!-- Compact Lifecycle Stepper -->
+      <div class="mt-6 rounded-xl border border-white/15 bg-white/5 p-3.5 backdrop-blur-sm">
         <div class="mb-2 flex items-center justify-between text-xs text-white/75">
           <span class="font-bold text-white" data-i18n="lifecycle_title">مراحل مسار العريضة</span>
           <span id="stage-summary" class="text-thread font-semibold">المرحلة 2 من 4</span>
@@ -117,7 +115,7 @@ html.no-scroll { overflow: hidden; }
 
     <section class="tag relative rounded-2xl bg-white px-6 pb-6 pt-12 text-denim-deep shadow-xl md:col-span-5" data-i18n-label="aria_status" aria-label="حالة العريضة">
       <dl class="space-y-2 text-sm">
-        <div class="flex justify-between border-b border-dashed border-denim/25 pb-2"><dt class="text-denim-soft" data-i18n="tag_current">تركيب الزي الحالي</dt><dd class="font-bold line-through decoration-bad decoration-2" data-i18n="tag_current_val">100% بوليستر</dd></div>
+        <div class="flex justify-between border-b border-dashed border-denim/25 pb-2"><dt class="text-denim-soft" data-i18n="tag_current">تركيب الزي الحالي</dt><dd class="font-bold line-through decoration-bad decoration-2" data-i18n="tag_current_val">+60% بوليستر</dd></div>
         <div class="flex justify-between border-b border-dashed border-denim/25 pb-2"><dt class="text-denim-soft" data-i18n="tag_proposed">ما نقترحه للزي</dt><dd class="font-bold text-emerald-700" data-i18n="tag_proposed_val">100% قطن مريح</dd></div>
         <div class="flex justify-between pb-1"><dt class="text-denim-soft" data-i18n="tag_canteen">ما نقترحه للمقصف</dt><dd class="font-bold text-denim" data-i18n="tag_canteen_val">وجبات مشبعة وتنوّع صحي</dd></div>
       </dl>
@@ -139,15 +137,11 @@ html.no-scroll { overflow: hidden; }
         <button type="button" data-action="copy" class="btn btn-line !px-2 !py-2 text-xs"><i class="fa-regular fa-copy" aria-hidden="true"></i><span data-i18n="copy_link">انسخ الرابط</span></button>
         <button type="button" data-action="qr" class="btn btn-line !px-2 !py-2 text-xs"><i class="fa-solid fa-qrcode" aria-hidden="true"></i><span data-i18n="qr_btn">رمز QR</span></button>
       </div>
-      <button type="button" data-action="print" class="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-denim/15 bg-chalk/60 py-2 text-xs font-semibold text-denim transition hover:bg-chalk">
-        <i class="fa-solid fa-print" aria-hidden="true"></i>
-        <span data-i18n="print_summary">طباعة ملخص العريضة الرسمي</span>
-      </button>
     </section>
   </div>
 </header>
 
-<!-- Official Administration Response Banner (Visible when administration responds) -->
+<!-- Official Administration Response Banner (Visible only when administration responds) -->
 <section id="admin-response-banner" class="mx-auto mt-6 hidden max-w-6xl px-4" aria-label="رد الإدارة الرسمي">
   <div class="rounded-2xl border-2 border-emerald-600/30 bg-emerald-50/90 p-5 shadow-sm sm:p-6">
     <div class="flex flex-wrap items-center justify-between gap-2">
@@ -164,7 +158,7 @@ html.no-scroll { overflow: hidden; }
   </div>
 </section>
 
-<!-- Drawer & Overlay -->
+<!-- Drawer & Overlay (Clean Menu without any Developer/Mode Controls) -->
 <div id="sidebar-overlay" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" aria-hidden="true"></div>
 <aside id="sidebar" role="dialog" aria-modal="true" aria-labelledby="menu-title" class="z-50 flex flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl">
   <div>
@@ -181,28 +175,13 @@ html.no-scroll { overflow: hidden; }
         </select>
       </div>
 
-      <!-- Data Mode Switcher (Live vs Interactive Demo) -->
-      <div class="rounded-xl border border-denim/15 bg-chalk/50 p-4">
-        <p class="mb-2 text-xs font-bold text-denim-soft"><i class="fa-solid fa-database" aria-hidden="true"></i> <span data-i18n="mode_label">وضع الاتصال بالبيانات</span></p>
-        <div class="grid grid-cols-2 gap-2">
-          <button id="mode-live" type="button" data-action="mode-live" class="rounded-lg border border-denim/20 bg-white px-3 py-2 text-xs font-bold text-denim transition">
-            <i class="fa-solid fa-cloud" aria-hidden="true"></i> <span data-i18n="mode_live_btn">مباشر (Supabase)</span>
-          </button>
-          <button id="mode-demo" type="button" data-action="mode-demo" class="rounded-lg border border-denim/20 bg-white px-3 py-2 text-xs font-bold text-denim transition">
-            <i class="fa-solid fa-flask" aria-hidden="true"></i> <span data-i18n="mode_demo_btn">معاينة تجريبية</span>
-          </button>
-        </div>
-        <p class="mt-2 text-[11px] leading-relaxed text-denim-soft" data-i18n="mode_hint">يتيح وضع المعاينة تجربة التوقيع والفلترة والإيصالات محليًا دون التأثير على قاعدة البيانات الفعلية.</p>
-      </div>
-
       <div class="space-y-1.5 pt-1">
-        <h3 class="px-1 text-xs font-bold text-denim-soft" data-i18n="important_links">روابط وأقسام المنصة</h3>
-        <a href="#sign" data-nav class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-signature w-5" aria-hidden="true"></i><span data-i18n="sign_now">وقّع الآن</span></a>
-        <a href="#analytics" data-nav class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-chart-pie w-5" aria-hidden="true"></i><span data-i18n="link_analytics">إحصائيات وتوزيع الأصوات</span></a>
-        <a href="#updates-sec" data-nav class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-bullhorn w-5" aria-hidden="true"></i><span data-i18n="link_updates">مستجدات العريضة</span></a>
-        <a href="#why-started" data-nav class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-circle-question w-5" aria-hidden="true"></i><span data-i18n="link_why">لماذا بدأنا؟</span></a>
-        <a href="#privacy" data-nav class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-shield-halved w-5" aria-hidden="true"></i><span data-i18n="link_privacy">الخصوصية والأمان</span></a>
-        <a href="#discord" data-nav class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-brands fa-discord w-5" aria-hidden="true"></i><span data-i18n="link_discord">منتدى ديسكورد</span></a>
+        <h3 class="px-1 text-xs font-bold text-denim-soft" data-i18n="important_links">صفحات المنصة</h3>
+        <button type="button" data-page="home" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-house w-5" aria-hidden="true"></i><span data-i18n="link_home">الصفحة الرئيسية</span></button>
+        <button type="button" data-page="analytics" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-chart-pie w-5" aria-hidden="true"></i><span data-i18n="link_analytics">إحصائيات وتوزيع الأصوات</span></button>
+        <button type="button" data-page="why-started" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-circle-question w-5" aria-hidden="true"></i><span data-i18n="link_why">لماذا بدأنا؟</span></button>
+        <button type="button" data-page="privacy" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-shield-halved w-5" aria-hidden="true"></i><span data-i18n="link_privacy">الخصوصية والأمان</span></button>
+        <button type="button" data-page="discord" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-brands fa-discord w-5" aria-hidden="true"></i><span data-i18n="link_discord">منتدى ديسكورد</span></button>
       </div>
     </nav>
   </div>
@@ -211,7 +190,7 @@ html.no-scroll { overflow: hidden; }
   </div>
 </aside>
 
-<!-- QR Code & Share Modal -->
+<!-- QR Code Modal -->
 <div id="qr-modal" role="dialog" aria-modal="true" aria-labelledby="qr-title" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
   <div class="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl">
     <div class="flex items-center justify-between border-b border-denim/15 pb-3">
@@ -228,63 +207,45 @@ html.no-scroll { overflow: hidden; }
   </div>
 </div>
 
-<!-- Main Content Grid -->
-<main class="mx-auto grid max-w-6xl gap-x-10 gap-y-10 px-4 py-10 lg:grid-cols-12">
-  <!-- Left Column: Problem Statement, Proposals, Analytics & Updates -->
+<!-- ================= PAGE 1: MAIN PETITION PAGE (Compact & Focused) ================= -->
+<main id="page-home" class="mx-auto grid max-w-6xl gap-x-10 gap-y-8 px-4 py-8 lg:grid-cols-12">
+  <!-- Left Column: Concise Problem & Proposal Overview -->
   <section class="lg:col-span-7">
     <h2 class="font-display text-2xl font-extrabold" data-i18n="why_title"></h2>
-    <p class="mt-3 max-w-prose leading-loose" data-i18n="why_desc"></p>
-    <p class="mt-4 rounded-e-xl border-s-4 border-thread bg-white/70 p-4 font-semibold leading-loose shadow-sm" data-i18n="respect_note"></p>
+    <p class="mt-2 max-w-prose text-sm leading-relaxed text-denim-soft" data-i18n="why_desc"></p>
+    <p class="mt-3 rounded-e-xl border-s-4 border-thread bg-white/70 px-4 py-2.5 text-sm font-semibold leading-relaxed shadow-sm" data-i18n="respect_note"></p>
 
-    <h3 class="mt-8 font-display text-lg font-bold" data-i18n="uniform_h"></h3>
-    <ul data-list="uniform_problems" data-icon="fa-triangle-exclamation text-bad" class="mt-2 divide-y divide-denim/15 border-y border-denim/15"></ul>
-
-    <h3 class="mt-8 font-display text-lg font-bold" data-i18n="canteen_h"></h3>
-    <ul data-list="canteen_problems" data-icon="fa-utensils text-bad" class="mt-2 divide-y divide-denim/15 border-y border-denim/15"></ul>
-
-    <h2 class="mt-12 font-display text-2xl font-extrabold" data-i18n="proposals_heading"></h2>
-    <h3 class="mt-4 font-display text-lg font-bold" data-i18n="asks_uniform_h"></h3>
-    <ul data-list="asks_uniform" data-icon="fa-circle-check text-emerald-600" class="mt-2 divide-y divide-denim/15 border-y border-denim/15"></ul>
-
-    <h3 class="mt-8 font-display text-lg font-bold" data-i18n="asks_canteen_h"></h3>
-    <ul data-list="asks_canteen" data-icon="fa-circle-check text-emerald-600" class="mt-2 divide-y divide-denim/15 border-y border-denim/15"></ul>
-
-    <!-- Community Breakdown & Grade Distribution Section -->
-    <div id="analytics" class="mt-12 scroll-mt-6 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <h2 class="font-display text-xl font-extrabold" data-i18n="analytics_title">توزيع الأصوات وأولويات الطلاب</h2>
-        <span class="badge bg-chalk text-denim-soft"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> <span data-i18n="live_stats_badge">إحصائيات حية</span></span>
+    <div class="mt-6 grid gap-5 sm:grid-cols-2">
+      <div class="rounded-xl border border-denim/15 bg-white p-4">
+        <h3 class="font-display text-base font-bold text-denim-deep" data-i18n="uniform_h"></h3>
+        <ul data-list="uniform_problems" data-icon="fa-triangle-exclamation text-bad" class="mt-2 divide-y divide-denim/10"></ul>
       </div>
-      <p class="mt-1 text-xs text-denim-soft" data-i18n="analytics_sub">يوضح الرسم أدناه نسبة تأييد محاور العريضة وتوزيع المشاركين حسب الصفوف الدراسية.</p>
-
-      <!-- Priority Breakdown -->
-      <div class="mt-4 space-y-2.5" id="cat-bars"></div>
-
-      <!-- Grade Distribution Chips / Bars -->
-      <div class="mt-6 border-t border-denim/10 pt-4">
-        <h3 class="text-xs font-bold text-denim-soft" data-i18n="grade_dist_title">المشاركون حسب الصف الدراسي</h3>
-        <div id="grade-bars" class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3"></div>
+      <div class="rounded-xl border border-denim/15 bg-white p-4">
+        <h3 class="font-display text-base font-bold text-denim-deep" data-i18n="canteen_h"></h3>
+        <ul data-list="canteen_problems" data-icon="fa-utensils text-bad" class="mt-2 divide-y divide-denim/10"></ul>
       </div>
     </div>
 
-    <!-- Official Updates & Announcements Feed -->
-    <div id="updates-sec" class="mt-10 scroll-mt-6 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm">
-      <div class="flex items-center justify-between gap-2">
-        <h2 class="font-display text-xl font-extrabold" data-i18n="updates_title">سجل المستجدات والمتابعة</h2>
-        <span class="badge bg-thread/20 text-denim-deep"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i> <span id="updates-count">3</span></span>
+    <h2 class="mt-8 font-display text-2xl font-extrabold" data-i18n="proposals_heading"></h2>
+    <div class="mt-3 grid gap-5 sm:grid-cols-2">
+      <div class="rounded-xl border border-denim/15 bg-white p-4">
+        <h3 class="font-display text-base font-bold text-denim-deep" data-i18n="asks_uniform_h"></h3>
+        <ul data-list="asks_uniform" data-icon="fa-circle-check text-emerald-600" class="mt-2 divide-y divide-denim/10"></ul>
       </div>
-      <ol id="updates-list" class="mt-4 space-y-4 border-s-2 border-denim/15 ps-4"></ol>
+      <div class="rounded-xl border border-denim/15 bg-white p-4">
+        <h3 class="font-display text-base font-bold text-denim-deep" data-i18n="asks_canteen_h"></h3>
+        <ul data-list="asks_canteen" data-icon="fa-circle-check text-emerald-600" class="mt-2 divide-y divide-denim/10"></ul>
+      </div>
     </div>
   </section>
 
   <!-- Right Column: Sticky Signature Form & Receipt Card -->
   <aside class="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1">
-    <div id="sign" class="scroll-mt-4 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-8 lg:sticky lg:top-6">
+    <div id="sign" class="scroll-mt-4 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-7 lg:sticky lg:top-6">
       <div id="closed" class="hidden rounded-xl border border-denim/20 bg-chalk/70 p-5 text-center">
         <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-denim/10 text-xl text-denim"><i class="fa-solid fa-lock" aria-hidden="true"></i></div>
         <p class="font-display text-base font-extrabold text-denim-deep" id="closed-heading" data-i18n="closed_heading">العريضة مغلقة حاليًا لجمع التواقيع</p>
         <p class="mt-1 text-sm leading-relaxed text-denim-soft" data-i18n="closed_msg">انتهى جمع التواقيع وأُغلقت العريضة. شكرًا لكل من شارك وساهم بصوته.</p>
-        <button type="button" data-action="print" class="btn btn-line mt-4 w-full text-xs"><i class="fa-solid fa-print" aria-hidden="true"></i><span data-i18n="print_summary">طباعة ملخص العريضة الرسمي</span></button>
       </div>
 
       <!-- Post-Signature Confirmation & Verification Receipt -->
@@ -293,7 +254,6 @@ html.no-scroll { overflow: hidden; }
         <h2 id="thanks-h" tabindex="-1" class="font-display text-2xl font-extrabold outline-none" data-i18n="thanks_title">شكرًا، وصل صوتك</h2>
         <p class="mt-2 text-sm leading-relaxed text-denim-soft" data-i18n="thanks_desc">تم تسجيل توقيعك بنجاح. كل صوت جديد يقرّبنا من الهدف. شارك العريضة مع زملائك.</p>
 
-        <!-- Transparent Verification Receipt Box -->
         <div class="mt-4 rounded-xl border border-dashed border-denim/30 bg-chalk/50 p-4 text-start text-xs">
           <div class="flex items-center justify-between border-b border-denim/10 pb-2">
             <span class="font-bold text-denim-deep"><i class="fa-solid fa-certificate text-thread me-1" aria-hidden="true"></i> <span data-i18n="receipt_label">إيصال تأكيد التوقيع</span></span>
@@ -302,7 +262,7 @@ html.no-scroll { overflow: hidden; }
           <dl class="mt-2.5 space-y-1.5 text-denim-soft">
             <div class="flex justify-between"><dt data-i18n="receipt_display">الظهور في القائمة العامة:</dt><dd id="receipt-name" class="font-bold text-denim-deep" dir="auto">—</dd></div>
             <div class="flex justify-between"><dt data-i18n="receipt_grade">الصف الدراسي:</dt><dd id="receipt-grade" class="font-semibold text-denim-deep">—</dd></div>
-            <div class="flex justify-between"><dt data-i18n="receipt_status">حالة التسجيل:</dt><dd class="font-semibold text-emerald-700" data-i18n="receipt_status_val">مسجّل ومحتسب في العدّاد</dd></div>
+            <div class="flex justify-between"><dt data-i18n="receipt_status">حالة التسجيل:</dt><dd class="font-semibold text-emerald-700" data-i18n="receipt_status_val">مسجّل ومحتسب في العدّاد ✓</dd></div>
           </dl>
           <button type="button" data-action="copy-receipt" class="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-denim/20 bg-white py-1.5 text-xs font-semibold text-denim hover:bg-chalk">
             <i class="fa-regular fa-copy" aria-hidden="true"></i> <span data-i18n="copy_receipt_btn">نسخ رمز الإيصال</span>
@@ -310,7 +270,6 @@ html.no-scroll { overflow: hidden; }
         </div>
 
         <button type="button" data-action="share" class="btn btn-main mt-4 w-full"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i><span data-i18n="share_petition">شارك العريضة</span></button>
-        <button type="button" data-action="reset-local" class="mt-3 text-xs font-semibold text-denim-soft underline hover:text-denim" data-i18n="sign_another_student">هل يستخدم جهازك طالب آخر؟ اضغط لتوقيع جديد</button>
       </div>
 
       <!-- Signing Form -->
@@ -351,7 +310,7 @@ html.no-scroll { overflow: hidden; }
             <label for="note" class="text-sm font-semibold"><span data-i18n="label_note">ملاحظتك أو سبب تأييدك</span> <span class="font-normal text-denim-soft" data-i18n="optional_tag">(اختياري)</span></label>
             <span id="note-count" class="text-xs text-denim-soft" dir="ltr">0/250</span>
           </div>
-          <textarea id="note" rows="3" maxlength="250" class="field resize-none" data-i18n-placeholder="placeholder_note" placeholder="مثال: القماش حارّ ويتعبنا في الصيف…"></textarea>
+          <textarea id="note" rows="2" maxlength="250" class="field resize-none" data-i18n-placeholder="placeholder_note" placeholder="مثال: القماش حارّ ويتعبنا في الصيف…"></textarea>
           <p class="mt-1 text-xs leading-relaxed text-denim-soft" data-i18n="note_hint">تظهر الملاحظة للعامة بعد مراجعتها فقط. لا تكتب معلومات شخصية ولا إساءة لأحد.</p>
         </div>
 
@@ -373,7 +332,7 @@ html.no-scroll { overflow: hidden; }
         <p id="msg" role="alert" class="hidden rounded-lg border px-3 py-2 text-sm"></p>
         <button id="submit" type="submit" class="btn btn-main w-full py-4 text-base"><i class="fa-solid fa-signature" aria-hidden="true"></i><span data-i18n="btn_submit">أوقّع على العريضة</span></button>
         <p class="text-center text-xs leading-relaxed text-denim-soft" data-i18n="privacy_footnote">نحفظ الاسم والصف فقط. يظهر في القائمة اسمك الأول وحرف من عائلتك، أو «مجهول» إن فعّلت إخفاء الاسم.</p>
-        <p class="text-center text-xs"><a href="#privacy" class="font-semibold text-denim underline" data-i18n="privacy_link_form">اقرأ تفاصيل الخصوصية والأمان</a></p>
+        <p class="text-center text-xs"><a href="#privacy" data-page="privacy" class="font-semibold text-denim underline" data-i18n="privacy_link_form">اقرأ تفاصيل الخصوصية والأمان</a></p>
       </form>
     </div>
   </aside>
@@ -388,8 +347,7 @@ html.no-scroll { overflow: hidden; }
       <button id="refresh-btn" type="button" data-action="refresh" class="btn btn-line !px-3 !py-1.5 text-xs"><i class="fa-solid fa-rotate" aria-hidden="true"></i><span data-i18n="refresh">تحديث</span></button>
     </div>
 
-    <!-- Wall Filter & Search Bar -->
-    <div class="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-12">
+    <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-12">
       <div class="relative sm:col-span-6">
         <input id="wall-search" type="search" class="field !py-2 ps-9 text-xs" data-i18n-placeholder="wall_search_ph" placeholder="ابحث في التواقيع أو الملاحظات…">
         <i class="fa-solid fa-magnifying-glass pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-xs text-denim-soft" aria-hidden="true"></i>
@@ -410,37 +368,66 @@ html.no-scroll { overflow: hidden; }
   </section>
 </main>
 
-<!-- Bottom Information Sections -->
-<div class="mx-auto max-w-6xl space-y-14 px-4 pb-14">
-  <section id="why-started" class="scroll-mt-6 grid gap-10 lg:grid-cols-12">
-    <div class="lg:col-span-7">
-      <h2 class="font-display text-2xl font-extrabold" data-i18n="why_started_title"></h2>
-      <p class="mt-3 max-w-prose leading-loose" data-i18n="why_started_intro"></p>
-      <ul data-list="why_started_points" data-icon="fa-flag text-denim" class="mt-3 divide-y divide-denim/15 border-y border-denim/15"></ul>
+<!-- ================= SEPARATE DEDICATED SUB-PAGES (Opened via Menu / Footer) ================= -->
+<div id="subpage-wrap" class="mx-auto hidden max-w-4xl px-4 py-8">
+  <div class="mb-6 flex items-center justify-between border-b border-denim/15 pb-4">
+    <button type="button" data-page="home" class="btn btn-line !px-4 !py-2 text-xs">
+      <i class="fa-solid fa-arrow-right rtl:rotate-0 ltr:rotate-180" aria-hidden="true"></i>
+      <span data-i18n="back_home">العودة إلى صفحة العريضة</span>
+    </button>
+    <a href="#sign" data-page="home" class="btn btn-main !px-4 !py-2 text-xs" data-i18n="sign_now">وقّع الآن</a>
+  </div>
+
+  <!-- Sub-page: Analytics & Grade Distribution -->
+  <section id="analytics" class="hidden rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-8">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <h2 class="font-display text-2xl font-extrabold" data-i18n="analytics_title">توزيع الأصوات وأولويات الطلاب</h2>
+      <span class="badge bg-chalk text-denim-soft"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> <span data-i18n="live_stats_badge">إحصائيات حية</span></span>
     </div>
-    <div class="lg:col-span-5">
-      <h2 class="font-display text-2xl font-extrabold" data-i18n="next_title"></h2>
-      <ol data-list="next_steps" data-icon="num" class="mt-3 divide-y divide-denim/15 border-y border-denim/15"></ol>
+    <p class="mt-2 text-sm text-denim-soft" data-i18n="analytics_sub">نسبة تأييد محاور العريضة وتوزيع المشاركين حسب الصفوف الدراسية.</p>
+    <div class="mt-6 space-y-3" id="cat-bars"></div>
+    <div class="mt-8 border-t border-denim/10 pt-6">
+      <h3 class="text-sm font-bold text-denim-soft" data-i18n="grade_dist_title">المشاركون حسب الصف الدراسي</h3>
+      <div id="grade-bars" class="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3"></div>
     </div>
   </section>
 
-  <section id="privacy" class="scroll-mt-6">
+  <!-- Sub-page: Why We Started & Next Steps -->
+  <section id="why-started" class="hidden rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-8">
+    <div class="grid gap-8 md:grid-cols-12">
+      <div class="md:col-span-7">
+        <h2 class="font-display text-2xl font-extrabold" data-i18n="why_started_title"></h2>
+        <p class="mt-2 text-sm leading-relaxed text-denim-soft" data-i18n="why_started_intro"></p>
+        <ul data-list="why_started_points" data-icon="fa-flag text-denim" class="mt-4 divide-y divide-denim/15 border-y border-denim/15"></ul>
+      </div>
+      <div class="md:col-span-5">
+        <h2 class="font-display text-2xl font-extrabold" data-i18n="next_title"></h2>
+        <ol data-list="next_steps" data-icon="num" class="mt-4 divide-y divide-denim/15 border-y border-denim/15"></ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub-page: Privacy & Security -->
+  <section id="privacy" class="hidden rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-8">
     <h2 class="font-display text-2xl font-extrabold" data-i18n="privacy_title"></h2>
-    <p class="mt-3 max-w-prose leading-loose" data-i18n="privacy_intro"></p>
-    <ul data-list="privacy_items" data-icon="fa-shield-halved" data-li="flex gap-3 rounded-xl border border-denim/15 bg-white p-4" class="mt-5 grid gap-3 md:grid-cols-2"></ul>
-    <p class="mt-4 text-sm text-denim-soft" data-i18n="privacy_note"></p>
+    <p class="mt-2 text-sm leading-relaxed text-denim-soft" data-i18n="privacy_intro"></p>
+    <ul data-list="privacy_items" data-icon="fa-shield-halved" data-li="flex gap-3 rounded-xl border border-denim/15 bg-chalk/30 p-4" class="mt-5 grid gap-3 sm:grid-cols-2"></ul>
+    <p class="mt-4 text-xs text-denim-soft" data-i18n="privacy_note"></p>
   </section>
 
-  <section id="discord" class="scroll-mt-6 grid gap-8 rounded-2xl bg-denim-deep p-6 text-white sm:p-8 md:grid-cols-12 md:items-center">
-    <div class="md:col-span-7">
-      <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#5865F2] text-2xl" aria-hidden="true"><i class="fa-brands fa-discord"></i></div>
-      <h2 class="font-display text-2xl font-extrabold" data-i18n="discord_title"></h2>
-      <p class="mt-2 max-w-prose leading-loose text-white/80" data-i18n="discord_desc"></p>
-      <ul data-list="discord_points" data-tone="dark" data-icon="fa-comments" data-li="flex gap-3 py-2" class="mt-4"></ul>
-    </div>
-    <div class="md:col-span-5">
-      <a id="discord-btn" href="#discord" class="btn btn-main w-full py-4 text-base focus-visible:!outline-white"><i class="fa-brands fa-discord" aria-hidden="true"></i><span data-i18n="discord_join"></span></a>
-      <p id="discord-soon" class="mt-3 hidden text-center text-sm text-white/70" data-i18n="discord_soon"></p>
+  <!-- Sub-page: Discord Forum -->
+  <section id="discord" class="hidden rounded-2xl bg-denim-deep p-6 text-white shadow-xl sm:p-8">
+    <div class="grid gap-8 md:grid-cols-12 md:items-center">
+      <div class="md:col-span-7">
+        <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#5865F2] text-2xl" aria-hidden="true"><i class="fa-brands fa-discord"></i></div>
+        <h2 class="font-display text-2xl font-extrabold" data-i18n="discord_title"></h2>
+        <p class="mt-2 text-sm leading-relaxed text-white/80" data-i18n="discord_desc"></p>
+        <ul data-list="discord_points" data-tone="dark" data-icon="fa-comments" data-li="flex gap-3 py-2" class="mt-4"></ul>
+      </div>
+      <div class="md:col-span-5">
+        <a id="discord-btn" href="#discord" class="btn btn-main w-full py-4 text-base focus-visible:!outline-white"><i class="fa-brands fa-discord" aria-hidden="true"></i><span data-i18n="discord_join"></span></a>
+        <p id="discord-soon" class="mt-3 hidden text-center text-sm text-white/70" data-i18n="discord_soon"></p>
+      </div>
     </div>
   </section>
 </div>
@@ -449,11 +436,11 @@ html.no-scroll { overflow: hidden; }
   <p class="font-display text-sm font-bold text-denim-deep" lang="ar">مدرسة النظم الحديثة الخاصة</p>
   <p class="mb-3 font-semibold" dir="ltr" lang="en">Modern Systems Private School</p>
   <nav class="mb-2 flex flex-wrap justify-center gap-5 font-semibold text-denim">
-    <a class="hover:underline" href="#analytics" data-i18n="link_analytics"></a>
-    <a class="hover:underline" href="#updates-sec" data-i18n="link_updates"></a>
-    <a class="hover:underline" href="#why-started" data-i18n="link_why"></a>
-    <a class="hover:underline" href="#privacy" data-i18n="link_privacy"></a>
-    <a class="hover:underline" href="#discord" data-i18n="link_discord"></a>
+    <a class="hover:underline" href="#page-home" data-page="home" data-i18n="link_home"></a>
+    <a class="hover:underline" href="#analytics" data-page="analytics" data-i18n="link_analytics"></a>
+    <a class="hover:underline" href="#why-started" data-page="why-started" data-i18n="link_why"></a>
+    <a class="hover:underline" href="#privacy" data-page="privacy" data-i18n="link_privacy"></a>
+    <a class="hover:underline" href="#discord" data-page="discord" data-i18n="link_discord"></a>
   </nav>
   <p><span data-i18n="footer_text"></span> © <span id="year"></span></p>
 </footer>
@@ -481,19 +468,18 @@ const CONFIG = {
   DISCORD_URL: ''
 };
 
-/* ================= Translations ================= */
+/* ================= Concise, Scannable Translations ================= */
 const I18N = {
   ar: {
     doc_title: 'عريضة صوت الطالب — مدرسة النظم الحديثة الخاصة',
     meta_desc: 'اقتراح طلابي لتحسين خامة الزي المدرسي وتوفير وجبات حقيقية وأصناف أكثر في المقصف. وقّع وشارك العريضة.',
     skip_link: 'انتقل إلى نموذج التوقيع',
     brand_title: 'صوت الطالب', brand_school: 'مدرسة النظم الحديثة الخاصة',
-    connecting: 'جارٍ الاتصال…', connected: 'متصل مباشر',
-    demo_mode: 'وضع المعاينة التجريبي', connection_err: 'وضع عدم الاتصال (بيانات محلية)',
+    connecting: 'جارٍ الاتصال…', connected: 'متصل',
+    connection_err: 'تعذّر الاتصال بالخادم',
     menu_btn: 'القائمة', close_menu: 'إغلاق القائمة', close_btn: 'إغلاق',
-    follow_btn: 'متابعة', following_btn: 'مُتابَع ✓',
-    follow_toast_on: 'تم تفعيل متابعة العريضة على هذا المتصفح.',
-    follow_toast_off: 'تم إلغاء متابعة العريضة.',
+    back_home: 'العودة إلى صفحة العريضة',
+    link_home: 'الصفحة الرئيسية',
     hero_title: 'نقترح زيًّا مدرسيًا بخامة أفضل، ومقصفًا فيه وجبات حقيقية',
     hero_sub: 'مبادرة طلابية في مدرسة النظم الحديثة الخاصة، نقدّمها بروح التعاون مع الإدارة. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.',
     lifecycle_title: 'مراحل مسار العريضة',
@@ -506,31 +492,27 @@ const I18N = {
     status_archived: 'مؤرشفة',
     deadline_prefix: 'الموعد النهائي: ',
     aria_status: 'حالة العريضة', aria_progress: 'التقدم نحو الهدف',
-    tag_current: 'تركيب الزي الحالي', tag_current_val: '100% بوليستر',
+    tag_current: 'تركيب الزي الحالي', tag_current_val: '+60% بوليستر',
     tag_proposed: 'ما نقترحه للزي', tag_proposed_val: '100% قطن مريح',
     tag_canteen: 'ما نقترحه للمقصف', tag_canteen_val: 'وجبات مشبعة وتنوّع صحي',
     signatures_of: 'توقيع من أصل', sign_now: 'وقّع الآن', share: 'شارك', copy_link: 'انسخ الرابط',
-    qr_btn: 'رمز QR', print_summary: 'طباعة ملخص العريضة الرسمي',
+    qr_btn: 'رمز QR',
     qr_modal_title: 'مشاركة العريضة عبر رمز QR',
     qr_modal_desc: 'امسح الرمز بكاميرا الهاتف أو انسخ الرابط لمشاركته مع زملائك.',
     official_response_title: 'رد وتوضيح رسمي من إدارة المدرسة',
     official_badge: 'رد رسمي',
     menu_title: 'القائمة والإعدادات', lang_label: 'Language / اللغة',
-    mode_label: 'وضع الاتصال بالبيانات',
-    mode_live_btn: 'مباشر (Supabase)', mode_demo_btn: 'معاينة تجريبية',
-    mode_hint: 'يتيح وضع المعاينة تجربة التوقيع والفلترة والإيصالات محليًا دون التأثير على قاعدة البيانات الفعلية.',
-    important_links: 'روابط وأقسام المنصة',
-    link_analytics: 'إحصائيات وتوزيع الأصوات', link_updates: 'مستجدات العريضة',
+    important_links: 'صفحات المنصة',
+    link_analytics: 'إحصائيات وتوزيع الأصوات',
     link_privacy: 'الخصوصية والأمان', link_why: 'لماذا بدأنا؟',
     why_title: 'لماذا نقدّم هذا الاقتراح؟',
-    why_desc: 'نقضي أكثر من 25 ساعة أسبوعيًا في المدرسة، فما نلبسه وما نأكله هناك يؤثر على راحتنا وصحتنا وتركيزنا كل يوم. نرى مشكلتين تحتاجان إلى حل: الزي المدرسي، والمقصف.',
-    respect_note: 'نحترم جهود مدرسة النظم الحديثة الخاصة وإدارتها، ونقدّم هذا الاقتراح بروح التعاون لا المواجهة.',
-    proposals_heading: 'ما نطلبه بشكل عملي',
+    why_desc: 'نقضي أكثر من 25 ساعة أسبوعيًا في المدرسة، فما نلبسه وما نأكله يؤثر مباشرةً على راحتنا وتركيزنا اليومي.',
+    respect_note: 'نقدّم هذا الاقتراح بروح التعاون والتقدير لإدارة مدرسة النظم الحديثة الخاصة.',
+    proposals_heading: 'ما نطلبه باختصار',
     analytics_title: 'توزيع الأصوات وأولويات الطلاب',
     live_stats_badge: 'إحصائيات حية',
-    analytics_sub: 'يوضح الرسم أدناه نسبة تأييد محاور العريضة وتوزيع المشاركين حسب الصفوف الدراسية.',
+    analytics_sub: 'نسبة تأييد محاور العريضة وتوزيع المشاركين حسب الصفوف الدراسية.',
     grade_dist_title: 'المشاركون حسب الصف الدراسي',
-    updates_title: 'سجل المستجدات والمتابعة',
     closed_heading: 'العريضة مغلقة حاليًا لجمع التواقيع',
     closed_msg: 'انتهى جمع التواقيع وأُغلقت العريضة. شكرًا لكل من شارك وساهم بصوته.',
     thanks_title: 'شكرًا، وصل صوتك',
@@ -542,7 +524,6 @@ const I18N = {
     receipt_status_val: 'مسجّل ومحتسب في العدّاد ✓',
     copy_receipt_btn: 'نسخ رمز الإيصال',
     receipt_copied: 'تم نسخ رمز إيصال التوقيع',
-    sign_another_student: 'هل يستخدم جهازك طالب آخر؟ اضغط لتوقيع جديد',
     share_petition: 'شارك العريضة',
     form_title: 'وقّع على العريضة', form_sub: 'اكتب اسمك الثنائي على الأقل واختر صفّك.',
     label_name: 'الاسم الكامل', placeholder_name: 'مثال: يوسف أحمد',
@@ -555,15 +536,15 @@ const I18N = {
     btn_submit: 'أوقّع على العريضة', sending: 'جارٍ الإرسال…',
     privacy_footnote: 'نحفظ الاسم والصف وموافقة ولي الأمر، وملاحظتك إن كتبتها. يظهر في القائمة اسمك الأول وحرف من عائلتك، أو «مجهول» إن فعّلت إخفاء الاسم.',
     wall_title: 'من وقّعوا حتى الآن', refresh: 'تحديث', show_more: 'عرض المزيد',
-    wall_showing: 'عرض {shown} من أصل {total} في القائمة الحديثة',
+    wall_showing: 'عرض {shown} من أصل {total}',
     wall_search_ph: 'ابحث بالاسم أو نص الملاحظة…',
     all_grades: 'كل الصفوف',
     filter_all: 'كل التواقيع', filter_notes: 'مع ملاحظات فقط',
     verified_badge: 'موثّق',
     footer_text: 'مبادرة طلابية فردية لتقديم اقتراح، وهي ليست جهة رسمية ولا تمثّل المدرسة أو إدارتها.',
-    anonymous: 'مجهول', no_signatures: 'لا توجد تواقيع مطابقة', be_first: 'كن أول من يوقّع على العريضة أو جرّب تغيير خيارات البحث.',
+    anonymous: 'مجهول', no_signatures: 'لا توجد تواقيع بعد', be_first: 'كن أول من يوقّع على العريضة.',
     retry: 'إعادة المحاولة', err_load: 'تعذّر تحميل التواقيع', check_conn: 'تحقق من الاتصال ثم حاول مجددًا.',
-    next_goal: 'الهدف المرحلي القادم {goal}، ويتبقى {rem} توقيع.', goal_passed: 'تجاوزنا الهدف المحدد، شكرًا لكل صوت!',
+    next_goal: 'الهدف القادم {goal}، ويتبقى {rem}.', goal_passed: 'تجاوزنا الهدف، شكرًا لكل صوت!',
     last_24h: 'آخر 24 ساعة: +{count}', just_now: 'الآن',
     copied: 'تم نسخ الرابط بنجاح', copy_failed: 'تعذّر النسخ، انسخ الرابط من شريط العنوان.',
     share_text: 'وقّع معنا على اقتراح طلاب مدرسة النظم الحديثة الخاصة: زيّ بخامة أفضل ووجبات حقيقية في المقصف',
@@ -572,66 +553,56 @@ const I18N = {
     err_name: 'الاسم غير مقبول: اكتب اسمك الثنائي بحروف فقط، بدون أرقام أو رموز.',
     err_grade: 'اختر صفًّا صحيحًا.', err_consent: 'يجب الموافقة على علم ولي الأمر لإتمام التصويت.',
     err_rate: 'محاولات كثيرة من هذه الشبكة. انتظر قليلًا ثم حاول مجددًا.',
-    err_offline: 'لا يوجد اتصال بالإنترنت. تحقق من الاتصال أو فعّل وضع المعاينة من القائمة.',
+    err_offline: 'لا يوجد اتصال بالإنترنت. تحقق من الاتصال وحاول مجددًا.',
     err_general: 'تعذّر إرسال التوقيع. حاول مجددًا بعد قليل.',
     uniform_h: 'مشكلة الزي المدرسي',
     uniform_problems: [
-      ['خامة رديئة', 'القميص مصنوع من خامات قليلة الجودة، ويتأثر شكله وملمسه بسرعة مع الاستخدام والغسيل.'],
-      ['روائح مزعجة', 'الألياف الصناعية لا تتنفّس، فتحبس الحرارة والعرق وتظهر الروائح بسرعة حتى بعد الغسيل.'],
-      ['تحسّس في الجلد', 'قد يسبّب أحيانًا حكّة وتهيّجًا في الجلد عند بعض الطلاب، خصوصًا مع طول اليوم الدراسي.'],
-      ['حرارة وعدم راحة', 'يزيد الشعور بالحرارة والإرهاق، ويقيّد الحركة أثناء الحصص والأنشطة.']
+      ['نسبة بوليستر مرتفعة (+60%)', 'الألياف الصناعية تحبس الحرارة والعرق وتسبب عدم راحة خلال الدوام.'],
+      ['تحسّس وتلف سريع', 'تسبب تهيجًا للبشرة عند بعض الطلاب ويتأثر ملمسها سريعًا بالغسيل.']
     ],
     canteen_h: 'مشكلة المقصف',
     canteen_problems: [
-      ['لا توجد وجبات فعلية', 'المقصف يقدّم سناكات فقط، ولا يوجد طعام حقيقي يسدّ جوع الطالب خلال يوم دراسي طويل.'],
-      ['أصناف قليلة جدًا', 'حتى السناكات المتوفرة قليلة ومتكررة، فلا يجد الطالب ما يناسب ذوقه أو حاجته.'],
-      ['النتيجة', 'يبقى بعض الطلاب جائعين، أو يضطرون إلى إحضار طعامهم من البيت.']
+      ['غياب الوجبات المشبعة', 'الاقتصار على سناكات خفيفة لا تسدّ جوع الطالب في يوم دراسي طويل.'],
+      ['محدودية الأصناف', 'قلة الخيارات وتكرارها يوميًا دون بدائل صحية كافية.']
     ],
     asks_uniform_h: 'بخصوص الزي',
     asks_uniform: [
-      ['خامة قطنية جيدة', 'نسيج طبيعي يتنفّس، ويتحمّل الغسيل المتكرر، ويناسب مناخنا الدافئ.'],
-      ['قصّة مرنة ومريحة', 'تصميم عملي يتيح حرية الحركة طوال اليوم.'],
-      ['ألوان هادئة', 'ألوان متناسقة تعطي مظهرًا مرتّبًا ومحترمًا.']
+      ['قماش قطني مريح', 'نسيج طبيعي يتنفّس ويناسب الأجواء الدافئة والغسيل المتكرر.'],
+      ['قصّة عملية وألوان هادئة', 'تصميم مريح للحركة بمظهر مدرسي مرتب.']
     ],
     asks_canteen_h: 'بخصوص المقصف',
     asks_canteen: [
-      ['وجبات فعلية', 'توفير وجبات كاملة ومشبعة، وليس سناكات فقط.'],
-      ['أصناف أكثر تنوّعًا', 'قائمة متنوعة تتغيّر، وفيها خيارات صحية.'],
-      ['سناكات أكثر', 'زيادة عدد السناكات وتنويعها، بأسعار مناسبة للطلاب.']
+      ['وجبات فعلية مشبعة', 'توفير فطائر وسندويشات ووجبات كاملة بسعر مناسب.'],
+      ['تنوّع وخيارات صحية', 'قائمة متجددة تلبي احتياجات الطلاب اليومية.']
     ],
     why_started_title: 'لماذا بدأنا هذه المبادرة؟',
-    why_started_intro: 'بدأنا لأننا نريد بيئة مدرسية أفضل لنا ولمن سيأتي بعدنا، وبطريقة هادئة ومحترمة.',
+    why_started_intro: 'نريد بيئة مدرسية أفضل لنا ولزملائنا بطريقة منظّمة وهادئة.',
     why_started_points: [
-      ['صوت واحد منظّم', 'بدل الشكاوى المتفرقة والكلام الذي يدور بيننا ولا يصل لأحد، نجمع أصواتنا في مكان واحد وبأرقام واضحة.'],
-      ['اقتراح لا مواجهة', 'نقدّم طلبًا واضحًا ومدروسًا، ونتمنى حوارًا هادئًا يصل إلى حل يناسب الجميع.'],
-      ['بعلم الأهالي', 'نطلب موافقة ولي الأمر عند التوقيع، حتى يكون الاقتراح بعلم الأسرة.']
+      ['صوت واحد منظّم', 'جمع آراء الطلاب في مكان واحد بأرقام واضحة بدل الشكاوى المتفرقة.'],
+      ['اقتراح بنّاء', 'تقديم طلب مدروس يفتح حوارًا إيجابيًا مع الإدارة.'],
+      ['بعلم الأسرة', 'اشتراط موافقة ولي الأمر لتكون المبادرة بعلم الأهالي.']
     ],
     next_title: 'ماذا بعد التوقيع؟',
     next_steps: [
-      ['نجمع الأصوات', 'نشارك العريضة بين الطلاب حتى نصل إلى الهدف.'],
-      ['نعرض الاقتراح', 'نقدّم العدد والمطالب للمعلمين والإدارة باحترام.'],
-      ['نتابع الحوار', 'نبقى منفتحين على أي ملاحظات وحلول.']
+      ['جمع التواقيع', 'مشاركة العريضة بين الطلاب للوصول إلى العدد المستهدف.'],
+      ['تقديم المقترح', 'رفع النتيجة والمطالب لإدارة المدرسة باحترام.'],
+      ['متابعة الحوار', 'التعاون مع الإدارة للوصول إلى أفضل حل ممكن.']
     ],
     privacy_title: 'الخصوصية والأمان',
-    privacy_intro: 'نجمع أقل قدر ممكن من البيانات، ونحميها بقواعد على مستوى قاعدة البيانات نفسها، وليس في هذه الصفحة فقط.',
+    privacy_intro: 'نجمع أقل قدر ممكن من البيانات، ونحميها بقواعد صارمة على مستوى قاعدة البيانات.',
     privacy_items: [
-      ['ما الذي نحفظه', 'الاسم والصف وخيار إخفاء الاسم وتأكيد موافقة ولي الأمر، وملاحظتك إن كتبتها. لا نطلب بريدًا ولا رقم هاتف ولا أي وسيلة تواصل.', 'fa-database'],
-      ['ما الذي يظهر للعامة', 'اسمك الأول وحرف من اسم عائلتك مع الصف ووقت التوقيع، أو «مجهول» إن أخفيت اسمك. والملاحظة لا تظهر إلا بعد مراجعتها.', 'fa-eye-slash'],
-      ['قاعدة بيانات مقفلة', 'لا يستطيع الموقع قراءة الجدول أو تعديله مباشرة. كل شيء يمرّ عبر دوال محدودة ومؤمّنة.', 'fa-lock'],
-      ['منع التكرار والإساءة', 'يرفض الخادم الأسماء غير الصحيحة والروابط والرموز، ويمنع التوقيع المكرر بنفس الاسم والصف، ويحدّ من المحاولات الآلية.', 'fa-user-shield'],
-      ['الشبكة وعنوان الـ IP', 'نستخدم بصمة مشفّرة لا يمكن عكسها لرصد المحاولات الكثيرة من شبكة واحدة، ولا نخزّن العنوان نفسه.', 'fa-network-wired'],
-      ['على جهازك', 'يحفظ المتصفح أنك وقّعت وإيصال التحقق واللغة التي اخترتها. لا نستخدم ملفات تتبّع ولا إعلانات.', 'fa-mobile-screen'],
-      ['مفاتيح الوصول', 'تحمل الصفحة مفتاحًا عامًا فقط، مصمّمًا ليكون علنيًا. المفاتيح السرية لا توجد في الكود إطلاقًا.', 'fa-key'],
-      ['خدمات خارجية', 'تُحمَّل الخطوط والمكتبات من خدمات خارجية مثل Google Fonts، وتُحفظ البيانات على منصة Supabase.', 'fa-cloud']
+      ['بيانات محدودة فقط', 'نحفظ الاسم والصف وموافقة ولي الأمر، دون طلب بريد إلكتروني أو رقم هاتف.', 'fa-database'],
+      ['حماية الاسم للعامة', 'يظهر الاسم الأول وحرف من العائلة فقط، أو «مجهول» عند تفعيل إخفاء الاسم.', 'fa-eye-slash'],
+      ['مراجعة الملاحظات ومنع التكرار', 'تُراجع الملاحظات قبل نشرها، ويُمنع التوقيع المكرر والروابط تلقائيًا.', 'fa-user-shield'],
+      ['قاعدة بيانات مؤمّنة', 'الاتصال يتم عبر دوال محدودة ومحمية دون كشف أي بيانات خاصة.', 'fa-lock']
     ],
-    privacy_note: 'لطلب حذف توقيعك أو تصحيحه، تواصل مع القائمين على المبادرة مع رمز الإيصال.',
+    privacy_note: 'لطلب حذف توقيعك أو تعديله، تواصل مع القائمين على المبادرة.',
     privacy_link_form: 'اقرأ تفاصيل الخصوصية والأمان',
     discord_title: 'منتدى المدرسة على ديسكورد',
-    discord_desc: 'مساحة لطلاب المدرسة للنقاش وطرح الأفكار ومتابعة أخبار العريضة، باحترام ودون إساءة لأحد.',
+    discord_desc: 'مساحة لطلاب المدرسة للنقاش وطرح الأفكار ومتابعة أخبار العريضة باحترام.',
     discord_points: [
-      ['نقاش مفتوح', 'ناقش الاقتراحات وأضف أفكارك حول الزي والمقصف.', 'fa-comments'],
-      ['أخبار المبادرة', 'تابع تقدّم العريضة وأي ردود أو مستجدات.', 'fa-bullhorn'],
-      ['مجتمع محترم', 'قواعد واضحة تمنع الإساءة وتحمي خصوصية الجميع.', 'fa-handshake']
+      ['نقاش مفتوح', 'طرح الأفكار والاقتراحات حول الزي والمقصف.', 'fa-comments'],
+      ['متابعة المستجدات', 'معرفة أخبار العريضة ونتائج التواصل مع الإدارة.', 'fa-bullhorn']
     ],
     discord_join: 'انضم إلى المنتدى', discord_soon: 'رابط المنتدى قيد التجهيز وسيُضاف قريبًا.',
     link_discord: 'منتدى ديسكورد',
@@ -646,12 +617,11 @@ const I18N = {
     meta_desc: 'A student proposal for a better uniform fabric, plus real meals and more variety in the canteen. Sign and share the petition.',
     skip_link: 'Skip to signature form',
     brand_title: 'Student Voice', brand_school: 'Modern Systems Private School',
-    connecting: 'Connecting…', connected: 'Live Connected',
-    demo_mode: 'Interactive Demo Mode', connection_err: 'Offline (Local Preview)',
+    connecting: 'Connecting…', connected: 'Connected',
+    connection_err: 'Connection error',
     menu_btn: 'Menu', close_menu: 'Close menu', close_btn: 'Close',
-    follow_btn: 'Follow', following_btn: 'Following ✓',
-    follow_toast_on: 'You are now following petition updates on this browser.',
-    follow_toast_off: 'Unfollowed petition updates.',
+    back_home: 'Back to Petition Page',
+    link_home: 'Home Page',
     hero_title: 'Proposing a better uniform fabric and real meals in the canteen',
     hero_sub: 'A student initiative at Modern Systems Private School, offered in a spirit of cooperation with the administration. If you agree, sign it and share it with your classmates.',
     lifecycle_title: 'Petition Lifecycle Progress',
@@ -664,31 +634,27 @@ const I18N = {
     status_archived: 'Archived',
     deadline_prefix: 'Deadline: ',
     aria_status: 'Petition status', aria_progress: 'Progress toward the goal',
-    tag_current: 'Current uniform material', tag_current_val: '100% Polyester',
+    tag_current: 'Current uniform material', tag_current_val: '+60% Polyester',
     tag_proposed: 'Proposed uniform', tag_proposed_val: '100% Breathable Cotton',
     tag_canteen: 'Proposed canteen', tag_canteen_val: 'Real Meals & Healthy Variety',
     signatures_of: 'signatures out of', sign_now: 'Sign Now', share: 'Share', copy_link: 'Copy Link',
-    qr_btn: 'QR Code', print_summary: 'Print Official Petition Summary',
+    qr_btn: 'QR Code',
     qr_modal_title: 'Share Petition via QR Code',
     qr_modal_desc: 'Scan with your phone camera or copy the link to share with classmates.',
     official_response_title: 'Official School Administration Response',
     official_badge: 'Official Response',
     menu_title: 'Menu & Settings', lang_label: 'Language / اللغة',
-    mode_label: 'Data Connection Mode',
-    mode_live_btn: 'Live (Supabase)', mode_demo_btn: 'Demo Preview',
-    mode_hint: 'Demo mode lets you test signing, filtering, and receipts locally without modifying the live database.',
-    important_links: 'Platform Sections & Links',
-    link_analytics: 'Vote Breakdown & Analytics', link_updates: 'Petition Updates',
+    important_links: 'Platform Pages',
+    link_analytics: 'Vote Breakdown & Analytics',
     link_privacy: 'Privacy & Security', link_why: 'Why We Started',
     why_title: 'Why are we making this proposal?',
-    why_desc: 'We spend more than 25 hours a week at school, so what we wear and eat there affects our comfort, health and focus every day. We see two problems that need a solution: the school uniform and the canteen.',
-    respect_note: 'We respect the efforts of Modern Systems Private School and its administration, and we present this proposal in a spirit of cooperation, not confrontation.',
+    why_desc: 'We spend over 25 hours a week at school, so what we wear and eat directly impacts our daily comfort and focus.',
+    respect_note: 'We present this proposal in a spirit of cooperation and respect for Modern Systems Private School.',
     proposals_heading: 'What we are asking for',
     analytics_title: 'Vote Distribution & Student Priorities',
     live_stats_badge: 'Live Metrics',
     analytics_sub: 'Breakdown of student priorities and participation across school grades.',
     grade_dist_title: 'Participation by Grade',
-    updates_title: 'Petition Updates & Milestones',
     closed_heading: 'Signature Collection is Currently Closed',
     closed_msg: 'The petition has ended and signature collection is closed. Thank you to everyone who participated.',
     thanks_title: 'Thank you! Your voice was heard',
@@ -700,7 +666,6 @@ const I18N = {
     receipt_status_val: 'Registered & Counted ✓',
     copy_receipt_btn: 'Copy Receipt Code',
     receipt_copied: 'Receipt code copied to clipboard',
-    sign_another_student: 'Another student using this device? Click to sign again',
     share_petition: 'Share Petition',
     form_title: 'Sign the Petition', form_sub: 'Enter at least your first and last name, then select your grade.',
     label_name: 'Full Name', placeholder_name: 'e.g. Yousef Ahmed',
@@ -713,13 +678,13 @@ const I18N = {
     btn_submit: 'Sign Petition', sending: 'Sending…',
     privacy_footnote: 'We store your name, grade, parental consent and your note if you write one. The list shows your first name and the initial of your family name, or “Anonymous” if you hide your name.',
     wall_title: 'Recent Signatures', refresh: 'Refresh', show_more: 'Show More',
-    wall_showing: 'Showing {shown} of {total} recent signatures',
+    wall_showing: 'Showing {shown} of {total}',
     wall_search_ph: 'Search by name or note…',
     all_grades: 'All Grades',
     filter_all: 'All Signatures', filter_notes: 'With Notes Only',
     verified_badge: 'Verified',
     footer_text: 'An independent student initiative to present a proposal; not an official entity, and does not represent the school or its administration.',
-    anonymous: 'Anonymous', no_signatures: 'No matching signatures', be_first: 'Be the first to sign the petition or adjust your search filters.',
+    anonymous: 'Anonymous', no_signatures: 'No signatures yet', be_first: 'Be the first to sign the petition.',
     retry: 'Retry', err_load: 'Failed to load signatures', check_conn: 'Check your connection and try again.',
     next_goal: 'Next milestone is {goal}, {rem} to go.', goal_passed: 'Goal reached! Thank you for every vote.',
     last_24h: 'Last 24h: +{count}', just_now: 'just now',
@@ -730,66 +695,56 @@ const I18N = {
     err_name: 'Invalid name: enter at least first and last name, letters only, no numbers or symbols.',
     err_grade: 'Please select a valid grade.', err_consent: 'Parental consent is required to submit your vote.',
     err_rate: 'Too many attempts from this network. Please wait a moment and try again.',
-    err_offline: 'You appear to be offline. Check your connection or switch to Demo Mode in the menu.',
+    err_offline: 'You appear to be offline. Check your connection and try again.',
     err_general: 'Failed to submit your signature. Please try again shortly.',
     uniform_h: 'The uniform problem',
     uniform_problems: [
-      ['Poor-quality fabric', 'The shirt is made from low-quality materials, and its shape and feel deteriorate quickly with wear and washing.'],
-      ['Unpleasant odors', 'Synthetic fibers do not breathe, so they trap heat and sweat, and odors appear quickly, even after washing.'],
-      ['Skin sensitivity', 'It can sometimes cause itching and skin irritation for some students, especially over a long school day.'],
-      ['Heat and discomfort', 'It adds to the feeling of heat and tiredness, and restricts movement in class and during activities.']
+      ['High polyester blend (+60%)', 'Synthetic fibers trap heat and sweat, causing discomfort throughout the school day.'],
+      ['Skin irritation & wear', 'Can irritate sensitive skin and deteriorates quickly with frequent washing.']
     ],
     canteen_h: 'The canteen problem',
     canteen_problems: [
-      ['No real meals', 'The canteen sells only snacks. There is no real food to fill a student during a long school day.'],
-      ['Very few options', 'Even the snacks are few and repeated, so students cannot find something that suits their taste or needs.'],
-      ['The result', 'Some students stay hungry or have to bring food from home.']
+      ['No filling meals', 'Only light snacks are sold, leaving students hungry during a long school day.'],
+      ['Limited variety', 'Very few repeated options with limited healthy alternatives.']
     ],
     asks_uniform_h: 'On the uniform',
     asks_uniform: [
-      ['Good-quality cotton', 'A natural fabric that breathes, withstands frequent washing and suits our warm climate.'],
-      ['A flexible, comfortable cut', 'A practical design that allows free movement all day.'],
-      ['Calm colors', 'Coordinated colors for a neat and respectable look.']
+      ['Breathable cotton fabric', 'Natural fabric suited for warm weather and frequent washing.'],
+      ['Comfortable cut & calm colors', 'Practical daily fit with a neat, respectable look.']
     ],
     asks_canteen_h: 'On the canteen',
     asks_canteen: [
-      ['Real meals', 'Complete, filling meals, not just snacks.'],
-      ['More variety', 'A varied menu that changes, including healthy options.'],
-      ['More snacks', 'More snack choices, at prices that suit students.']
+      ['Real, filling meals', 'Fresh sandwiches and complete meals at student-friendly prices.'],
+      ['Healthy variety', 'A rotating menu with nutritious daily options.']
     ],
     why_started_title: 'Why did we start this?',
-    why_started_intro: 'We started because we want a better school environment for us and for those who come after us, in a calm and respectful way.',
+    why_started_intro: 'We want a better school environment for everyone in a calm, organized way.',
     why_started_points: [
-      ['One organized voice', 'Instead of scattered complaints and talk that goes around and reaches no one, we gather our voices in one place with clear numbers.'],
-      ['A proposal, not a confrontation', 'We present a clear, well-considered request and hope for a calm dialogue that leads to a solution that works for everyone.'],
-      ['With parents’ knowledge', 'We ask for a parent’s or guardian’s consent when signing, so the proposal is made with the family’s knowledge.']
+      ['One organized voice', 'Gathering student voices in one place with clear numbers instead of scattered complaints.'],
+      ['Constructive proposal', 'Presenting a thoughtful request to open a positive dialogue with the administration.'],
+      ['With parents’ knowledge', 'Requiring parental consent so families are informed.']
     ],
     next_title: 'What happens after you sign?',
     next_steps: [
-      ['We collect voices', 'We share the petition among students until we reach the goal.'],
-      ['We present the proposal', 'We respectfully share the count and the requests with teachers and the administration.'],
-      ['We follow up', 'We stay open to any feedback and solutions.']
+      ['Collect signatures', 'Share the petition among classmates until we reach our target.'],
+      ['Present the proposal', 'Respectfully submit the numbers and requests to the administration.'],
+      ['Follow up', 'Collaborate constructively on practical solutions.']
     ],
     privacy_title: 'Privacy & Security',
-    privacy_intro: 'We collect as little data as possible and protect it with rules in the database itself, not only on this page.',
+    privacy_intro: 'We collect minimal data and protect it with strict database-level rules.',
     privacy_items: [
-      ['What we store', 'Your name, grade, hide-name option and parental consent, plus your note if you write one. We do not ask for an email, phone number or any contact details.', 'fa-database'],
-      ['What the public sees', 'Your first name and the first letter of your family name, with your grade and signing time, or “Anonymous” if you hide your name. A note appears only after it is reviewed.', 'fa-eye-slash'],
-      ['A locked database', 'The site cannot read or edit the table directly. Everything goes through strictly scoped database functions.', 'fa-lock'],
-      ['Abuse and duplicate protection', 'The server rejects invalid names, links and symbols, blocks duplicate signatures with the same name and grade, and limits automated attempts.', 'fa-user-shield'],
-      ['Network and IP address', 'We use an irreversible cryptographic hash to spot too many attempts from one network. We do not store the address itself.', 'fa-network-wired'],
-      ['On your device', 'Your browser remembers that you signed, your verification receipt, and your chosen language. We use no tracking cookies or ads.', 'fa-mobile-screen'],
-      ['Access keys', 'This page carries only a public key, designed to be public. Secret keys are never in the code.', 'fa-key'],
-      ['External services', 'Fonts and libraries load from external services such as Google Fonts, and data is stored on the Supabase platform.', 'fa-cloud']
+      ['Minimal data', 'We store only name, grade, and parental consent—no email or phone number.', 'fa-database'],
+      ['Public privacy', 'Only your first name and family initial appear publicly, or “Anonymous” if hidden.', 'fa-eye-slash'],
+      ['Moderation & anti-abuse', 'Notes require review before appearing, and duplicate votes or links are blocked.', 'fa-user-shield'],
+      ['Locked database', 'All operations pass through restricted database functions with no direct table access.', 'fa-lock']
     ],
-    privacy_note: 'To request deletion or correction of your signature, contact the organizers with your receipt code.',
+    privacy_note: 'To request deletion or correction of your signature, contact the initiative organizers.',
     privacy_link_form: 'Read the privacy and security details',
     discord_title: 'The school forum on Discord',
-    discord_desc: 'A space for students to discuss, share ideas and follow petition news, respectfully and without insulting anyone.',
+    discord_desc: 'A respectful space for students to discuss ideas and follow petition news.',
     discord_points: [
-      ['Open discussion', 'Discuss the proposals and add your ideas about the uniform and the canteen.', 'fa-comments'],
-      ['Initiative news', 'Follow the petition’s progress and any replies or updates.', 'fa-bullhorn'],
-      ['A respectful community', 'Clear rules that prevent abuse and protect everyone’s privacy.', 'fa-handshake']
+      ['Open discussion', 'Share ideas regarding the school uniform and canteen.', 'fa-comments'],
+      ['Initiative updates', 'Follow progress and official responses.', 'fa-bullhorn']
     ],
     discord_join: 'Join the forum', discord_soon: 'The forum link is being prepared and will be added soon.',
     link_discord: 'Discord Forum',
@@ -821,12 +776,11 @@ const t = (key, params) => {
 };
 
 const state = {
+  page: 'home',
   limit: CONFIG.PAGE_SIZE, count: 0, stats: null, rows: null, listState: 'loading',
   loaded: false, busy: false, queued: null, lastOk: 0, status: 'connecting',
   open: true, lifecycle: 'collecting', thanks: false, sending: false, menuOpen: false, anim: 0,
-  forceDemo: store.get('petition:mode') === 'demo',
   wallSearch: '', wallGrade: '', wallFilter: 'all',
-  following: store.get('petition:follow') === '1',
   receipt: (() => { try { return JSON.parse(store.get('petition:receipt') || 'null'); } catch { return null; } })()
 };
 
@@ -843,53 +797,30 @@ const makeHashCode = (str) => {
   return 'SV-' + (h >>> 0).toString(16).toUpperCase().padStart(8, '0');
 };
 
-/* ================= Rich Demo Data & Fallback Layer ================= */
-const mins = (m) => new Date(Date.now() - m * 6e4).toISOString();
-const demo = {
-  base: 84,
-  goal: 150,
-  status: 'collecting',
-  deadline_at: new Date(Date.now() + 14 * 864e5).toISOString(),
-  admin_response: null,
-  by_grade: { 6: 8, 7: 14, 8: 19, 9: 24, 10: 23 },
-  by_category: { both: 56, uniform: 19, canteen: 13 },
-  updates: [
-    {
-      title_ar: 'تجاوزنا حاجز 50% من الهدف المبدئي',
-      title_en: 'Passed 50% of our initial signature goal',
-      body_ar: 'شكرًا لكل الطلاب وأولياء الأمور الذين دعموا المبادرة. نواصل جمع التواقيع للوصول إلى 150 توقيعًا قبل تقديم الملف الرسمي للإدارة.',
-      body_en: 'Thank you to all students and parents who supported the initiative. We continue collecting signatures toward our 150-signature target.',
-      badge: 'milestone',
-      created_at: mins(320)
-    },
-    {
-      title_ar: 'إضافة خيار تحديد الأولوية وإيصال التحقق',
-      title_en: 'Added priority selection & verification receipts',
-      body_ar: 'يمكن لكل طالب الآن تحديد الأولوية (الزي، المقصف، أو كلاهما) والاحتفاظ برمز إيصال التوقيع لضمان الشفافية التامة.',
-      body_en: 'Students can now select their top priority and keep a verification receipt code for full transparency.',
-      badge: 'update',
-      created_at: mins(1440)
-    },
-    {
-      title_ar: 'انطلاق مبادرة «صوت الطالب» رسميًا',
-      title_en: 'Official launch of the Student Voice Petition',
-      body_ar: 'تم إطلاق العريضة الطلابية لتحسين خامة الزي المدرسي وتطوير وجبات المقصف في مدرسة النظم الحديثة الخاصة.',
-      body_en: 'Launched the student proposal for better uniform fabric and healthier, filling meals in the school canteen.',
-      badge: 'update',
-      created_at: mins(4320)
-    }
-  ],
-  list: [
-    { display_name: 'خالد م.', grade: 9, category: 'both', is_verified: true, note: 'القماش حارّ جدًا في الصيف، ونتمنى بديلًا قطنيًا مريحًا.', created_at: mins(25) },
-    { display_name: 'مجهول', grade: 10, category: 'canteen', is_verified: true, note: 'نتمنى توفير وجبات حقيقية ومشبعة في المقصف بدل السناكات فقط.', created_at: mins(110) },
-    { display_name: 'ريم س.', grade: 8, category: 'uniform', is_verified: false, note: 'خامة القميص الحالي تسبب حساسية وحرارة مع طول الدوام.', created_at: mins(240) },
-    { display_name: 'سامي ع.', grade: 7, category: 'both', is_verified: true, note: null, created_at: mins(620) },
-    { display_name: 'عمر د.', grade: 10, category: 'both', is_verified: true, note: 'نؤيد الاقتراح بالكامل ونتمنى من الإدارة الكريمة النظر فيه.', created_at: mins(1100) },
-    { display_name: 'ليان ك.', grade: 9, category: 'canteen', is_verified: false, note: 'نحتاج خيارات صحية وسندويشات طازجة يوميًا.', created_at: mins(1650) }
-  ]
-};
+/* ================= Separate Page Navigation ================= */
+const SUBPAGES = ['analytics', 'why-started', 'privacy', 'discord'];
+function showPage(pageName) {
+  const target = SUBPAGES.includes(pageName) ? pageName : 'home';
+  state.page = target;
+  const isHome = target === 'home';
+  $('#hero-sec').classList.toggle('hidden', !isHome);
+  $('#page-home').classList.toggle('hidden', !isHome);
+  $('#subpage-wrap').classList.toggle('hidden', isHome);
+  SUBPAGES.forEach((p) => {
+    const sec = $('#' + p);
+    if (sec) sec.classList.toggle('hidden', p !== target);
+  });
+  toggleMenu(false);
+  window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-page]');
+  if (!btn) return;
+  if (btn.tagName === 'A' && btn.getAttribute('href') !== '#sign') e.preventDefault();
+  showPage(btn.dataset.page);
+});
 
-const configured = !/^YOUR_/.test(CONFIG.SUPABASE_URL) && !/^YOUR_/.test(CONFIG.SUPABASE_ANON_KEY);
+/* ================= Live Supabase Data Layer ================= */
 let db = null;
 const client = () => {
   if (!db && window.supabase) db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
@@ -903,23 +834,7 @@ async function rpc(name, args) {
   finally { clearTimeout(timer); }
 }
 
-function getDemoStats() {
-  return {
-    total: demo.base + demo.list.length,
-    goal: demo.goal,
-    is_open: true,
-    status: demo.status,
-    deadline_at: demo.deadline_at,
-    admin_response: demo.admin_response,
-    last_24h: demo.list.filter((x) => (Date.now() - new Date(x.created_at)) < 864e5).length,
-    by_grade: demo.by_grade,
-    by_category: demo.by_category,
-    updates: demo.updates
-  };
-}
-
 async function fetchStats() {
-  if (!configured || state.forceDemo) return getDemoStats();
   const { data, error } = await rpc(CONFIG.RPC_STATS);
   if (error) throw error;
   const s = Array.isArray(data) ? data[0] : data;
@@ -928,7 +843,6 @@ async function fetchStats() {
 }
 
 async function fetchList(limit) {
-  if (!configured || state.forceDemo) return demo.list.slice(0, limit);
   const { data, error } = await rpc(CONFIG.RPC_LIST, { lim: Math.min(limit, CONFIG.MAX_ROWS) });
   if (error) throw error;
   return data || [];
@@ -936,27 +850,6 @@ async function fetchList(limit) {
 
 async function signPetition(v) {
   const receiptCode = makeHashCode(`${v.name}:${v.grade}:${Date.now()}`);
-  if (!configured || state.forceDemo) {
-    await new Promise((r) => setTimeout(r, 450));
-    const norm = v.name.toLowerCase();
-    if (demo.list.some((x) => x._rawName === norm && x.grade === v.grade)) {
-      return { status: 'duplicate', receipt_code: receiptCode };
-    }
-    demo.list.unshift({
-      _rawName: norm,
-      display_name: formatPublicDisplay(v.name, v.hide),
-      grade: v.grade,
-      category: v.category,
-      is_verified: true,
-      note: v.note,
-      created_at: new Date().toISOString()
-    });
-    demo.by_grade[v.grade] = (demo.by_grade[v.grade] || 0) + 1;
-    demo.by_category[v.category] = (demo.by_category[v.category] || 0) + 1;
-    return { status: 'ok', receipt_code: receiptCode };
-  }
-
-  // Try v4 signature with p_category first, then gracefully fallback to v2/v1
   const v4Args = { p_name: v.name, p_grade: v.grade, p_hide_name: v.hide, p_parent_consent: v.parent_consent, p_note: v.note || null, p_category: v.category || 'both' };
   let res = await rpc(CONFIG.RPC_SIGN, v4Args);
   if (res.error && (res.error.code === 'PGRST202' || res.status === 404)) {
@@ -989,10 +882,7 @@ function ago(iso) {
 
 function renderStatus() {
   $('#dot').dataset.s = state.status;
-  $('#status').textContent = t({ connecting: 'connecting', ok: 'connected', demo: 'demo_mode', err: 'connection_err' }[state.status]);
-  const isDemo = state.forceDemo || state.status === 'demo';
-  $('#mode-live').className = `rounded-lg border px-3 py-2 text-xs font-bold transition ${!isDemo ? 'border-denim bg-denim text-white' : 'border-denim/20 bg-white text-denim'}`;
-  $('#mode-demo').className = `rounded-lg border px-3 py-2 text-xs font-bold transition ${isDemo ? 'border-thread bg-thread text-denim-deep' : 'border-denim/20 bg-white text-denim'}`;
+  $('#status').textContent = t({ connecting: 'connecting', ok: 'connected', err: 'connection_err' }[state.status] || 'connecting');
 }
 
 const gradeLabel = (g) => I18N[lang].grades[g] || String(g);
@@ -1041,7 +931,6 @@ function renderLifecycle() {
   $('#lifecycle-badge').className = `badge border ${stCls}`;
   $('#lifecycle-text').textContent = t(stKey);
 
-  // Deadline badge
   const dl = state.stats && state.stats.deadline_at;
   if (dl && !isNaN(new Date(dl))) {
     $('#deadline-badge').classList.remove('hidden');
@@ -1050,7 +939,6 @@ function renderLifecycle() {
     $('#deadline-badge').classList.add('hidden');
   }
 
-  // Official Administration Response Banner
   const resp = state.stats && clean(state.stats.admin_response);
   const banner = $('#admin-response-banner');
   if (resp) {
@@ -1064,22 +952,22 @@ function renderLifecycle() {
 }
 
 function renderAnalytics() {
-  const s = state.stats || getDemoStats();
+  const s = state.stats || {};
   const rows = state.rows || [];
 
-  // Category Breakdown
   const catCounts = { both: 0, uniform: 0, canteen: 0, ...(s.by_category || {}) };
   if (!s.by_category && rows.length) {
     rows.forEach((r) => { const c = r.category || 'both'; catCounts[c] = (catCounts[c] || 0) + 1; });
   }
   const catTotal = Math.max(1, (Number(catCounts.both) || 0) + (Number(catCounts.uniform) || 0) + (Number(catCounts.canteen) || 0));
+  const hasAnyCat = ((Number(catCounts.both) || 0) + (Number(catCounts.uniform) || 0) + (Number(catCounts.canteen) || 0)) > 0;
   const cats = [
     ['both', t('cat_both'), Number(catCounts.both) || 0, 'bg-denim'],
     ['uniform', t('cat_uniform'), Number(catCounts.uniform) || 0, 'bg-thread'],
     ['canteen', t('cat_canteen'), Number(catCounts.canteen) || 0, 'bg-emerald-600']
   ];
   $('#cat-bars').replaceChildren(...cats.map(([, label, cnt, color]) => {
-    const pct = Math.round((cnt / catTotal) * 100);
+    const pct = hasAnyCat ? Math.round((cnt / catTotal) * 100) : 0;
     const wrap = el('div', 'space-y-1');
     const top = el('div', 'flex justify-between text-xs font-semibold');
     top.append(el('span', 'text-denim-deep', label), el('span', 'text-denim-soft', `${pct}% (${fmt(cnt)})`));
@@ -1091,7 +979,6 @@ function renderAnalytics() {
     return wrap;
   }));
 
-  // Grade Breakdown
   const byGrade = s.by_grade ? { ...s.by_grade } : {};
   if (!Object.keys(byGrade).length && rows.length) {
     rows.forEach((r) => { if (r.grade) byGrade[r.grade] = (byGrade[r.grade] || 0) + 1; });
@@ -1109,21 +996,6 @@ function renderAnalytics() {
     card.append(top, bar);
     return card;
   }) : [el('p', 'col-span-full text-xs text-denim-soft', t('no_signatures'))]));
-
-  // Official Updates Timeline
-  const updates = (s.updates && s.updates.length) ? s.updates : demo.updates;
-  $('#updates-count').textContent = fmt(updates.length);
-  $('#updates-list').replaceChildren(...updates.map((u) => {
-    const li = el('li', 'relative rounded-xl border border-denim/10 bg-chalk/30 p-4');
-    const dot = el('span', 'absolute -start-[21px] top-5 h-2.5 w-2.5 rounded-full border-2 border-white bg-thread');
-    const head = el('div', 'flex flex-wrap items-center justify-between gap-2');
-    const title = lang === 'en' && u.title_en ? u.title_en : u.title_ar;
-    const body = lang === 'en' && u.body_en ? u.body_en : u.body_ar;
-    head.append(el('h3', 'font-display text-sm font-bold text-denim-deep', title), el('time', 'text-[11px] text-denim-soft', ago(u.created_at)));
-    const p = el('p', 'mt-1.5 text-xs leading-relaxed text-denim-soft', body);
-    li.append(dot, head, p);
-    return li;
-  }));
 }
 
 function animateCount(from, to) {
@@ -1267,18 +1139,14 @@ async function refresh({ silent = false } = {}) {
   state.busy = false;
   $('#refresh-btn i').classList.remove('animate-spin');
 
+  [c, l].forEach((r) => r.status === 'rejected' && console.error(r.reason));
   if (c.status === 'fulfilled') setStats(c.value);
   if (l.status === 'fulfilled') { state.rows = l.value; state.listState = 'ok'; renderList(); }
-  else if (!quiet && !state.loaded) {
-    // Graceful fallback to rich preview data if network is unreachable on initial load
-    setStats(getDemoStats());
-    state.rows = demo.list.slice(0, state.limit);
-    state.listState = 'ok';
-    renderList();
-  }
+  else if (!quiet || state.listState !== 'ok') { state.listState = 'error'; renderList(); }
+
   const ok = c.status === 'fulfilled' || l.status === 'fulfilled';
   if (ok) { state.loaded = true; state.lastOk = Date.now(); }
-  state.status = (!configured || state.forceDemo) ? 'demo' : ok ? 'ok' : 'err';
+  state.status = ok ? 'ok' : 'err';
   renderStatus();
   if (state.queued) { const q = state.queued; state.queued = null; refresh(q); }
 }
@@ -1289,13 +1157,13 @@ function renderLists() {
     const items = I18N[lang][ul.dataset.list] || I18N.en[ul.dataset.list] || [];
     const dark = ul.dataset.tone === 'dark', num = ul.dataset.icon === 'num';
     ul.replaceChildren(...items.map(([title, desc, icon], i) => {
-      const li = el('li', ul.dataset.li || 'flex gap-3 py-3');
+      const li = el('li', ul.dataset.li || 'flex gap-2.5 py-2.5');
       const mark = num
-        ? el('span', 'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-denim text-xs font-bold text-white', String(i + 1))
-        : el('i', `fa-solid ${icon || ul.dataset.icon} mt-1 w-5 shrink-0 ${dark ? 'text-thread' : icon ? 'text-denim' : ''}`);
+        ? el('span', 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-denim text-xs font-bold text-white', String(i + 1))
+        : el('i', `fa-solid ${icon || ul.dataset.icon} mt-1 w-4 shrink-0 text-xs ${dark ? 'text-thread' : icon ? 'text-denim' : ''}`);
       mark.setAttribute('aria-hidden', 'true');
       const body = el('div');
-      body.append(el('b', '', title), el('p', `text-sm ${dark ? 'text-white/70' : 'text-denim-soft'}`, desc));
+      body.append(el('b', 'text-sm', title), el('p', `text-xs leading-relaxed ${dark ? 'text-white/70' : 'text-denim-soft'}`, desc));
       li.append(mark, body);
       return li;
     }));
@@ -1314,14 +1182,6 @@ $('#name').addEventListener('input', updatePublicPreview);
 $('#anon').addEventListener('change', updatePublicPreview);
 $('#grade').addEventListener('change', updatePublicPreview);
 
-/* ================= Follow Button ================= */
-function renderFollow() {
-  const btn = $('#follow-btn');
-  btn.setAttribute('aria-pressed', String(state.following));
-  $('#follow-icon').className = state.following ? 'fa-solid fa-bell text-thread' : 'fa-regular fa-bell';
-  $('#follow-label').textContent = t(state.following ? 'following_btn' : 'follow_btn');
-}
-
 /* ================= Language ================= */
 function applyLanguage() {
   const root = document.documentElement;
@@ -1335,9 +1195,9 @@ function applyLanguage() {
   $('#lang-quick').textContent = lang === 'ar' ? 'EN' : 'عربي';
   renderLists();
   populateGrades();
-  renderFollow();
   updatePublicPreview();
   renderReceipt();
+  renderLifecycle();
   setBusy(state.sending);
   say('');
   renderStatus(); renderStats(false); renderList();
@@ -1447,7 +1307,6 @@ function toggleMenu(open) {
 menuBtn.addEventListener('click', () => toggleMenu(true));
 $('#close-menu').addEventListener('click', () => toggleMenu(false));
 overlay.addEventListener('click', () => toggleMenu(false));
-sidebar.querySelectorAll('a[data-nav]').forEach((a) => a.addEventListener('click', () => toggleMenu(false)));
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     if (state.menuOpen) toggleMenu(false);
@@ -1502,38 +1361,6 @@ function toggleQr(open) {
   }
 }
 
-/* ================= Official Printable Summary ================= */
-function printSummary() {
-  const s = state.stats || getDemoStats();
-  const rows = state.rows || demo.list;
-  const wrap = $('#print-sheet');
-  const title = el('h1', 'text-2xl font-bold', t('doc_title'));
-  const sub = el('p', 'mt-1 text-sm', `${t('signatures_of')}: ${fmt(s.total)} / ${fmt(s.goal)} — ${new Date().toLocaleDateString(lang === 'ar' ? 'ar-u-ca-gregory-nu-latn' : 'en-US', { dateStyle: 'long' })}`);
-  const demandsH = el('h2', 'mt-4 text-lg font-bold', t('proposals_heading'));
-  const demandsList = el('ul', 'mt-2 list-disc ps-5 text-sm space-y-1');
-  [...I18N[lang].asks_uniform, ...I18N[lang].asks_canteen].forEach(([h, d]) => {
-    demandsList.append(el('li', '', `${h}: ${d}`));
-  });
-  const table = el('table');
-  const thead = el('thead'), trH = el('tr');
-  ['#', t('label_name'), t('label_grade'), t('label_note')].forEach((h) => trH.append(el('th', '', h)));
-  thead.append(trH);
-  const tbody = el('tbody');
-  rows.forEach((r, idx) => {
-    const tr = el('tr');
-    tr.append(
-      el('td', '', String(idx + 1)),
-      el('td', '', clean(r.display_name) || t('anonymous')),
-      el('td', '', gradeLabel(r.grade)),
-      el('td', '', clean(r.note) || '—')
-    );
-    tbody.append(tr);
-  });
-  table.append(thead, tbody);
-  wrap.replaceChildren(title, sub, demandsH, demandsList, table);
-  window.print();
-}
-
 /* ================= Share & Action Handlers ================= */
 const pageUrl = () => location.href.split('#')[0];
 function toast(text) {
@@ -1561,25 +1388,9 @@ const actions = {
     const code = state.receipt ? state.receipt.code : 'SV-VERIFIED';
     toast((await copyText(code)) ? t('receipt_copied') : t('copy_failed'));
   },
-  'reset-local': () => {
-    store.del('petition:signed');
-    store.del('petition:receipt');
-    state.receipt = null;
-    showThanks(false);
-    $('#name').focus();
-  },
   qr: () => toggleQr(true),
   'close-qr': () => toggleQr(false),
-  print: () => printSummary(),
-  follow: () => {
-    state.following = !state.following;
-    store.set('petition:follow', state.following ? '1' : '0');
-    renderFollow();
-    toast(t(state.following ? 'follow_toast_on' : 'follow_toast_off'));
-  },
   'toggle-lang': () => setLanguage(lang === 'ar' ? 'en' : 'ar'),
-  'mode-live': () => { state.forceDemo = false; store.set('petition:mode', 'live'); toggleMenu(false); refresh(); },
-  'mode-demo': () => { state.forceDemo = true; store.set('petition:mode', 'demo'); toggleMenu(false); refresh(); },
   more: () => { state.limit += CONFIG.PAGE_SIZE; refresh(); },
   refresh: () => refresh()
 };
