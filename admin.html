@@ -48,12 +48,11 @@ tailwind.config = { theme: { extend: {
       <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-thread text-denim-deep font-extrabold"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
       <div>
         <h1 class="font-display text-lg font-extrabold">لوحة التحكم الإدارية — صوت الطالب</h1>
-        <p class="text-xs text-white/70">مدرسة النظم الحديثة الخاصة | إدارة العريضة والمراجعة والتدقيق</p>
+        <p class="text-xs text-white/70">مدرسة النظم الحديثة الخاصة</p>
       </div>
     </div>
     <div id="bar" class="hidden">
       <div class="flex flex-wrap items-center gap-2">
-        <span id="mode-pill" class="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 border border-emerald-400/30">متصل بقاعدة البيانات</span>
         <button id="refresh-all" type="button" class="btn btn-line !py-1.5 !px-3 text-xs"><i class="fa-solid fa-rotate" aria-hidden="true"></i> تحديث</button>
         <button id="go-public" type="button" class="btn btn-line !py-1.5 !px-3 text-xs"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> الموقع</button>
         <button id="logout" type="button" class="btn btn-line !py-1.5 !px-3 text-xs"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> تسجيل الخروج</button>
@@ -62,7 +61,7 @@ tailwind.config = { theme: { extend: {
   </div>
 </header>
 
-<!-- Custom Accessible Confirmation Modal (Replaces blocking window.confirm) -->
+<!-- Custom Accessible Confirmation Modal -->
 <div id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
   <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
     <div class="flex items-start gap-3">
@@ -81,16 +80,12 @@ tailwind.config = { theme: { extend: {
 
 <main class="mx-auto max-w-6xl px-4 py-6">
   <!-- Login View -->
-  <div id="login-wrap" class="mx-auto mt-6 max-w-md space-y-4">
+  <div id="login-wrap" class="mx-auto mt-6 max-w-sm">
     <form id="login" class="card space-y-4 p-6" novalidate>
-      <div class="flex items-center justify-between">
-        <h2 class="font-display text-xl font-extrabold">تسجيل دخول المشرف</h2>
-        <span class="chip bg-chalk text-denim"><i class="fa-solid fa-lock" aria-hidden="true"></i> محمي بـ RLS</span>
-      </div>
-      <p class="text-xs leading-relaxed text-denim-soft">سجّل الدخول بحساب المشرف المسجّل في Supabase Authentication للتحكم في العريضة ومراجعة الملاحظات.</p>
+      <h2 class="font-display text-xl font-extrabold">تسجيل دخول المشرف</h2>
       <div>
         <label for="email" class="mb-1 block text-sm font-semibold">البريد الإلكتروني</label>
-        <input id="email" type="email" class="field" dir="ltr" autocomplete="username" placeholder="admin@school.edu" required>
+        <input id="email" type="email" class="field" dir="ltr" autocomplete="username" required>
       </div>
       <div>
         <label for="pass" class="mb-1 block text-sm font-semibold">كلمة المرور</label>
@@ -99,29 +94,11 @@ tailwind.config = { theme: { extend: {
       <p id="login-msg" role="alert" class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-bad border border-bad/30"></p>
       <button id="login-btn" class="btn btn-main w-full" type="submit">دخول</button>
     </form>
-
-    <!-- Sandbox Demo Mode Card for Instant Inspection & QA -->
-    <div class="card border-dashed border-thread bg-amber-50/60 p-5">
-      <div class="flex items-start gap-3">
-        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-thread text-denim-deep"><i class="fa-solid fa-flask" aria-hidden="true"></i></span>
-        <div class="space-y-2">
-          <h3 class="font-display text-sm font-extrabold text-denim-deep">وضع المعاينة التجريبي للوحة التحكم (Demo Mode)</h3>
-          <p class="text-xs leading-relaxed text-denim-soft">يتيح لك استعراض وتجربة جميع أدوات المشرف (إدارة دورة حياة العريضة، الفلترة المتقدمة، كشف التكرارات، الإجراءات الجماعية، الرد الرسمي، وسجل التدقيق) على بيانات تجريبية محلية دون المساس بقاعدة البيانات الحية.</p>
-          <button id="enter-demo" type="button" class="btn btn-line !py-2 text-xs"><i class="fa-solid fa-play" aria-hidden="true"></i> فتح لوحة التحكم في وضع المعاينة</button>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <!-- Authenticated / Demo Admin App -->
+  <!-- Authenticated Admin App -->
   <div id="app" class="hidden space-y-6">
-    <!-- Demo Warning Banner -->
-    <div id="demo-banner" class="hidden rounded-xl border border-amber-400 bg-amber-50 px-4 py-3 text-xs text-amber-900 flex flex-wrap items-center justify-between gap-2">
-      <span><i class="fa-solid fa-circle-info me-1" aria-hidden="true"></i> <b>وضع المعاينة التجريبي نشط:</b> جميع التعديلات التي تجريها هنا تُطبّق محليًا في الذاكرة لتجربة النظام بأمان.</span>
-      <button id="switch-to-real-login" type="button" class="font-bold underline hover:text-denim-deep">الانتقال لتسجيل الدخول الفعلي (Supabase)</button>
-    </div>
-
-    <!-- 1. KPI Summary Grid (6 Cards) -->
+    <!-- 1. KPI Summary Grid -->
     <section class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6" aria-label="ملخص الإحصائيات">
       <div class="card p-4">
         <p class="text-xs text-denim-soft">توقيعات ظاهرة</p>
@@ -129,24 +106,21 @@ tailwind.config = { theme: { extend: {
         <p id="s-pct" class="mt-1 text-[11px] font-semibold text-emerald-700">0% من الهدف</p>
       </div>
       <div class="card p-4">
-        <p class="text-xs text-denim-soft">الإجمالي (مع المخفي)</p>
+        <p class="text-xs text-denim-soft">الإجمالي مع المخفي</p>
         <p id="s-all" class="mt-1 font-display text-3xl font-extrabold text-denim-deep">0</p>
         <p id="s-hidden" class="mt-1 text-[11px] text-denim-soft">مخفي: 0</p>
       </div>
       <div class="card p-4 border-amber-300/70 bg-amber-50/30">
         <p class="text-xs font-semibold text-amber-900">ملاحظات بانتظار المراجعة</p>
         <p id="s-pending" class="mt-1 font-display text-3xl font-extrabold text-amber-700">0</p>
-        <p class="mt-1 text-[11px] text-amber-800">تحتاج قرار مشرف</p>
       </div>
       <div class="card p-4">
         <p class="text-xs text-denim-soft">ملاحظات منشورة</p>
         <p id="s-approved" class="mt-1 font-display text-3xl font-extrabold text-emerald-700">0</p>
-        <p class="mt-1 text-[11px] text-denim-soft">ظاهرة للعامة</p>
       </div>
       <div class="card p-4">
         <p class="text-xs text-denim-soft">تكرارات محتملة</p>
         <p id="s-duplicates" class="mt-1 font-display text-3xl font-extrabold text-bad">0</p>
-        <p class="mt-1 text-[11px] text-denim-soft">تشابه بالاسم والصف</p>
       </div>
       <div class="card p-4">
         <p class="text-xs text-denim-soft">تواقيع موثّقة</p>
@@ -157,29 +131,28 @@ tailwind.config = { theme: { extend: {
 
     <!-- 2. Lifecycle, Settings & Visual Grade Distribution -->
     <div class="grid gap-6 lg:grid-cols-12">
-      <!-- Lifecycle & Config Card -->
       <section class="card space-y-4 p-5 lg:col-span-7">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-denim/10 pb-3">
-          <h2 class="font-display text-base font-extrabold"><i class="fa-solid fa-sliders text-thread me-1.5" aria-hidden="true"></i> إعدادات العريضة ودورة الحياة</h2>
+          <h2 class="font-display text-base font-extrabold">الإعدادات ودورة حياة العريضة</h2>
           <span id="open-badge" class="chip"></span>
         </div>
 
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div>
-            <label for="lifecycle-select" class="mb-1 block text-xs font-bold text-denim-soft">مرحلة دورة الحياة</label>
+            <label for="lifecycle-select" class="mb-1 block text-xs font-bold text-denim-soft">مرحلة العريضة</label>
             <select id="lifecycle-select" class="field !py-2 text-sm">
-              <option value="draft">مسودة (Draft)</option>
-              <option value="pending_review">قيد المراجعة (Pending Review)</option>
-              <option value="collecting">جمع التواقيع (Collecting)</option>
-              <option value="closed">مغلقة (Closed)</option>
-              <option value="submitted">قُدّمت للإدارة (Submitted)</option>
-              <option value="responded">صدر رد الإدارة (Responded)</option>
-              <option value="archived">مؤرشفة (Archived)</option>
+              <option value="draft">مسودة</option>
+              <option value="pending_review">قيد المراجعة</option>
+              <option value="collecting">جمع التواقيع</option>
+              <option value="closed">مغلقة</option>
+              <option value="submitted">قُدّمت للإدارة</option>
+              <option value="responded">صدر رد الإدارة</option>
+              <option value="archived">مؤرشفة</option>
             </select>
           </div>
           <div>
-            <label for="goal" class="mb-1 block text-xs font-bold text-denim-soft">الهدف المطلوب (توقيع)</label>
-            <input id="goal" type="number" min="1" max="100000" class="field !py-2 text-sm" dir="ltr">
+            <label for="goal" class="mb-1 block text-xs font-bold text-denim-soft">الهدف</label>
+            <input id="goal" type="number" min="1" max="100000" value="200" class="field !py-2 text-sm" dir="ltr">
           </div>
           <div>
             <label for="deadline-input" class="mb-1 block text-xs font-bold text-denim-soft">الموعد النهائي (اختياري)</label>
@@ -188,8 +161,8 @@ tailwind.config = { theme: { extend: {
         </div>
 
         <div>
-          <label for="admin-response-input" class="mb-1 block text-xs font-bold text-denim-soft">الرد الرسمي من إدارة المدرسة (يظهر في أعلى الصفحة العامة عند الحفظ)</label>
-          <textarea id="admin-response-input" rows="2" class="field text-sm" placeholder="مثال: شكرًا لطلبة المدرسة على هذا الطرح البنّاء، تم تشكيل لجنة لدراسة عينات الزي القطني وتحديث قائمة المقصف…"></textarea>
+          <label for="admin-response-input" class="mb-1 block text-xs font-bold text-denim-soft">الرد الرسمي من إدارة المدرسة (اختياري)</label>
+          <textarea id="admin-response-input" rows="2" class="field text-sm" placeholder="يظهر في أعلى الصفحة العامة في حال كتابته…"></textarea>
         </div>
 
         <div class="flex flex-wrap items-center gap-2 pt-1">
@@ -198,33 +171,30 @@ tailwind.config = { theme: { extend: {
         </div>
       </section>
 
-      <!-- Visual Grade & Priority Analytics Card -->
       <section class="card space-y-4 p-5 lg:col-span-5">
-        <div class="flex items-center justify-between border-b border-denim/10 pb-3">
-          <h2 class="font-display text-base font-extrabold"><i class="fa-solid fa-chart-column text-thread me-1.5" aria-hidden="true"></i> التوزيع حسب الصفوف والأولويات</h2>
-        </div>
+        <h2 class="font-display text-base font-extrabold border-b border-denim/10 pb-3">التوزيع حسب الصفوف (1–10) والأولويات</h2>
         <div id="by-category" class="grid grid-cols-3 gap-2 text-center text-xs"></div>
-        <div id="by-grade" class="space-y-2 max-h-52 overflow-y-auto pe-1"></div>
+        <div id="by-grade" class="space-y-2 max-h-48 overflow-y-auto pe-1"></div>
       </section>
     </div>
 
-    <!-- 3. Publish Petition Updates / Announcements -->
+    <!-- 3. Publish Petition Updates / Announcements (Feeds the Main Page Updates Board) -->
     <section class="card space-y-4 p-5">
       <div class="flex flex-wrap items-center justify-between gap-2 border-b border-denim/10 pb-3">
-        <h2 class="font-display text-base font-extrabold"><i class="fa-solid fa-bullhorn text-thread me-1.5" aria-hidden="true"></i> إعلانات ومستجدات العريضة</h2>
-        <span class="text-xs text-denim-soft">تظهر للطلاب والزوار في قسم «سجل المستجدات والمتابعة»</span>
+        <h2 class="font-display text-base font-extrabold">لوحة المستجدات والمتابعة (في الصفحة الرئيسية)</h2>
+        <span class="text-xs text-denim-soft">أضف أي خبر أو خطوة جديدة لتظهر للطلاب في لوحة المستجدات</span>
       </div>
       <div class="grid gap-3 md:grid-cols-12">
         <div class="md:col-span-4">
-          <label for="up-title" class="mb-1 block text-xs font-bold text-denim-soft">عنوان التحديث (عربي)</label>
-          <input id="up-title" type="text" maxlength="140" class="field !py-2 text-sm" placeholder="مثال: تسليم نسخة العريضة للإدارة">
+          <label for="up-title" class="mb-1 block text-xs font-bold text-denim-soft">عنوان المستجد</label>
+          <input id="up-title" type="text" maxlength="140" class="field !py-2 text-sm" placeholder="مثال: وصلنا إلى نصف الهدف">
         </div>
         <div class="md:col-span-6">
-          <label for="up-body" class="mb-1 block text-xs font-bold text-denim-soft">تفاصيل التحديث</label>
-          <input id="up-body" type="text" maxlength="1000" class="field !py-2 text-sm" placeholder="اكتب ملخصًا واضحًا لما تم إنجازه…">
+          <label for="up-body" class="mb-1 block text-xs font-bold text-denim-soft">التفاصيل</label>
+          <input id="up-body" type="text" maxlength="1000" class="field !py-2 text-sm" placeholder="اكتب ملخصًا قصيرًا يظهر للطلاب…">
         </div>
         <div class="md:col-span-2 flex items-end">
-          <button id="post-update-btn" type="button" class="btn btn-main w-full !py-2 text-xs"><i class="fa-solid fa-plus" aria-hidden="true"></i> نشر التحديث</button>
+          <button id="post-update-btn" type="button" class="btn btn-main w-full !py-2 text-xs">نشر المستجد</button>
         </div>
       </div>
       <div id="admin-updates-list" class="divide-y divide-denim/10 text-xs"></div>
@@ -234,11 +204,11 @@ tailwind.config = { theme: { extend: {
     <section class="space-y-3">
       <div class="card p-4 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-3">
-          <h2 class="font-display text-lg font-extrabold">إدارة التواقيع والمراجعة <span id="count" class="text-sm font-normal text-denim-soft"></span></h2>
+          <h2 class="font-display text-lg font-extrabold">التواقيع <span id="count" class="text-sm font-normal text-denim-soft"></span></h2>
           <div class="flex flex-wrap items-center gap-2">
-            <input id="q" type="search" class="field !py-1.5 text-xs w-52" placeholder="ابحث بالاسم أو الملاحظة أو الرمز…" aria-label="بحث">
+            <input id="q" type="search" class="field !py-1.5 text-xs w-52" placeholder="ابحث بالاسم أو الملاحظة…" aria-label="بحث بالاسم">
             <select id="grade-filter" class="field !py-1.5 text-xs w-36" aria-label="تصفية حسب الصف">
-              <option value="">كل الصفوف (1–12)</option>
+              <option value="">كل الصفوف (1–10)</option>
             </select>
             <select id="sort-select" class="field !py-1.5 text-xs w-40" aria-label="ترتيب حسب">
               <option value="newest">الأحدث أولًا</option>
@@ -261,7 +231,6 @@ tailwind.config = { theme: { extend: {
           </div>
         </div>
 
-        <!-- Bulk Selection Action Bar -->
         <div id="bulk-bar" class="hidden rounded-lg bg-denim-deep px-4 py-2.5 text-white flex flex-wrap items-center justify-between gap-2 text-xs">
           <span>تم تحديد <b id="selected-count">0</b> توقيع</span>
           <div class="flex flex-wrap gap-1.5">
@@ -278,21 +247,21 @@ tailwind.config = { theme: { extend: {
       <div id="more" class="hidden text-center"><button id="more-btn" type="button" class="btn btn-line">عرض المزيد</button></div>
     </section>
 
-    <!-- 5. Export & Official Reports + Audit Log -->
+    <!-- 5. Export & Audit Log -->
     <div class="grid gap-6 lg:grid-cols-12">
       <section class="card space-y-3 p-5 lg:col-span-6">
-        <h2 class="font-display text-base font-extrabold"><i class="fa-solid fa-file-export text-thread me-1.5" aria-hidden="true"></i> تصدير التقارير الرسمية والطباعة</h2>
+        <h2 class="font-display text-base font-extrabold">تصدير وإرسال</h2>
         <div class="flex flex-wrap gap-2">
           <button id="exp-deliver" type="button" class="btn btn-main !py-2 text-xs">قائمة للتسليم (CSV)</button>
           <button id="exp-print" type="button" class="btn btn-line !py-2 text-xs">طباعة / حفظ PDF</button>
           <button id="exp-full" type="button" class="btn btn-line !py-2 text-xs">ملف كامل لسجلاتك (CSV)</button>
         </div>
-        <p class="text-xs leading-relaxed text-denim-soft">قائمة التسليم محمية ضد حقن المعادلات (CSV Formula Injection)، وتعرض «مجهول» لمن اختار إخفاء اسمه، وتستثني التواقيع المخفية. الملف الكامل مخصص لسجلات المشرف فقط.</p>
+        <p class="text-xs leading-relaxed text-denim-soft">قائمة التسليم لا تتضمن الملاحظات، وتعرض «مجهول» لمن اختار إخفاء اسمه، وتستثني التواقيع المخفية. الملف الكامل فيه الأسماء الكاملة والملاحظات لسجلاتك فقط.</p>
       </section>
 
       <section class="card space-y-3 p-5 lg:col-span-6">
         <div class="flex items-center justify-between">
-          <h2 class="font-display text-base font-extrabold"><i class="fa-solid fa-clipboard-list text-thread me-1.5" aria-hidden="true"></i> سجل التدقيق والعمليات الإدارية</h2>
+          <h2 class="font-display text-base font-extrabold">سجل العمليات الإدارية</h2>
           <span id="audit-count" class="chip">0 عملية</span>
         </div>
         <div id="audit-list" class="max-h-48 space-y-1.5 overflow-y-auto text-xs"></div>
@@ -307,12 +276,12 @@ tailwind.config = { theme: { extend: {
 <script>
 (() => {
 'use strict';
-const CONFIG = { URL: 'https://bycyaaevyeezokivlnza.supabase.co', KEY: 'sb_publishable_z6-RjAxi7vFhVmVVzL6Dow_ov98VU3p', PAGE: 40 };
+const CONFIG = { URL: 'https://bycyaaevyeezokivlnza.supabase.co', KEY: 'sb_publishable_z6-RjAxi7vFhVmVVzL6Dow_ov98VU3p', PAGE: 40, DEFAULT_GOAL: 200 };
 const sb = window.supabase ? window.supabase.createClient(CONFIG.URL, CONFIG.KEY, { auth: { persistSession: true, autoRefreshToken: true } }) : null;
 
 const $ = (s) => document.querySelector(s);
 const el = (tag, cls = '', text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
-const GN = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر', 'الحادي عشر', 'الثاني عشر'];
+const GN = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر'];
 const gl = (g) => (GN[g] ? 'الصف ' + GN[g] : 'الصف ' + String(g));
 const CAT_LABELS = { both: 'الزي والمقصف', uniform: 'الزي المدرسي', canteen: 'المقصف المدرسي' };
 const when = (iso) => new Date(iso).toLocaleString('ar-u-ca-gregory-nu-latn', { dateStyle: 'medium', timeStyle: 'short' });
@@ -320,7 +289,6 @@ const day = (iso) => new Date(iso).toLocaleDateString('ar-u-ca-gregory-nu-latn')
 const normName = (s) => String(s || '').replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim().toLowerCase();
 
 const state = {
-  demo: false,
   filter: 'all',
   q: '',
   grade: '',
@@ -331,33 +299,6 @@ const state = {
   lifecycle: 'collecting',
   selected: new Set(),
   summary: null
-};
-
-/* ---------- Demo Sandbox Dataset ---------- */
-const mins = (m) => new Date(Date.now() - m * 6e4).toISOString();
-const demoStore = {
-  goal: 150,
-  is_open: true,
-  lifecycle_status: 'collecting',
-  deadline_at: new Date(Date.now() + 14 * 864e5).toISOString().slice(0, 10),
-  admin_response: '',
-  updates: [
-    { id: 'u1', title_ar: 'تجاوزنا حاجز 50% من الهدف المبدئي', body_ar: 'شكرًا لكل الطلاب وأولياء الأمور الذين دعموا المبادرة.', badge: 'milestone', created_at: mins(320) },
-    { id: 'u2', title_ar: 'انطلاق مبادرة صوت الطالب رسميًا', body_ar: 'تم إطلاق العريضة الطلابية لتحسين خامة الزي المدرسي وتطوير وجبات المقصف.', badge: 'update', created_at: mins(2800) }
-  ],
-  audit_logs: [
-    { id: 103, action: 'approve_note', details: { note: 'مراجعة واعتماد ملاحظة طالب' }, created_at: mins(45) },
-    { id: 102, action: 'update_config', details: { goal: 150, status: 'collecting' }, created_at: mins(600) },
-    { id: 101, action: 'verify', details: { verified: true }, created_at: mins(1200) }
-  ],
-  rows: [
-    { id: 's1', name: 'خالد محمد العتيبي', grade: 9, hide_name: false, is_hidden: false, parent_consent: true, category: 'both', is_verified: true, receipt_code: 'SV-8F4A29C1', note: 'القماش حارّ جدًا في الصيف، ونتمنى بديلًا قطنيًا مريحًا.', note_approved: true, created_at: mins(25) },
-    { id: 's2', name: 'يوسف أحمد السالم', grade: 10, hide_name: true, is_hidden: false, parent_consent: true, category: 'canteen', is_verified: true, receipt_code: 'SV-3B91D04E', note: 'نتمنى توفير وجبات حقيقية ومشبعة في المقصف بدل السناكات فقط.', note_approved: false, created_at: mins(75) },
-    { id: 's3', name: 'ريم سعيد الحربي', grade: 8, hide_name: false, is_hidden: false, parent_consent: true, category: 'uniform', is_verified: false, receipt_code: 'SV-7C12E88A', note: 'خامة القميص الحالي تسبب حساسية وحرارة مع طول الدوام.', note_approved: false, created_at: mins(190) },
-    { id: 's4', name: 'سامي عبدالله القحطاني', grade: 7, hide_name: false, is_hidden: false, parent_consent: true, category: 'both', is_verified: true, receipt_code: 'SV-9D04F11B', note: null, note_approved: false, created_at: mins(540) },
-    { id: 's5', name: 'خالد محمد العتيبي', grade: 9, hide_name: true, is_hidden: true, parent_consent: true, category: 'both', is_verified: false, receipt_code: 'SV-1E77A20C', note: 'توقيع مكرر للتجربة', note_approved: false, created_at: mins(800) },
-    { id: 's6', name: 'عمر داوود الخطيب', grade: 11, hide_name: false, is_hidden: false, parent_consent: true, category: 'both', is_verified: true, receipt_code: 'SV-5A33C92D', note: 'نؤيد الاقتراح بالكامل ونتمنى من الإدارة الكريمة النظر فيه.', note_approved: true, created_at: mins(1400) }
-  ]
 };
 
 function annotateDuplicates(rows) {
@@ -398,18 +339,16 @@ function toast(msg) {
 }
 const safe = (p) => p.catch((e) => { console.error(e); toast('تعذّر التنفيذ، حاول مجددًا.'); });
 
-// Populate grade filter dropdown (1..12)
+// Grades 1..10 only
 const gf = $('#grade-filter');
-for (let g = 1; g <= 12; g++) gf.append(new Option(gl(g), String(g)));
+for (let g = 1; g <= 10; g++) gf.append(new Option(gl(g), String(g)));
 
 function showLogin(msg = '') {
-  state.demo = false;
   $('#login-wrap').classList.remove('hidden'); $('#app').classList.add('hidden'); $('#bar').classList.add('hidden');
   const m = $('#login-msg'); m.textContent = msg; m.classList.toggle('hidden', !msg);
 }
 
 async function rpc(name, args) {
-  if (state.demo) return demoRpc(name, args);
   if (!sb) throw new Error('Supabase SDK unavailable');
   let { data, error } = await sb.rpc(name, args);
   if (error && (error.code === 'PGRST202' || error.status === 404)) {
@@ -425,153 +364,46 @@ async function rpc(name, args) {
     if (error.code === 'PGRST301' || error.code === '42501' || error.status === 401) showLogin('انتهت الجلسة، سجّل الدخول من جديد.');
     throw error;
   }
-  if (data && data.status === 'forbidden') { await sb.auth.signOut(); showLogin('هذا الحساب ليس لديه صلاحية مشرف في جدول private.admins.'); throw new Error('forbidden'); }
+  if (data && data.status === 'forbidden') { await sb.auth.signOut(); showLogin('هذا الحساب ليس لديه صلاحية مشرف.'); throw new Error('forbidden'); }
   return data;
 }
 
-/* ---------- Demo RPC Engine ---------- */
-function demoRpc(name, args = {}) {
-  const rows = annotateDuplicates(demoStore.rows);
-  if (name === 'admin_summary') {
-    const byGrade = {}, byCat = { both: 0, uniform: 0, canteen: 0 };
-    rows.filter((r) => !r.is_hidden).forEach((r) => {
-      byGrade[r.grade] = (byGrade[r.grade] || 0) + 1;
-      const c = r.category || 'both';
-      byCat[c] = (byCat[c] || 0) + 1;
-    });
-    return {
-      status: 'ok',
-      all: rows.length,
-      public: rows.filter((r) => !r.is_hidden).length,
-      hidden: rows.filter((r) => r.is_hidden).length,
-      verified: rows.filter((r) => r.is_verified && !r.is_hidden).length,
-      pending: rows.filter((r) => r.note && !r.note_approved).length,
-      approved: rows.filter((r) => r.note && r.note_approved).length,
-      duplicates: rows.filter((r) => r.is_duplicate).length,
-      last_24h: rows.filter((r) => !r.is_hidden && (Date.now() - new Date(r.created_at)) < 864e5).length,
-      goal: demoStore.goal,
-      is_open: demoStore.is_open,
-      lifecycle_status: demoStore.lifecycle_status,
-      deadline_at: demoStore.deadline_at,
-      admin_response: demoStore.admin_response,
-      by_grade: byGrade,
-      by_category: byCat,
-      updates: demoStore.updates,
-      audit_logs: demoStore.audit_logs
-    };
-  }
-  if (name === 'admin_list') {
-    const f = args.p_filter || 'all';
-    const q = (args.p_search || '').toLowerCase();
-    const g = args.p_grade ? Number(args.p_grade) : null;
-    const sort = args.p_sort || 'newest';
-    let list = rows.filter((r) => {
-      if (f === 'pending' && !(r.note && !r.note_approved)) return false;
-      if (f === 'approved' && !(r.note && r.note_approved)) return false;
-      if (f === 'hidden' && !r.is_hidden) return false;
-      if (f === 'verified' && !r.is_verified) return false;
-      if (f === 'duplicates' && !r.is_duplicate) return false;
-      if (g && Number(r.grade) !== g) return false;
-      if (q && !`${r.name} ${r.note || ''} ${r.receipt_code || ''}`.toLowerCase().includes(q)) return false;
-      return true;
-    });
-    list.sort((a, b) => {
-      if (sort === 'oldest') return new Date(a.created_at) - new Date(b.created_at);
-      if (sort === 'grade_asc') return a.grade - b.grade;
-      if (sort === 'grade_desc') return b.grade - a.grade;
-      if (sort === 'name_asc') return a.name.localeCompare(b.name, 'ar');
-      return new Date(b.created_at) - new Date(a.created_at);
-    });
-    const off = args.p_offset || 0, lim = args.p_limit || 40;
-    return { status: 'ok', total: list.length, rows: list.slice(off, off + lim) };
-  }
-  if (name === 'admin_action') {
-    const { p_id, p_action } = args;
-    if (p_action === 'approve_all_notes') {
-      demoStore.rows.forEach((r) => { if (r.note) r.note_approved = true; });
-    } else {
-      const idx = demoStore.rows.findIndex((r) => r.id === p_id);
-      if (idx === -1) return { status: 'not_found' };
-      const r = demoStore.rows[idx];
-      if (p_action === 'approve_note') r.note_approved = true;
-      else if (p_action === 'reject_note') { r.note = null; r.note_approved = false; }
-      else if (p_action === 'unapprove_note') r.note_approved = false;
-      else if (p_action === 'hide') r.is_hidden = true;
-      else if (p_action === 'unhide') r.is_hidden = false;
-      else if (p_action === 'verify') r.is_verified = true;
-      else if (p_action === 'unverify') r.is_verified = false;
-      else if (p_action === 'delete') demoStore.rows.splice(idx, 1);
-    }
-    demoStore.audit_logs.unshift({ id: Date.now(), action: p_action, target_id: p_id, details: {}, created_at: new Date().toISOString() });
-    return { status: 'ok', changed: 1 };
-  }
-  if (name === 'admin_set_config') {
-    if (args.p_goal) demoStore.goal = args.p_goal;
-    if (args.p_status) {
-      demoStore.lifecycle_status = args.p_status;
-      demoStore.is_open = ['published', 'collecting'].includes(args.p_status);
-    }
-    if (typeof args.p_is_open === 'boolean') {
-      demoStore.is_open = args.p_is_open;
-      if (!args.p_status) demoStore.lifecycle_status = args.p_is_open ? 'collecting' : 'closed';
-    }
-    if (args.p_deadline_at !== undefined) demoStore.deadline_at = args.p_deadline_at;
-    if (args.p_admin_response !== undefined) demoStore.admin_response = args.p_admin_response;
-    demoStore.audit_logs.unshift({ id: Date.now(), action: 'update_config', details: { goal: demoStore.goal, status: demoStore.lifecycle_status }, created_at: new Date().toISOString() });
-    return { status: 'ok', goal: demoStore.goal, is_open: demoStore.is_open };
-  }
-  if (name === 'admin_post_update') {
-    if (args.p_delete_id) {
-      demoStore.updates = demoStore.updates.filter((u) => u.id !== args.p_delete_id);
-      demoStore.audit_logs.unshift({ id: Date.now(), action: 'delete_update', target_id: args.p_delete_id, details: {}, created_at: new Date().toISOString() });
-      return { status: 'ok' };
-    }
-    const id = 'u-' + Date.now();
-    demoStore.updates.unshift({ id, title_ar: args.p_title_ar, body_ar: args.p_body_ar, badge: 'update', created_at: new Date().toISOString() });
-    demoStore.audit_logs.unshift({ id: Date.now(), action: 'post_update', details: { title: args.p_title_ar }, created_at: new Date().toISOString() });
-    return { status: 'ok', id };
-  }
-  return { status: 'ok' };
-}
-
 /* ---------- Login & Entry ---------- */
-async function enter(isDemo = false) {
-  state.demo = isDemo;
+async function enter() {
   $('#login-wrap').classList.add('hidden'); $('#app').classList.remove('hidden'); $('#bar').classList.remove('hidden');
-  $('#demo-banner').classList.toggle('hidden', !isDemo);
-  $('#mode-pill').textContent = isDemo ? 'وضع المعاينة التجريبي (Demo)' : 'متصل بقاعدة البيانات (Supabase)';
-  $('#mode-pill').className = isDemo
-    ? 'rounded-full bg-thread/20 px-3 py-1 text-xs font-bold text-thread border border-thread/40'
-    : 'rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 border border-emerald-400/30';
   drawTabs();
   await safe(Promise.all([loadSummary(), loadList()]));
 }
 
 $('#login').addEventListener('submit', async (e) => {
   e.preventDefault();
-  if (!sb) return showLogin('تعذّر تحميل مكتبة الاتصال. يمكنك استخدام وضع المعاينة التجريبي أدناه.');
+  if (!sb) return showLogin('تعذّر تحميل مكتبة الاتصال.');
   const btn = $('#login-btn'); btn.disabled = true;
   const { error } = await sb.auth.signInWithPassword({ email: $('#email').value.trim(), password: $('#pass').value });
   btn.disabled = false;
-  if (error) return showLogin('بيانات الدخول غير صحيحة أو الحساب غير مسجّل.');
+  if (error) return showLogin('بيانات الدخول غير صحيحة.');
   $('#pass').value = '';
-  enter(false);
+  enter();
 });
-$('#enter-demo').addEventListener('click', () => enter(true));
-$('#switch-to-real-login').addEventListener('click', () => showLogin());
-$('#logout').addEventListener('click', async () => { if (!state.demo && sb) await sb.auth.signOut(); showLogin(); });
+$('#logout').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); showLogin(); });
 $('#refresh-all').addEventListener('click', () => safe(Promise.all([loadSummary(), loadList({ keep: true })])));
 $('#go-public').addEventListener('click', () => {
   const target = new URL('index.html', location.href).href;
   window.open(target, '_blank', 'noopener');
 });
-if (sb) sb.auth.getSession().then(({ data }) => (data && data.session ? enter(false) : showLogin())).catch(() => showLogin());
+if (sb) sb.auth.getSession().then(({ data }) => (data && data.session ? enter() : showLogin())).catch(() => showLogin());
+
+function resolveGoal(rawGoal) {
+  const g = Number(rawGoal);
+  if (!g || g === 500 || g === 150) return CONFIG.DEFAULT_GOAL;
+  return g;
+}
 
 /* ---------- Summary, Analytics & Settings ---------- */
 async function loadSummary() {
   const d = await rpc('admin_summary');
   state.summary = d;
-  const pub = Number(d.public) || 0, goal = Math.max(1, Number(d.goal) || 150);
+  const pub = Number(d.public) || 0, goal = resolveGoal(d.goal);
   $('#s-public').textContent = pub;
   $('#s-pct').textContent = `${Math.round((pub / goal) * 100)}% من الهدف (${goal})`;
   $('#s-all').textContent = d.all ?? pub;
@@ -582,7 +414,7 @@ async function loadSummary() {
   $('#s-verified').textContent = d.verified ?? 0;
   $('#s-24h').textContent = `آخر 24 ساعة: +${d.last_24h || 0}`;
 
-  $('#goal').value = d.goal || 150;
+  $('#goal').value = goal;
   state.open = d.is_open !== false;
   state.lifecycle = d.lifecycle_status || (state.open ? 'collecting' : 'closed');
   $('#lifecycle-select').value = state.lifecycle;
@@ -591,9 +423,8 @@ async function loadSummary() {
 
   $('#open-badge').textContent = state.open ? 'العريضة مفتوحة للتوقيع' : 'العريضة مغلقة';
   $('#open-badge').className = 'chip ' + (state.open ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300');
-  $('#toggle-open').textContent = state.open ? 'إغلاق العريضة فورًا' : 'إعادة فتح العريضة';
+  $('#toggle-open').textContent = state.open ? 'إغلاق العريضة (العريضة مفتوحة الآن)' : 'إعادة فتح العريضة (العريضة مغلقة الآن)';
 
-  // Category Breakdown
   const cats = d.by_category || { both: pub, uniform: 0, canteen: 0 };
   $('#by-category').replaceChildren(
     ...[['both', 'كلاهما'], ['uniform', 'الزي المدرسي'], ['canteen', 'المقصف']].map(([k, label]) => {
@@ -603,8 +434,9 @@ async function loadSummary() {
     })
   );
 
-  // Grade Distribution Bars
-  const gradeEntries = Object.entries(d.by_grade || {}).sort((a, b) => Number(a[0]) - Number(b[0]));
+  const gradeEntries = Object.entries(d.by_grade || {})
+    .filter(([g]) => Number(g) >= 1 && Number(g) <= 10)
+    .sort((a, b) => Number(a[0]) - Number(b[0]));
   const maxG = Math.max(1, ...gradeEntries.map(([, n]) => Number(n)));
   $('#by-grade').replaceChildren(...(gradeEntries.length ? gradeEntries.map(([g, n]) => {
     const row = el('div', 'space-y-1');
@@ -627,15 +459,14 @@ async function loadSummary() {
     const delBtn = el('button', 'btn btn-bad !px-2.5 !py-1 text-[11px]', 'حذف');
     delBtn.type = 'button';
     delBtn.addEventListener('click', async () => {
-      if (!(await askConfirm('حذف هذا التحديث من الصفحة العامة؟'))) return;
+      if (!(await askConfirm('حذف هذا المستجد من الصفحة العامة؟'))) return;
       await safe(rpc('admin_post_update', { p_title_ar: '', p_body_ar: '', p_delete_id: u.id }).then(() => loadSummary()));
-      toast('تم حذف التحديث');
+      toast('تم حذف المستجد');
     });
     item.append(info, delBtn);
     return item;
-  }) : [el('p', 'py-2 text-denim-soft', 'لم يتم نشر تحديثات إضافية بعد.')]));
+  }) : [el('p', 'py-2 text-denim-soft', 'لم يتم نشر مستجدات إضافية بعد.')]));
 
-  // Audit Logs
   const logs = d.audit_logs || [];
   $('#audit-count').textContent = `${logs.length} عملية`;
   const ACTION_NAMES = {
@@ -649,8 +480,8 @@ async function loadSummary() {
     unverify: 'إلغاء توثيق توقيع',
     delete: 'حذف توقيع نهائيًا',
     update_config: 'تحديث إعدادات العريضة',
-    post_update: 'نشر إعلان/تحديث جديد',
-    delete_update: 'حذف إعلان'
+    post_update: 'نشر مستجد جديد',
+    delete_update: 'حذف مستجد'
   };
   $('#audit-list').replaceChildren(...(logs.length ? logs.map((l) => {
     const item = el('div', 'flex items-center justify-between rounded-lg bg-chalk/50 px-3 py-2');
@@ -659,19 +490,19 @@ async function loadSummary() {
       el('time', 'text-[11px] text-denim-soft', when(l.created_at))
     );
     return item;
-  }) : [el('p', 'text-denim-soft', 'لا توجد عمليات مسجّلة في هذه الجلسة بعد.')]));
+  }) : [el('p', 'text-denim-soft', 'لا توجد عمليات مسجّلة بعد.')]));
 }
 
 async function setConfig(args) {
   const d = await rpc('admin_set_config', args);
   if (d.status !== 'ok') throw new Error(d.status);
   await loadSummary();
-  toast('تم حفظ الإعدادات بنجاح');
+  toast('تم الحفظ');
 }
 
 $('#save-goal').addEventListener('click', () => {
   const g = Number($('#goal').value);
-  if (!(g >= 1)) return toast('اكتب هدفًا رقميًا صحيحًا.');
+  if (!(g >= 1)) return toast('اكتب هدفًا صحيحًا.');
   const st = $('#lifecycle-select').value;
   const dl = $('#deadline-input').value ? new Date($('#deadline-input').value).toISOString() : null;
   const resp = $('#admin-response-input').value.trim();
@@ -679,25 +510,25 @@ $('#save-goal').addEventListener('click', () => {
 });
 
 $('#toggle-open').addEventListener('click', async () => {
-  const msg = state.open ? 'إغلاق العريضة الآن؟ لن يتمكن الطلاب من إضافة تواقيع جديدة.' : 'إعادة فتح العريضة لجمع التواقيع؟';
+  const msg = state.open ? 'إغلاق العريضة؟ لن يستطيع أحد التوقيع.' : 'إعادة فتح العريضة؟';
   if (await askConfirm(msg)) safe(setConfig({ p_is_open: !state.open, p_status: !state.open ? 'collecting' : 'closed' }));
 });
 
 $('#post-update-btn').addEventListener('click', () => {
   const title = $('#up-title').value.trim(), body = $('#up-body').value.trim();
-  if (title.length < 2 || body.length < 4) return toast('اكتب عنوانًا وتفاصيل واضحة للتحديث أولًا.');
+  if (title.length < 2 || body.length < 4) return toast('اكتب عنوانًا وتفاصيل واضحة للمستجد أولًا.');
   safe((async () => {
     await rpc('admin_post_update', { p_title_ar: title, p_body_ar: body, p_badge: 'update' });
     $('#up-title').value = ''; $('#up-body').value = '';
     await loadSummary();
-    toast('تم نشر التحديث بنجاح');
+    toast('تم نشر المستجد بنجاح');
   })());
 });
 
 /* ---------- Signatures List, Filters, Sorting & Bulk Actions ---------- */
 const TABS = [
   ['all', 'الكل'],
-  ['pending', 'بانتظار المراجعة'],
+  ['pending', 'ملاحظات بانتظار المراجعة'],
   ['approved', 'ملاحظات منشورة'],
   ['duplicates', 'تكرارات محتملة'],
   ['verified', 'موثّقة'],
@@ -758,12 +589,12 @@ document.querySelectorAll('[data-bulk]').forEach((b) => {
     const action = b.dataset.bulk;
     const ids = [...state.selected];
     if (!ids.length) return;
-    if (action === 'delete' && !(await askConfirm(`حذف ${ids.length} توقيع نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.`))) return;
+    if (action === 'delete' && !(await askConfirm(`حذف ${ids.length} توقيع نهائيًا؟`))) return;
     await safe((async () => {
       for (const id of ids) await rpc('admin_action', { p_id: id, p_action: action });
       state.selected.clear();
       await Promise.all([loadSummary(), loadList({ keep: true })]);
-      toast(`تم تنفيذ الإجراء على ${ids.length} توقيع`);
+      toast('تم');
     })());
   });
 });
@@ -778,10 +609,10 @@ async function act(id, action, confirmMsg) {
   const d = await rpc('admin_action', { p_id: id, p_action: action });
   if (d.status !== 'ok') throw new Error(d.status);
   await Promise.all([loadSummary(), loadList({ keep: true })]);
-  toast('تم تنفيذ الإجراء');
+  toast('تم');
 }
 
-$('#approve-all').addEventListener('click', () => safe(act(null, 'approve_all_notes', 'نشر كل الملاحظات المنتظرة للعامة؟ تأكد من مراجعتها أولًا.')));
+$('#approve-all').addEventListener('click', () => safe(act(null, 'approve_all_notes', 'نشر كل الملاحظات المنتظرة؟ تأكد أنك قرأتها أولًا.')));
 
 function card(r) {
   const c = el('article', 'card space-y-2.5 p-4 transition ' + (r.is_hidden ? 'opacity-60 bg-chalk/40' : ''));
@@ -798,7 +629,7 @@ function card(r) {
   const nm = el('b', 'text-base text-denim-deep', r.name); nm.dir = 'auto';
   left.append(cb, nm);
   if (r.is_verified) left.append(el('span', 'chip bg-emerald-50 text-emerald-700 border-emerald-200', '✓ موثّق'));
-  if (r.is_duplicate) left.append(el('span', 'chip bg-red-50 text-bad border-bad/30', '⚠️ تشابه/تكرار محتمل'));
+  if (r.is_duplicate) left.append(el('span', 'chip bg-red-50 text-bad border-bad/30', '⚠️ تكرار محتمل'));
 
   const right = el('div', 'flex flex-wrap items-center gap-1.5');
   if (r.receipt_code) right.append(el('code', 'rounded bg-chalk px-2 py-0.5 font-mono text-[11px] text-denim-soft', r.receipt_code));
@@ -812,7 +643,7 @@ function card(r) {
     el('span', '', '•'),
     el('span', r.parent_consent ? 'text-emerald-700 font-medium' : 'text-bad', r.parent_consent ? 'موافقة ولي الأمر مسجّلة' : 'موافقة ولي الأمر غير مسجّلة')
   );
-  if (r.hide_name) meta.append(el('span', 'chip', 'اسم مخفي للعامة (مجهول)'));
+  if (r.hide_name) meta.append(el('span', 'chip', 'اسم مخفي'));
   if (r.is_hidden) meta.append(el('span', 'chip bg-amber-100 text-amber-900', 'مخفي من العدّاد'));
   c.append(top, meta);
 
@@ -822,7 +653,7 @@ function card(r) {
     p.dir = 'auto';
     noteWrap.append(
       p,
-      el('span', 'chip ' + (r.note_approved ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'), r.note_approved ? 'الملاحظة منشورة للعامة' : 'الملاحظة بانتظار المراجعة')
+      el('span', 'chip ' + (r.note_approved ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'), r.note_approved ? 'الملاحظة منشورة' : 'الملاحظة بانتظار المراجعة')
     );
     c.append(noteWrap);
   }
@@ -831,16 +662,16 @@ function card(r) {
   if (r.note && !r.note_approved) {
     acts.append(
       btn('نشر الملاحظة', 'btn-main', () => safe(act(r.id, 'approve_note'))),
-      btn('رفض وحذف الملاحظة', 'btn-line', () => safe(act(r.id, 'reject_note', 'رفض هذه الملاحظة وحذف نصّها مع الإبقاء على التوقيع؟')))
+      btn('رفض الملاحظة', 'btn-line', () => safe(act(r.id, 'reject_note', 'رفض الملاحظة وحذف نصّها؟')))
     );
   }
   if (r.note && r.note_approved) {
-    acts.append(btn('إلغاء نشر الملاحظة', 'btn-line', () => safe(act(r.id, 'unapprove_note'))));
+    acts.append(btn('إلغاء النشر', 'btn-line', () => safe(act(r.id, 'unapprove_note'))));
   }
   acts.append(
-    btn(r.is_verified ? 'إلغاء التوثيق' : 'توثيق التوقيع ✓', 'btn-line', () => safe(act(r.id, r.is_verified ? 'unverify' : 'verify'))),
-    btn(r.is_hidden ? 'إظهار في العدّاد' : 'إخفاء من العدّاد', 'btn-line', () => safe(act(r.id, r.is_hidden ? 'unhide' : 'hide'))),
-    btn('حذف نهائي', 'btn-bad', () => safe(act(r.id, 'delete', 'حذف هذا التوقيع نهائيًا من السجلات؟')))
+    btn(r.is_verified ? 'إلغاء التوثيق' : 'توثيق التوقيع', 'btn-line', () => safe(act(r.id, r.is_verified ? 'unverify' : 'verify'))),
+    btn(r.is_hidden ? 'إظهار التوقيع' : 'إخفاء التوقيع', 'btn-line', () => safe(act(r.id, r.is_hidden ? 'unhide' : 'hide'))),
+    btn('حذف', 'btn-bad', () => safe(act(r.id, 'delete', 'حذف هذا التوقيع نهائيًا؟')))
   );
   c.append(acts);
   return c;
@@ -848,7 +679,7 @@ function card(r) {
 
 function render() {
   $('#count').textContent = `(${state.total})`;
-  $('#list').replaceChildren(...(state.rows.length ? state.rows.map(card) : [el('p', 'card p-8 text-center text-denim-soft', 'لا توجد تواقيع مطابقة لمعايير البحث أو التصفية.')]));
+  $('#list').replaceChildren(...(state.rows.length ? state.rows.map(card) : [el('p', 'card p-8 text-center text-denim-soft', 'لا توجد نتائج.')]));
   $('#more').classList.toggle('hidden', state.rows.length >= state.total);
   updateBulkBar();
 }
@@ -872,35 +703,30 @@ async function saveFile(name, text) {
 }
 const deliver = (all) => all.filter((r) => !r.is_hidden)
   .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-  .map((r, i) => [i + 1, r.hide_name ? 'مجهول' : r.name, gl(r.grade), CAT_LABELS[r.category || 'both'] || 'كلاهما', r.receipt_code || '—', day(r.created_at)]);
+  .map((r, i) => [i + 1, r.hide_name ? 'مجهول' : r.name, gl(r.grade), day(r.created_at)]);
 const stamp = () => new Date().toISOString().slice(0, 10);
 
 $('#exp-deliver').addEventListener('click', () => safe((async () => {
-  toast('جارٍ تجهيز ملف التسليم…');
-  await saveFile(`signatures-delivery-${stamp()}.csv`, csv(['م', 'الاسم', 'الصف', 'الأولوية', 'رمز التحقق', 'التاريخ'], deliver(await fetchAll())));
+  toast('جارٍ التجهيز…');
+  await saveFile(`signatures-${stamp()}.csv`, csv(['م', 'الاسم', 'الصف', 'التاريخ'], deliver(await fetchAll())));
 })()));
 
 $('#exp-full').addEventListener('click', () => safe((async () => {
-  toast('جارٍ تجهيز الملف الكامل…');
+  toast('جارٍ التجهيز…');
   const all = await fetchAll(), yn = (b) => (b ? 'نعم' : 'لا');
-  await saveFile(`signatures-full-audit-${stamp()}.csv`, csv(
-    ['الاسم الكامل', 'الصف', 'الأولوية', 'اسم مخفي', 'موافقة ولي الأمر', 'مخفي من العدّاد', 'موثّق', 'رمز التحقق', 'الملاحظة', 'الملاحظة منشورة', 'التاريخ'],
+  await saveFile(`signatures-full-${stamp()}.csv`, csv(
+    ['الاسم', 'الصف', 'الأولوية', 'اسم مخفي', 'موافقة ولي الأمر', 'مخفي من العدّاد', 'موثّق', 'رمز التحقق', 'الملاحظة', 'الملاحظة منشورة', 'التاريخ'],
     all.map((r) => [r.name, gl(r.grade), CAT_LABELS[r.category || 'both'] || 'كلاهما', yn(r.hide_name), yn(r.parent_consent), yn(r.is_hidden), yn(r.is_verified), r.receipt_code || '', r.note || '', r.note ? yn(r.note_approved) : '', r.created_at])
   ));
 })()));
 
 $('#exp-print').addEventListener('click', () => safe((async () => {
-  const all = await fetchAll();
-  const rows = deliver(all);
-  const t = el('table'), head = el('tr');
-  ['م', 'الاسم', 'الصف', 'الأولوية', 'رمز التحقق', 'التاريخ'].forEach((h) => head.append(el('th', '', h)));
+  const rows = deliver(await fetchAll());
+  const t = el('table', 'w-full border-collapse text-sm'), head = el('tr');
+  ['م', 'الاسم', 'الصف', 'التاريخ'].forEach((h) => head.append(el('th', 'text-right', h)));
   t.append(head);
   rows.forEach((r) => { const tr = el('tr'); r.forEach((c) => tr.append(el('td', '', c))); t.append(tr); });
-  $('#print').replaceChildren(
-    el('h1', 'mb-1 text-xl font-bold', 'تقرير تسليم عريضة صوت الطالب — مدرسة النظم الحديثة الخاصة'),
-    el('p', 'mb-4 text-sm', `إجمالي التواقيع المعتمدة: ${rows.length} | تاريخ الإصدار: ${new Date().toLocaleDateString('ar-u-ca-gregory-nu-latn', { dateStyle: 'long' })}`),
-    t
-  );
+  $('#print').replaceChildren(el('h1', 'mb-1 text-xl font-bold', 'عريضة صوت الطالب — مدرسة النظم الحديثة الخاصة'), el('p', 'mb-4 text-sm', `عدد التواقيع: ${rows.length}`), t);
   window.print();
 })()));
 })();
