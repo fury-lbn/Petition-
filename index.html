@@ -43,13 +43,16 @@ html[dir="rtl"] .seam i { background: repeating-linear-gradient(to left, #E8A317
 .dot[data-s=ok] { background: #34d399; } .dot[data-s=err] { background: #f87171; }
 .field[aria-invalid=true] { border-color: #C62F3B; }
 input[type=checkbox][aria-invalid=true] { outline: 2px solid #C62F3B; outline-offset: 2px; }
-#msg[data-t=err] { background: #fdecee; border-color: #C62F3B; color: #8f1d28; }
-#msg[data-t=ok] { background: #e6f6ef; border-color: #1F9D6B; color: #0f6a47; }
+#msg[data-t=err], #sug-msg[data-t=err] { background: #fdecee; border-color: #C62F3B; color: #8f1d28; }
+#msg[data-t=ok], #sug-msg[data-t=ok] { background: #e6f6ef; border-color: #1F9D6B; color: #0f6a47; }
 #msg[data-t=warn] { background: #fef9c3; border-color: #ca8a04; color: #854d0e; }
 .hp { position: absolute; top: 0; inset-inline-start: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); opacity: 0; pointer-events: none; }
 .switch-thumb { inset-inline-start: .25rem; }
 .switch input:checked ~ .switch-thumb { transform: translateX(1.25rem); }
 html[dir="rtl"] .switch input:checked ~ .switch-thumb { transform: translateX(-1.25rem); }
+.switch-sm-thumb { inset-inline-start: .15rem; }
+.switch-sm input:checked ~ .switch-sm-thumb { transform: translateX(.9rem); }
+html[dir="rtl"] .switch-sm input:checked ~ .switch-sm-thumb { transform: translateX(-.9rem); }
 #sidebar { --d: 1; position: fixed; inset-block: 0; inset-inline-end: 0; width: 20rem; max-width: 100%; transform: translateX(calc(var(--d) * 100%)); visibility: hidden; transition: transform .3s ease, visibility 0s linear .3s; }
 html[dir="rtl"] #sidebar { --d: -1; }
 #sidebar.open { transform: none; visibility: visible; transition: transform .3s ease, visibility 0s; }
@@ -105,7 +108,11 @@ html.no-scroll { overflow: hidden; }
         </span>
       </div>
       <h1 class="font-display text-3xl font-extrabold leading-snug sm:text-5xl sm:leading-tight" data-i18n="hero_title">نقترح زيًّا مدرسيًا بخامة أفضل، ومقصفًا فيه وجبات حقيقية</h1>
-      <p class="mt-4 max-w-xl text-base leading-loose text-white/80" data-i18n="hero_sub">مبادرة طلابية أطلقها طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة باسم زملائهم من الصف الأول حتى العاشر، نقدّمها بروح التعاون مع الإدارة لتحسين بيئتنا المدرسية اليومية. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.</p>
+      <div id="site-announcement-banner" class="mt-3 hidden rounded-xl border border-thread/40 bg-thread/15 px-3.5 py-2.5 text-xs font-semibold text-amber-200">
+        <i class="fa-solid fa-bullhorn text-thread me-1.5" aria-hidden="true"></i>
+        <span id="site-announcement-text"></span>
+      </div>
+      <p id="hero-sub-text" class="mt-4 max-w-xl text-base leading-loose text-white/80" data-i18n="hero_sub">مبادرة طلابية أطلقها طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة باسم زملائهم من الصف الأول حتى العاشر، نقدّمها بروح التعاون مع الإدارة لتحسين بيئتنا المدرسية اليومية. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.</p>
 
       <!-- Compact Lifecycle Stepper -->
       <div class="mt-6 rounded-xl border border-white/15 bg-white/5 p-3.5 backdrop-blur-sm">
@@ -128,7 +135,13 @@ html.no-scroll { overflow: hidden; }
           <p id="count" class="font-display text-5xl font-extrabold leading-none">0</p>
           <p id="pct-label" class="mt-1 text-xs font-semibold text-denim-soft">0%</p>
         </div>
-        <p class="text-sm text-denim-soft"><span data-i18n="signatures_of">توقيع من أصل</span> <span id="goal" class="font-bold text-denim-deep">200</span></p>
+        <div class="text-end">
+          <p class="text-sm text-denim-soft"><span data-i18n="signatures_of">توقيع من أصل</span> <span id="goal" class="font-bold text-denim-deep">200</span></p>
+          <p id="teacher-stat" class="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100/90 px-2.5 py-0.5 text-[11px] font-bold text-amber-900 border border-amber-300">
+            <i class="fa-solid fa-star text-thread text-[10px]" aria-hidden="true"></i>
+            <span id="teacher-stat-text">دعم المعلمين: 0</span>
+          </p>
+        </div>
       </div>
       <div id="bar-wrap" class="seam mt-3" role="progressbar" data-i18n-label="aria_progress" aria-label="التقدم نحو الهدف" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="bar"></i></div>
       <div class="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-denim-soft">
@@ -162,7 +175,7 @@ html.no-scroll { overflow: hidden; }
   </div>
 </section>
 
-<!-- Drawer & Overlay (Clean Menu: Only Home, Why We Started, Privacy, and Students' Discord) -->
+<!-- Drawer & Overlay -->
 <div id="sidebar-overlay" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" aria-hidden="true"></div>
 <aside id="sidebar" role="dialog" aria-modal="true" aria-labelledby="menu-title" class="z-50 flex flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl">
   <div>
@@ -184,6 +197,7 @@ html.no-scroll { overflow: hidden; }
         <button type="button" data-page="home" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-house w-5" aria-hidden="true"></i><span data-i18n="link_home">الصفحة الرئيسية</span></button>
         <button type="button" data-page="why-started" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-circle-question w-5" aria-hidden="true"></i><span data-i18n="link_why">لماذا بدأنا؟</span></button>
         <button type="button" data-page="privacy" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-shield-halved w-5" aria-hidden="true"></i><span data-i18n="link_privacy">الخصوصية والأمان</span></button>
+        <button type="button" data-page="suggestions" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-envelope-open-text w-5" aria-hidden="true"></i><span data-i18n="link_suggestions">الاقتراحات والتواصل</span></button>
         <button type="button" data-page="discord" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-brands fa-discord w-5" aria-hidden="true"></i><span data-i18n="link_discord">سيرفر الطلاب (ديسكورد)</span></button>
       </div>
     </nav>
@@ -253,7 +267,7 @@ html.no-scroll { overflow: hidden; }
 
   <!-- Right Column: Signature Form + Analytics Directly Below Signing Section -->
   <aside class="space-y-6 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1">
-    <div id="sign" class="scroll-mt-4 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-7">
+    <div id="sign" class="scroll-mt-4 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-7 transition-colors duration-200">
       <div id="closed" class="hidden rounded-xl border border-denim/20 bg-chalk/70 p-5 text-center">
         <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-denim/10 text-xl text-denim"><i class="fa-solid fa-lock" aria-hidden="true"></i></div>
         <p class="font-display text-base font-extrabold text-denim-deep" id="closed-heading" data-i18n="closed_heading">العريضة مغلقة حاليًا لجمع التواقيع</p>
@@ -273,7 +287,7 @@ html.no-scroll { overflow: hidden; }
           </div>
           <dl class="mt-2.5 space-y-1.5 text-denim-soft">
             <div class="flex justify-between"><dt data-i18n="receipt_display">الظهور في القائمة العامة:</dt><dd id="receipt-name" class="font-bold text-denim-deep" dir="auto">—</dd></div>
-            <div class="flex justify-between"><dt data-i18n="receipt_grade">الصف الدراسي:</dt><dd id="receipt-grade" class="font-semibold text-denim-deep">—</dd></div>
+            <div class="flex justify-between"><dt data-i18n="receipt_grade">الصفة / الصف:</dt><dd id="receipt-grade" class="font-semibold text-denim-deep">—</dd></div>
             <div class="flex justify-between"><dt data-i18n="receipt_status">حالة التسجيل:</dt><dd class="font-semibold text-emerald-700" data-i18n="receipt_status_val">مسجّل ومحتسب في العدّاد ✓</dd></div>
           </dl>
           <button type="button" data-action="copy-receipt" class="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-denim/20 bg-white py-1.5 text-xs font-semibold text-denim hover:bg-chalk">
@@ -286,18 +300,40 @@ html.no-scroll { overflow: hidden; }
 
       <!-- Signing Form -->
       <form id="form" novalidate class="space-y-4">
-        <div>
-          <h2 class="font-display text-2xl font-extrabold" data-i18n="form_title">وقّع على العريضة</h2>
-          <p class="mt-1 text-sm text-denim-soft" data-i18n="form_sub">اكتب اسمك الثنائي على الأقل واختر صفّك (من الأول للعاشر).</p>
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <h2 class="font-display text-2xl font-extrabold" data-i18n="form_title">وقّع على العريضة</h2>
+            <p id="form-sub-text" class="mt-1 text-sm text-denim-soft" data-i18n="form_sub">اكتب اسمك الثنائي على الأقل واختر صفّك (من الأول للعاشر).</p>
+          </div>
+          <!-- Compact Side Switch for Teacher Signing Mode -->
+          <label class="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-denim/20 bg-chalk/70 px-2.5 py-1 text-[11px] font-bold text-denim-deep transition hover:border-thread" title="التبديل لتوقيع المعلمين">
+            <span class="switch-sm relative">
+              <input id="teacher-mode" type="checkbox" role="switch" class="peer sr-only">
+              <span class="block h-4 w-7 rounded-full bg-denim/25 transition peer-checked:bg-thread"></span>
+              <span class="switch-sm-thumb absolute top-0.5 h-3 w-3 rounded-full bg-white shadow transition"></span>
+            </span>
+            <span data-i18n="teacher_toggle">معلّم؟</span>
+          </label>
         </div>
+
         <div>
           <label for="name" class="mb-1.5 block text-sm font-semibold" data-i18n="label_name">الاسم الكامل</label>
           <input id="name" class="field" required minlength="4" maxlength="60" autocomplete="name" autocapitalize="words" data-i18n-placeholder="placeholder_name" placeholder="مثال: يوسف أحمد">
         </div>
+
+        <!-- Student Grade + Priority Row -->
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <div>
+          <div id="grade-wrap">
             <label for="grade" class="mb-1.5 block text-sm font-semibold" data-i18n="label_grade">الصف</label>
             <select id="grade" class="field" required></select>
+          </div>
+          <!-- Teacher Passcode Field (Replaces Grade when Teacher Switch is ON) -->
+          <div id="passcode-wrap" class="hidden">
+            <label for="teacher-passcode" class="mb-1.5 block text-sm font-semibold text-amber-900">
+              <i class="fa-solid fa-key text-thread me-1 text-xs" aria-hidden="true"></i>
+              <span data-i18n="label_passcode">رمز التحقق للمعلّم</span>
+            </label>
+            <input id="teacher-passcode" type="password" dir="ltr" class="field border-amber-400/60 bg-amber-50/30" data-i18n-placeholder="placeholder_passcode" placeholder="أدخل الرمز المخصّص…">
           </div>
           <div>
             <label for="category" class="mb-1.5 block text-sm font-semibold" data-i18n="label_category">الأولوية بالنسبة لك</label>
@@ -335,7 +371,8 @@ html.no-scroll { overflow: hidden; }
           <span><b class="text-sm" data-i18n="label_hide">إخفاء اسمي</b><span class="block text-xs text-denim-soft" data-i18n="hide_desc">يُحتسب صوتك دون ظهور اسمك في القائمة العامة.</span></span>
         </label>
 
-        <label class="flex cursor-pointer items-start gap-3 rounded-lg border border-denim/20 bg-chalk/40 p-3">
+        <!-- Parental Consent (Hidden automatically when Teacher Switch is ON) -->
+        <label id="consent-wrap" class="flex cursor-pointer items-start gap-3 rounded-lg border border-denim/20 bg-chalk/40 p-3">
           <input id="parent_consent" type="checkbox" required class="mt-1 h-4 w-4 shrink-0 rounded border-denim/35 text-denim focus:ring-thread">
           <span class="text-xs leading-relaxed"><b data-i18n="parent_title">موافقة ولي الأمر:</b> <span data-i18n="parent_desc">أؤكد أن هذا التصويت يتم بعلم وموافقة ولي أمري.</span></span>
         </label>
@@ -384,6 +421,8 @@ html.no-scroll { overflow: hidden; }
       <div class="sm:col-span-3">
         <select id="wall-filter" class="field !py-2 text-xs" aria-label="تصفية التواقيع">
           <option value="all" data-i18n="filter_all">كل التواقيع</option>
+          <option value="pinned" data-i18n="filter_pinned">المثبّتة في الأعلى 📌</option>
+          <option value="teachers" data-i18n="filter_teachers">تواقيع المعلمين ⭐</option>
           <option value="notes" data-i18n="filter_notes">مع ملاحظات فقط</option>
         </select>
       </div>
@@ -427,6 +466,69 @@ html.no-scroll { overflow: hidden; }
     <p class="mt-4 text-xs text-denim-soft" data-i18n="privacy_note"></p>
   </section>
 
+  <!-- Sub-page: Suggestions & Direct Contact with Site Developer/Admin -->
+  <section id="suggestions" class="hidden space-y-6">
+    <div class="grid gap-6 md:grid-cols-12">
+      <!-- Suggestion Submission Box -->
+      <div class="rounded-2xl border border-denim/15 bg-white p-6 shadow-sm md:col-span-7">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h2 class="font-display text-xl font-extrabold" data-i18n="sug_title">صندوق الاقتراحات والأفكار</h2>
+          <button id="toggle-sug-list" type="button" data-action="toggle-suggestions" class="btn btn-line !px-3 !py-1.5 text-xs">
+            <i class="fa-regular fa-eye" aria-hidden="true"></i>
+            <span id="toggle-sug-text" data-i18n="show_suggestions_btn">إظهار الاقتراحات المرسلة</span>
+          </button>
+        </div>
+        <p class="mt-1.5 text-xs leading-relaxed text-denim-soft" data-i18n="sug_desc">هل لديك فكرة إضافية لتطوير المبادرة أو تحسين الموقع؟ شاركنا اقتراحك هنا.</p>
+
+        <form id="sug-form" novalidate class="mt-4 space-y-3">
+          <div>
+            <label for="sug-author" class="mb-1 block text-xs font-semibold"><span data-i18n="sug_name_label">الاسم</span> <span class="font-normal text-denim-soft" data-i18n="optional_tag">(اختياري)</span></label>
+            <input id="sug-author" type="text" maxlength="40" class="field !py-2 text-sm" data-i18n-placeholder="sug_name_ph" placeholder="مثال: طالب في الصف التاسع">
+          </div>
+          <div>
+            <label for="sug-text" class="mb-1 block text-xs font-semibold" data-i18n="sug_content_label">الاقتراح أو الفكرة</label>
+            <textarea id="sug-text" rows="3" maxlength="400" required class="field resize-none text-sm" data-i18n-placeholder="sug_content_ph" placeholder="اكتب اقتراحك أو فكرتك هنا…"></textarea>
+          </div>
+          <p id="sug-msg" role="alert" class="hidden rounded-lg border px-3 py-2 text-xs"></p>
+          <button id="sug-submit" type="submit" class="btn btn-main w-full !py-2.5 text-sm">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            <span data-i18n="sug_submit_btn">إرسال الاقتراح</span>
+          </button>
+        </form>
+
+        <!-- Hidden Suggestions Drawer (Only shown when user clicks the button) -->
+        <div id="sug-list-wrap" class="mt-5 hidden border-t border-denim/15 pt-4">
+          <h3 class="mb-2.5 font-display text-sm font-bold text-denim-deep" data-i18n="sug_list_heading">الاقتراحات المرسلة</h3>
+          <div id="sug-list" class="max-h-64 space-y-2.5 overflow-y-auto text-xs"></div>
+        </div>
+      </div>
+
+      <!-- Direct Contact with Site Developer / Project Lead -->
+      <div class="rounded-2xl border border-denim/15 bg-denim-deep p-6 text-white shadow-sm md:col-span-5 flex flex-col justify-between">
+        <div>
+          <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-thread text-denim-deep text-lg">
+            <i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>
+          </div>
+          <h2 class="font-display text-xl font-extrabold" data-i18n="contact_title">التواصل مع مدير ومطوّر الموقع</h2>
+          <p class="mt-2.5 text-xs leading-loose text-white/80" data-i18n="contact_desc">للتواصل المباشر مع مطوّر الموقع والقائم على المشروع، سواء للاستفسار، أو الإبلاغ عن أي ملاحظة تقنية، أو طلب تعديل أو حذف توقيع، أو الحصول على رمز التوقيع الخاص بالمعلمين، يمكنك المراسلة مباشرة عبر البريد الإلكتروني:</p>
+          <div id="contact-email-display" class="mt-4 rounded-xl border border-white/15 bg-white/10 px-3.5 py-2.5 font-mono text-xs text-thread select-all text-center" dir="ltr">
+            bilalmehrez@outlook.com
+          </div>
+        </div>
+        <div class="mt-5 space-y-2">
+          <a id="contact-mailto-link" href="mailto:bilalmehrez@outlook.com?subject=%D9%85%D8%A8%D8%A7%D8%AF%D8%B1%D8%A9%20%D8%B5%D9%88%D8%AA%20%D8%A7%D9%84%D8%B7%D8%A7%D9%84%D8%A8" class="btn btn-main w-full !py-3 text-xs">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            <span data-i18n="contact_email_btn">مراسلة عبر تطبيق البريد</span>
+          </a>
+          <button type="button" data-action="copy-email" class="btn btn-line w-full !py-2 text-xs">
+            <i class="fa-regular fa-copy" aria-hidden="true"></i>
+            <span data-i18n="copy_email_btn">نسخ البريد الإلكتروني</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Sub-page: Student Discord Community Server -->
   <section id="discord" class="hidden rounded-2xl bg-denim-deep p-6 text-white shadow-xl sm:p-8">
     <div class="grid gap-8 md:grid-cols-12 md:items-center">
@@ -451,6 +553,7 @@ html.no-scroll { overflow: hidden; }
     <a class="hover:underline" href="#page-home" data-page="home" data-i18n="link_home"></a>
     <a class="hover:underline" href="#why-started" data-page="why-started" data-i18n="link_why"></a>
     <a class="hover:underline" href="#privacy" data-page="privacy" data-i18n="link_privacy"></a>
+    <a class="hover:underline" href="#suggestions" data-page="suggestions" data-i18n="link_suggestions"></a>
     <a class="hover:underline" href="#discord" data-page="discord" data-i18n="link_discord"></a>
   </nav>
   <p><span data-i18n="footer_text"></span> © <span id="year"></span></p>
@@ -492,6 +595,7 @@ const I18N = {
     menu_btn: 'القائمة', close_menu: 'إغلاق القائمة', close_btn: 'إغلاق',
     back_home: 'العودة إلى صفحة العريضة',
     link_home: 'الصفحة الرئيسية',
+    link_suggestions: 'الاقتراحات والتواصل',
     grade9_badge: 'مبادرة طلاب الصف التاسع',
     hero_title: 'نقترح زيًّا مدرسيًا بخامة أفضل، ومقصفًا فيه وجبات حقيقية',
     hero_sub: 'مبادرة طلابية أطلقها طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة باسم زملائهم من الصف الأول حتى العاشر، نقدّمها بروح التعاون مع الإدارة لتحسين بيئتنا المدرسية اليومية. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.',
@@ -508,7 +612,9 @@ const I18N = {
     tag_current: 'تركيب الزي الحالي', tag_current_val: '+60% بوليستر',
     tag_proposed: 'ما نقترحه للزي', tag_proposed_val: '100% قطن مريح',
     tag_canteen: 'ما نقترحه للمقصف', tag_canteen_val: 'وجبات مشبعة وتنوّع صحي',
-    signatures_of: 'توقيع من أصل', sign_now: 'وقّع الآن', share: 'شارك', copy_link: 'انسخ الرابط',
+    signatures_of: 'توقيع من أصل',
+    teacher_stat_label: 'دعم المعلمين: {count}',
+    sign_now: 'وقّع الآن', share: 'شارك', copy_link: 'انسخ الرابط',
     qr_btn: 'رمز QR',
     qr_modal_title: 'مشاركة العريضة عبر رمز QR',
     qr_modal_desc: 'امسح الرمز بكاميرا الهاتف أو انسخ الرابط لمشاركته مع زملائك.',
@@ -527,20 +633,27 @@ const I18N = {
     grade_dist_title: 'المشاركون حسب الصف الدراسي',
     updates_title: 'لوحة المستجدات والمتابعة',
     default_update_title: 'انطلاق مبادرة طلاب الصف التاسع (الهدف: 200 توقيع)',
-    default_update_body: 'بدأت مرحلة جمع التواقيع من طلاب الصفوف الأول حتى العاشر وبموافقة أولياء الأمور، تمهيدًا لتقديم المقترح لإدارة المدرسة.',
+    default_update_body: 'بدأت مرحلة جمع التواقيع من طلاب الصفوف الأول حتى العاشر وبموافقة أولياء الأمور، بالإضافة لإتاحة خيار دعم المعلمين للمبادرة.',
     closed_heading: 'العريضة مغلقة حاليًا لجمع التواقيع',
     closed_msg: 'انتهى جمع التواقيع وأُغلقت العريضة. شكرًا لكل من شارك وساهم بصوته.',
     thanks_title: 'شكرًا، وصل صوتك',
     thanks_desc: 'تم تسجيل توقيعك بنجاح. كل صوت جديد يقرّبنا من الهدف. شارك العريضة مع زملائك.',
     receipt_label: 'إيصال تأكيد التوقيع',
     receipt_display: 'الظهور في القائمة العامة:',
-    receipt_grade: 'الصف الدراسي:',
+    receipt_grade: 'الصفة / الصف:',
     receipt_status: 'حالة التسجيل:',
     receipt_status_val: 'مسجّل ومحتسب في العدّاد ✓',
     copy_receipt_btn: 'نسخ رمز الإيصال',
     receipt_copied: 'تم نسخ رمز إيصال التوقيع',
     share_petition: 'شارك العريضة',
-    form_title: 'وقّع على العريضة', form_sub: 'اكتب اسمك الثنائي على الأقل واختر صفّك (من الأول للعاشر).',
+    form_title: 'وقّع على العريضة',
+    form_sub: 'اكتب اسمك الثنائي على الأقل واختر صفّك (من الأول للعاشر).',
+    form_sub_teacher: 'توقيع مخصّص للمعلمين والكادر التعليمي لدعم مبادرة الطلاب.',
+    teacher_toggle: 'معلّم؟',
+    teacher_badge: '⭐ معلّم / كادر تعليمي',
+    label_passcode: 'رمز التحقق للمعلّم',
+    placeholder_passcode: 'أدخل رمز المعلمين…',
+    err_passcode: 'رمز التحقق الخاص بالمعلمين غير صحيح. تواصل مع القائم على المبادرة للحصول عليه.',
     label_name: 'الاسم الكامل', placeholder_name: 'مثال: يوسف أحمد',
     label_grade: 'الصف', select_grade_default: 'اختر صفّك',
     label_category: 'الأولوية بالنسبة لك',
@@ -554,7 +667,11 @@ const I18N = {
     wall_showing: 'عرض {shown} من أصل {total}',
     wall_search_ph: 'ابحث بالاسم أو نص الملاحظة…',
     all_grades: 'كل الصفوف (1–10)',
-    filter_all: 'كل التواقيع', filter_notes: 'مع ملاحظات فقط',
+    filter_all: 'كل التواقيع',
+    filter_pinned: 'المثبّتة في الأعلى 📌',
+    filter_teachers: 'تواقيع المعلمين ⭐',
+    pinned_badge: '📌 مثبّت',
+    filter_notes: 'مع ملاحظات فقط',
     verified_badge: 'موثّق',
     footer_text: 'مبادرة طلابية أطلقها طلاب الصف التاسع لتقديم اقتراح بنّاء، وهي ليست جهة رسمية ولا تمثّل المدرسة أو إدارتها.',
     anonymous: 'مجهول', no_signatures: 'لا توجد تواقيع بعد', be_first: 'كن أول من يوقّع على العريضة.',
@@ -562,14 +679,32 @@ const I18N = {
     next_goal: 'الهدف المرحلي القادم {goal}، ويتبقى {rem}.', goal_passed: 'تجاوزنا الهدف (200 توقيع)، شكرًا لكل صوت!',
     last_24h: 'آخر 24 ساعة: +{count}', just_now: 'الآن',
     copied: 'تم نسخ الرابط بنجاح', copy_failed: 'تعذّر النسخ، انسخ الرابط من شريط العنوان.',
+    email_copied: 'تم نسخ البريد الإلكتروني: bilalmehrez@outlook.com',
     share_text: 'وقّع معنا على مبادرة طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة: زيّ بخامة أفضل ووجبات حقيقية في المقصف',
     signed_already: 'لقد قمت بالتوقيع مسبقًا من هذا المتصفح.',
-    err_duplicate: 'هذا الاسم مسجّل مسبقًا في نفس الصف الدراسي. شكرًا لدعمك!',
+    err_duplicate: 'هذا الاسم مسجّل مسبقًا. شكرًا لدعمك!',
     err_name: 'الاسم غير مقبول: اكتب اسمك الثنائي بحروف فقط، بدون أرقام أو رموز.',
     err_grade: 'اختر صفًّا صحيحًا (من الأول للعاشر).', err_consent: 'يجب الموافقة على علم ولي الأمر لإتمام التصويت.',
     err_rate: 'محاولات كثيرة من هذه الشبكة. انتظر قليلًا ثم حاول مجددًا.',
     err_offline: 'لا يوجد اتصال بالإنترنت. تحقق من الاتصال وحاول مجددًا.',
     err_general: 'تعذّر إرسال التوقيع. حاول مجددًا بعد قليل.',
+    sug_title: 'صندوق الاقتراحات والأفكار',
+    sug_desc: 'هل لديك فكرة إضافية لتطوير المبادرة أو تحسين الموقع؟ شاركنا اقتراحك هنا.',
+    show_suggestions_btn: 'إظهار الاقتراحات المرسلة',
+    hide_suggestions_btn: 'إخفاء الاقتراحات',
+    sug_name_label: 'الاسم أو الصفة',
+    sug_name_ph: 'مثال: طالب في الصف التاسع',
+    sug_content_label: 'الاقتراح أو الفكرة',
+    sug_content_ph: 'اكتب اقتراحك أو فكرتك هنا…',
+    sug_submit_btn: 'إرسال الاقتراح',
+    sug_list_heading: 'الاقتراحات المرسلة من الطلاب والمعلمين',
+    sug_empty: 'لا توجد اقتراحات مرسلة بعد. كن أول من يشارك فكرته!',
+    sug_ok: 'تم إرسال اقتراحك بنجاح! شكرًا لمساهمتك.',
+    sug_err: 'يرجى كتابة اقتراح واضح (من 4 إلى 400 حرف بدون روابط).',
+    contact_title: 'التواصل مع مدير ومطوّر الموقع',
+    contact_desc: 'للتواصل المباشر مع مطوّر الموقع والقائم على المشروع، سواء للاستفسار، أو الإبلاغ عن أي ملاحظة تقنية، أو طلب تعديل أو حذف توقيع، أو الحصول على رمز التوقيع الخاص بالمعلمين، يمكنك المراسلة مباشرة عبر البريد الإلكتروني:',
+    contact_email_btn: 'مراسلة عبر تطبيق البريد',
+    copy_email_btn: 'نسخ البريد الإلكتروني',
     uniform_h: 'مشكلة الزي المدرسي',
     uniform_problems: [
       ['نسبة بوليستر مرتفعة (+60%)', 'الألياف الصناعية تحبس الحرارة والعرق وتسبب عدم راحة خلال الدوام.'],
@@ -638,6 +773,7 @@ const I18N = {
     menu_btn: 'Menu', close_menu: 'Close menu', close_btn: 'Close',
     back_home: 'Back to Petition Page',
     link_home: 'Home Page',
+    link_suggestions: 'Suggestions & Contact',
     grade9_badge: '9th Grade Student Initiative',
     hero_title: 'Proposing a better uniform fabric and real meals in the canteen',
     hero_sub: 'A student initiative launched by 9th-grade students at Modern Systems Private School on behalf of classmates from 1st to 10th grade, offered in a spirit of cooperation with the administration to improve our daily school experience. If you agree, sign and share it.',
@@ -654,7 +790,9 @@ const I18N = {
     tag_current: 'Current uniform material', tag_current_val: '+60% Polyester',
     tag_proposed: 'Proposed uniform', tag_proposed_val: '100% Breathable Cotton',
     tag_canteen: 'Proposed canteen', tag_canteen_val: 'Real Meals & Healthy Variety',
-    signatures_of: 'signatures out of', sign_now: 'Sign Now', share: 'Share', copy_link: 'Copy Link',
+    signatures_of: 'signatures out of',
+    teacher_stat_label: 'Teachers supporting: {count}',
+    sign_now: 'Sign Now', share: 'Share', copy_link: 'Copy Link',
     qr_btn: 'QR Code',
     qr_modal_title: 'Share Petition via QR Code',
     qr_modal_desc: 'Scan with your phone camera or copy the link to share with classmates.',
@@ -673,20 +811,27 @@ const I18N = {
     grade_dist_title: 'Participation by Grade',
     updates_title: 'Updates & Progress Board',
     default_update_title: '9th Grade Student Initiative Launched (Target: 200 Signatures)',
-    default_update_body: 'Signature collection is open for students in grades 1 through 10 with parental consent, ahead of presenting the proposal to the school administration.',
+    default_update_body: 'Signature collection is open for students in grades 1 through 10 with parental consent, along with dedicated teacher support.',
     closed_heading: 'Signature Collection is Currently Closed',
     closed_msg: 'The petition has ended and signature collection is closed. Thank you to everyone who participated.',
     thanks_title: 'Thank you! Your voice was heard',
     thanks_desc: 'Your signature has been registered. Every voice brings us closer to our goal. Share the petition with your classmates.',
     receipt_label: 'Signature Verification Receipt',
     receipt_display: 'Public list display:',
-    receipt_grade: 'Grade:',
+    receipt_grade: 'Role / Grade:',
     receipt_status: 'Registration status:',
     receipt_status_val: 'Registered & Counted ✓',
     copy_receipt_btn: 'Copy Receipt Code',
     receipt_copied: 'Receipt code copied to clipboard',
     share_petition: 'Share Petition',
-    form_title: 'Sign the Petition', form_sub: 'Enter at least your first and last name, then select your grade (1st to 10th).',
+    form_title: 'Sign the Petition',
+    form_sub: 'Enter at least your first and last name, then select your grade (1st to 10th).',
+    form_sub_teacher: 'Dedicated signing option for teachers and faculty supporting the students.',
+    teacher_toggle: 'Teacher?',
+    teacher_badge: '⭐ Teacher / Faculty',
+    label_passcode: 'Teacher Passcode',
+    placeholder_passcode: 'Enter teacher passcode…',
+    err_passcode: 'Invalid teacher passcode. Contact the project organizer to obtain it.',
     label_name: 'Full Name', placeholder_name: 'e.g. Yousef Ahmed',
     label_grade: 'Grade', select_grade_default: 'Select your grade',
     label_category: 'Your Top Priority',
@@ -700,7 +845,11 @@ const I18N = {
     wall_showing: 'Showing {shown} of {total}',
     wall_search_ph: 'Search by name or note…',
     all_grades: 'All Grades (1–10)',
-    filter_all: 'All Signatures', filter_notes: 'With Notes Only',
+    filter_all: 'All Signatures',
+    filter_pinned: 'Pinned Only 📌',
+    filter_teachers: 'Teachers Only ⭐',
+    pinned_badge: '📌 Pinned',
+    filter_notes: 'With Notes Only',
     verified_badge: 'Verified',
     footer_text: 'An independent student initiative launched by 9th-grade students; not an official entity, and does not represent the school or its administration.',
     anonymous: 'Anonymous', no_signatures: 'No signatures yet', be_first: 'Be the first to sign the petition.',
@@ -708,14 +857,32 @@ const I18N = {
     next_goal: 'Next milestone is {goal}, {rem} to go.', goal_passed: 'Goal reached (200 signatures)! Thank you for every vote.',
     last_24h: 'Last 24h: +{count}', just_now: 'just now',
     copied: 'Link copied!', copy_failed: 'Could not copy. Copy the link from the address bar.',
+    email_copied: 'Email copied: bilalmehrez@outlook.com',
     share_text: 'Sign the 9th-grade student proposal at Modern Systems Private School: a better uniform fabric and real meals in the canteen',
     signed_already: 'You have already signed from this browser.',
-    err_duplicate: 'This name is already registered in the same grade. Thank you for your support!',
+    err_duplicate: 'This name is already registered. Thank you for your support!',
     err_name: 'Invalid name: enter at least first and last name, letters only, no numbers or symbols.',
     err_grade: 'Please select a valid grade (1st to 10th).', err_consent: 'Parental consent is required to submit your vote.',
     err_rate: 'Too many attempts from this network. Please wait a moment and try again.',
     err_offline: 'You appear to be offline. Check your connection and try again.',
     err_general: 'Failed to submit your signature. Please try again shortly.',
+    sug_title: 'Suggestions & Ideas Box',
+    sug_desc: 'Have an idea to improve the initiative or the website? Share your suggestion here.',
+    show_suggestions_btn: 'Show Submitted Suggestions',
+    hide_suggestions_btn: 'Hide Suggestions',
+    sug_name_label: 'Name or Role',
+    sug_name_ph: 'e.g. 9th Grade Student',
+    sug_content_label: 'Your Suggestion or Idea',
+    sug_content_ph: 'Write your suggestion here…',
+    sug_submit_btn: 'Send Suggestion',
+    sug_list_heading: 'Submitted Suggestions',
+    sug_empty: 'No suggestions submitted yet. Be the first to share your idea!',
+    sug_ok: 'Your suggestion has been submitted! Thank you.',
+    sug_err: 'Please write a clear suggestion (4 to 400 characters, no links).',
+    contact_title: 'Contact the Site Developer & Lead',
+    contact_desc: 'To directly contact the developer and project organizer—whether for inquiries, reporting a technical issue, requesting signature edits/deletion, or obtaining the teacher passcode—reach out via email:',
+    contact_email_btn: 'Open in Email App',
+    copy_email_btn: 'Copy Email Address',
     uniform_h: 'The uniform problem',
     uniform_problems: [
       ['High polyester blend (+60%)', 'Synthetic fibers trap heat and sweat, causing discomfort throughout the school day.'],
@@ -762,7 +929,7 @@ const I18N = {
     discord_title: 'School Students’ Server on Discord',
     discord_desc: 'A student-run space outside school hours where classmates can share ideas, discuss suggestions that improve our school day, and follow the initiative’s progress in a friendly, respectful atmosphere.',
     discord_points: [
-      ['By students, for students', 'A organized space among classmates to exchange ideas and practical suggestions.', 'fa-users'],
+      ['By students, for students', 'An organized space among classmates to exchange ideas and practical suggestions.', 'fa-users'],
       ['Follow our progress', 'Stay updated on how the petition is going and what steps we are preparing next.', 'fa-bullhorn'],
       ['Respectful & welcoming', 'Simple student-moderated rules that keep discussions positive and protect everyone’s privacy.', 'fa-handshake']
     ],
@@ -797,6 +964,9 @@ const t = (key, params) => {
 
 const state = {
   page: 'home',
+  isTeacher: false,
+  sugVisible: false,
+  suggestions: [],
   limit: CONFIG.PAGE_SIZE, count: 0, stats: null, rows: null, listState: 'loading',
   loaded: false, busy: false, queued: null, lastOk: 0, status: 'connecting',
   open: true, lifecycle: 'collecting', thanks: false, sending: false, menuOpen: false, anim: 0,
@@ -818,7 +988,7 @@ const makeHashCode = (str) => {
 };
 
 /* ================= Separate Page Navigation ================= */
-const SUBPAGES = ['why-started', 'privacy', 'discord'];
+const SUBPAGES = ['why-started', 'privacy', 'suggestions', 'discord'];
 function showPage(pageName) {
   const target = SUBPAGES.includes(pageName) ? pageName : 'home';
   state.page = target;
@@ -870,14 +1040,25 @@ async function fetchList(limit) {
 
 async function signPetition(v) {
   const receiptCode = makeHashCode(`${v.name}:${v.grade}:${Date.now()}`);
-  const v4Args = { p_name: v.name, p_grade: v.grade, p_hide_name: v.hide, p_parent_consent: v.parent_consent, p_note: v.note || null, p_category: v.category || 'both' };
-  let res = await rpc(CONFIG.RPC_SIGN, v4Args);
+  const v42Args = {
+    p_name: v.name,
+    p_grade: v.is_teacher ? 0 : v.grade,
+    p_hide_name: v.hide,
+    p_parent_consent: v.is_teacher ? true : v.parent_consent,
+    p_note: v.note || null,
+    p_category: v.category || 'both',
+    p_is_teacher: Boolean(v.is_teacher),
+    p_passcode: v.passcode || null
+  };
+  let res = await rpc(CONFIG.RPC_SIGN, v42Args);
   if (res.error && (res.error.code === 'PGRST202' || res.status === 404)) {
-    const { p_category, ...v2Args } = v4Args;
-    res = await rpc(CONFIG.RPC_SIGN, v2Args);
+    // Graceful fallback if SQL v4.2 isn't run yet
+    const { p_is_teacher, p_passcode, ...v4Args } = v42Args;
+    if (v.is_teacher) v4Args.p_grade = 10;
+    res = await rpc(CONFIG.RPC_SIGN, v4Args);
     if (res.error && (res.error.code === 'PGRST202' || res.status === 404)) {
-      const { p_parent_consent, p_note, ...v1Args } = v2Args;
-      res = await rpc(CONFIG.RPC_SIGN, v1Args);
+      const { p_category, ...v2Args } = v4Args;
+      res = await rpc(CONFIG.RPC_SIGN, v2Args);
     }
   }
   if (res.status === 429) return { status: 'rate_limited' };
@@ -886,6 +1067,51 @@ async function signPetition(v) {
   if (!out.receipt_code) out.receipt_code = receiptCode;
   return out;
 }
+
+/* ================= Suggestions Box Handlers ================= */
+async function loadSuggestions() {
+  const box = $('#sug-list');
+  try {
+    const { data, error } = await rpc('list_suggestions', { lim: 25 });
+    if (!error && Array.isArray(data)) state.suggestions = data;
+  } catch {}
+  const localSugs = (() => { try { return JSON.parse(store.get('petition:local_sugs') || '[]'); } catch { return []; } })();
+  const merged = [...state.suggestions];
+  localSugs.forEach((ls) => { if (!merged.some((m) => m.content === ls.content)) merged.unshift(ls); });
+
+  box.replaceChildren(...(merged.length ? merged.map((s) => {
+    const d = el('div', 'rounded-xl border border-denim/10 bg-chalk/40 p-3');
+    const top = el('div', 'flex items-center justify-between text-[11px] text-denim-soft');
+    top.append(el('b', 'text-denim-deep', s.author_name || t('anonymous')), el('time', '', ago(s.created_at)));
+    const p = el('p', 'mt-1 text-xs leading-relaxed text-denim-deep', s.content);
+    p.dir = 'auto';
+    d.append(top, p);
+    return d;
+  }) : [el('p', 'py-3 text-center text-xs text-denim-soft', t('sug_empty'))]));
+}
+
+$('#sug-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const author = clean($('#sug-author').value) || (lang === 'ar' ? 'طالب' : 'Student');
+  const content = clean($('#sug-text').value);
+  const sMsg = $('#sug-msg');
+  const showSugMsg = (txt, type) => { sMsg.textContent = txt; sMsg.dataset.t = type; sMsg.classList.toggle('hidden', !txt); };
+
+  if (content.length < 4 || content.length > 400 || /[<>{}|\\^`]|www|https?:|\.com|\.net|\.org/i.test(content)) {
+    return showSugMsg(t('sug_err'), 'err');
+  }
+  const btn = $('#sug-submit'); btn.disabled = true;
+  try {
+    await rpc('submit_suggestion', { p_author: author, p_content: content });
+  } catch {}
+  const localSugs = (() => { try { return JSON.parse(store.get('petition:local_sugs') || '[]'); } catch { return []; } })();
+  localSugs.unshift({ author_name: author, content, created_at: new Date().toISOString() });
+  store.set('petition:local_sugs', JSON.stringify(localSugs.slice(0, 20)));
+  btn.disabled = false;
+  $('#sug-form').reset();
+  showSugMsg(t('sug_ok'), 'ok');
+  if (state.sugVisible) loadSuggestions();
+});
 
 /* ================= Rendering ================= */
 const rtfCache = {};
@@ -905,7 +1131,7 @@ function renderStatus() {
   $('#status').textContent = t({ connecting: 'connecting', ok: 'connected', err: 'connection_err' }[state.status] || 'connecting');
 }
 
-const gradeLabel = (g) => I18N[lang].grades[g] || String(g);
+const gradeLabel = (g, isTeacher) => (isTeacher || Number(g) === 0) ? t('teacher_badge') : (I18N[lang].grades[g] || String(g));
 function populateGrades() {
   const maxG = CONFIG.GRADE_MAX;
   const minG = CONFIG.GRADE_MIN;
@@ -969,6 +1195,47 @@ function renderLifecycle() {
   } else {
     banner.classList.add('hidden');
   }
+
+  const ann = state.stats && clean(state.stats.site_announcement);
+  const annBanner = $('#site-announcement-banner');
+  if (annBanner) {
+    if (ann) {
+      annBanner.classList.remove('hidden');
+      $('#site-announcement-text').textContent = ann;
+    } else {
+      annBanner.classList.add('hidden');
+    }
+  }
+
+  const customSub = state.stats && clean(state.stats.custom_hero_sub);
+  const heroSubNode = $('#hero-sub-text');
+  if (heroSubNode) {
+    heroSubNode.textContent = (customSub && lang === 'ar') ? customSub : t('hero_sub');
+  }
+
+  const dynDiscord = (state.stats && clean(state.stats.discord_url)) || CONFIG.DISCORD_URL;
+  const dBtn = $('#discord-btn');
+  if (dBtn) {
+    if (dynDiscord) {
+      dBtn.href = dynDiscord;
+      dBtn.target = '_blank';
+      dBtn.rel = 'noopener noreferrer';
+      dBtn.removeAttribute('aria-disabled');
+      dBtn.classList.remove('opacity-60', 'pointer-events-none');
+      $('#discord-soon').classList.add('hidden');
+    } else {
+      dBtn.removeAttribute('href');
+      dBtn.setAttribute('aria-disabled', 'true');
+      dBtn.classList.add('opacity-60', 'pointer-events-none');
+      $('#discord-soon').classList.remove('hidden');
+    }
+  }
+
+  const dynEmail = (state.stats && clean(state.stats.contact_email)) || 'bilalmehrez@outlook.com';
+  const emailDisp = $('#contact-email-display');
+  const emailLink = $('#contact-mailto-link');
+  if (emailDisp) emailDisp.textContent = dynEmail;
+  if (emailLink) emailLink.href = `mailto:${dynEmail}?subject=${encodeURIComponent('مبادرة صوت الطالب')}`;
 }
 
 function renderAnalytics() {
@@ -1001,7 +1268,7 @@ function renderAnalytics() {
 
   const byGrade = s.by_grade ? { ...s.by_grade } : {};
   if (!Object.keys(byGrade).length && rows.length) {
-    rows.forEach((r) => { if (r.grade && r.grade <= CONFIG.GRADE_MAX) byGrade[r.grade] = (byGrade[r.grade] || 0) + 1; });
+    rows.forEach((r) => { if (r.grade >= CONFIG.GRADE_MIN && r.grade <= CONFIG.GRADE_MAX) byGrade[r.grade] = (byGrade[r.grade] || 0) + 1; });
   }
   const entries = Object.entries(byGrade)
     .filter(([g, n]) => Number(g) >= CONFIG.GRADE_MIN && Number(g) <= CONFIG.GRADE_MAX && Number(n) > 0)
@@ -1019,7 +1286,6 @@ function renderAnalytics() {
     return card;
   }) : [el('p', 'col-span-full text-xs text-denim-soft', t('no_signatures'))]));
 
-  // Updates Board on Main Page (Shows DB updates if published, or single clean launch milestone)
   const dbUpdates = (s.updates && Array.isArray(s.updates) && s.updates.length) ? s.updates : [
     {
       title_ar: I18N.ar.default_update_title,
@@ -1058,7 +1324,6 @@ function animateCount(from, to) {
 
 function resolveGoal(rawGoal) {
   const g = Number(rawGoal);
-  // Normalize old 500 or 150 default to 200 unless explicitly set to another custom number
   if (!g || g === 500 || g === 150) return CONFIG.DEFAULT_GOAL;
   return g;
 }
@@ -1072,6 +1337,12 @@ function renderStats(animate) {
   $('#pct-label').textContent = `${Math.round((n / goal) * 100)}%`;
   $('#bar').style.width = pct + '%';
   $('#bar-wrap').setAttribute('aria-valuenow', Math.floor(pct));
+
+  // Teacher count badge in the main card
+  const rowTeachers = (state.rows || []).filter((r) => r.is_teacher || Number(r.grade) === 0).length;
+  const tCount = Math.max(Number(s.teachers) || 0, rowTeachers);
+  $('#teacher-stat-text').textContent = t('teacher_stat_label', { count: fmt(tCount) });
+
   const next = CONFIG.MILESTONES.map((f) => Math.round(goal * f)).find((m) => m > n);
   $('#next').textContent = next ? t('next_goal', { goal: fmt(next), rem: fmt(next - n) }) : t('goal_passed');
   const day = Number(s.last_24h) || 0;
@@ -1095,19 +1366,27 @@ function renderReceipt() {
   if (!r) return;
   $('#receipt-code').textContent = '#' + (r.code || 'SV-VERIFIED');
   $('#receipt-name').textContent = r.display || t('anonymous');
-  $('#receipt-grade').textContent = gradeLabel(r.grade);
+  $('#receipt-grade').textContent = gradeLabel(r.grade, r.is_teacher);
 }
 
 function row(sig) {
   const name = clean(sig.display_name);
   const anon = !name || /^(مجهول|anonymous)/i.test(name);
-  const li = el('li', 'px-4 py-3.5 transition hover:bg-chalk/30');
+  const isTeacher = Boolean(sig.is_teacher || Number(sig.grade) === 0);
+  const isPinned = Boolean(sig.is_pinned);
+  const li = el('li', (isPinned || isTeacher)
+    ? 'px-4 py-3.5 transition bg-amber-50/75 border-s-4 border-s-thread hover:bg-amber-50'
+    : 'px-4 py-3.5 transition hover:bg-chalk/30'
+  );
   const top = el('div', 'flex flex-wrap items-center justify-between gap-2');
-  const left = el('div', 'flex items-center gap-2');
+  const left = el('div', 'flex flex-wrap items-center gap-2');
   const who = el('span', anon ? 'italic text-denim-soft' : 'font-bold text-denim-deep', anon ? t('anonymous') : name);
   who.dir = 'auto';
   left.append(who);
-  if (sig.is_verified) {
+  if (isPinned) {
+    left.append(el('span', 'inline-flex items-center gap-1 rounded-full bg-thread/30 px-2 py-0.5 text-[11px] font-extrabold text-amber-950 border border-amber-400', t('pinned_badge')));
+  }
+  if (sig.is_verified && !isTeacher) {
     const vBadge = el('span', 'inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200');
     vBadge.innerHTML = `<i class="fa-solid fa-circle-check text-[10px]" aria-hidden="true"></i>`;
     vBadge.append(el('span', '', t('verified_badge')));
@@ -1118,13 +1397,17 @@ function row(sig) {
     const cLabel = sig.category === 'uniform' ? t('cat_uniform') : t('cat_canteen');
     right.append(el('span', 'rounded bg-chalk px-2 py-0.5 text-[11px] font-medium text-denim-soft', cLabel));
   }
-  right.append(el('span', 'shrink-0 rounded border border-denim/20 bg-white px-2 py-0.5 text-xs font-semibold text-denim-soft', gradeLabel(sig.grade)));
+  right.append(el('span', isTeacher
+    ? 'shrink-0 rounded-full border border-amber-400 bg-thread/25 px-2.5 py-0.5 text-xs font-extrabold text-amber-950 shadow-sm'
+    : 'shrink-0 rounded border border-denim/20 bg-white px-2 py-0.5 text-xs font-semibold text-denim-soft',
+    gradeLabel(sig.grade, isTeacher)
+  ));
   top.append(left, right);
   li.append(top);
 
   const note = clean(sig.note);
   if (note) {
-    const p = el('p', 'mt-2 rounded-lg bg-chalk/60 px-3 py-2 text-sm leading-relaxed text-denim-deep/90 border-s-2 border-thread', note);
+    const p = el('p', 'mt-2 rounded-lg bg-white/80 px-3 py-2 text-sm leading-relaxed text-denim-deep/90 border-s-2 border-thread', note);
     p.dir = 'auto';
     li.append(p);
   }
@@ -1155,8 +1438,21 @@ function getFilteredRows() {
   const q = state.wallSearch.toLowerCase();
   const g = state.wallGrade ? Number(state.wallGrade) : null;
   const f = state.wallFilter;
-  return all.filter((r) => {
+  // Pin is_pinned signatures first, then teacher signatures, then newest
+  const sorted = [...all].sort((a, b) => {
+    const pa = Boolean(a.is_pinned);
+    const pb = Boolean(b.is_pinned);
+    if (pa !== pb) return pb ? 1 : -1;
+    const ta = Boolean(a.is_teacher || Number(a.grade) === 0);
+    const tb = Boolean(b.is_teacher || Number(b.grade) === 0);
+    if (ta !== tb) return tb ? 1 : -1;
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
+  return sorted.filter((r) => {
+    const isT = Boolean(r.is_teacher || Number(r.grade) === 0);
     if (g && Number(r.grade) !== g) return false;
+    if (f === 'pinned' && !r.is_pinned) return false;
+    if (f === 'teachers' && !isT) return false;
     if (f === 'notes' && !clean(r.note)) return false;
     if (q) {
       const hay = `${clean(r.display_name)} ${clean(r.note)}`.toLowerCase();
@@ -1180,7 +1476,7 @@ function renderList() {
   $('#wall-sub').textContent = totalRecent ? t('wall_showing', { shown: fmt(rows.length), total: fmt(totalRecent) }) : '';
   list.replaceChildren(...(rows.length ? rows.map(row) : [message(t('no_signatures'), t('be_first'))]));
   $('#more').classList.toggle('hidden', totalRecent < state.limit || state.limit >= CONFIG.MAX_ROWS);
-  renderAnalytics();
+  renderStats(false);
 }
 
 async function refresh({ silent = false } = {}) {
@@ -1223,13 +1519,30 @@ function renderLists() {
   });
 }
 
-/* ================= Live Public Name Preview ================= */
+/* ================= Teacher Mode Toggle & Live Public Name Preview ================= */
+function applyTeacherMode() {
+  const on = $('#teacher-mode').checked;
+  state.isTeacher = on;
+  $('#grade-wrap').classList.toggle('hidden', on);
+  $('#consent-wrap').classList.toggle('hidden', on);
+  $('#passcode-wrap').classList.toggle('hidden', !on);
+  $('#sign').classList.toggle('ring-2', on);
+  $('#sign').classList.toggle('ring-thread', on);
+  $('#form-sub-text').textContent = t(on ? 'form_sub_teacher' : 'form_sub');
+  updatePublicPreview();
+}
+$('#teacher-mode').addEventListener('change', applyTeacherMode);
+
 function updatePublicPreview() {
   const nm = clean($('#name').value);
   const hide = $('#anon').checked;
   const g = Number($('#grade').value);
   const disp = formatPublicDisplay(nm, hide);
-  $('#public-preview').textContent = g ? `${disp} — ${gradeLabel(g)}` : disp;
+  if (state.isTeacher) {
+    $('#public-preview').textContent = `${disp} — ${t('teacher_badge')}`;
+  } else {
+    $('#public-preview').textContent = g ? `${disp} — ${gradeLabel(g)}` : disp;
+  }
 }
 $('#name').addEventListener('input', updatePublicPreview);
 $('#anon').addEventListener('change', updatePublicPreview);
@@ -1248,7 +1561,7 @@ function applyLanguage() {
   $('#lang-quick').textContent = lang === 'ar' ? 'EN' : 'عربي';
   renderLists();
   populateGrades();
-  updatePublicPreview();
+  applyTeacherMode();
   renderReceipt();
   renderLifecycle();
   renderAnalytics();
@@ -1283,8 +1596,12 @@ function setBusy(b) {
 const NAME_OK = /^[\p{L}\p{M}][\p{L}\p{M} .'’-]*$/u;
 function validate(v) {
   if (v.name.split(' ').length < 2 || v.name.length < 4 || v.name.length > 60 || !NAME_OK.test(v.name) || /(.)\1{4,}/.test(v.name)) return ['name', t('err_name')];
-  if (!(v.grade >= CONFIG.GRADE_MIN && v.grade <= CONFIG.GRADE_MAX)) return ['grade', t('err_grade')];
-  if (!v.parent_consent) return ['parent_consent', t('err_consent')];
+  if (v.is_teacher) {
+    if (!v.passcode || v.passcode.length < 2) return ['teacher-passcode', t('err_passcode')];
+  } else {
+    if (!(v.grade >= CONFIG.GRADE_MIN && v.grade <= CONFIG.GRADE_MAX)) return ['grade', t('err_grade')];
+    if (!v.parent_consent) return ['parent_consent', t('err_consent')];
+  }
   if (v.note && (v.note.length > 250 || /[<>{}|\\^`]|www|https?:|\.com|\.net|\.org|@/i.test(v.note))) return ['note', t('err_note')];
   return null;
 }
@@ -1298,6 +1615,8 @@ form.addEventListener('submit', async (e) => {
   if (store.get('petition:signed')) { showThanks(true); toast(t('signed_already')); return; }
   const v = {
     name: clean($('#name').value),
+    is_teacher: $('#teacher-mode').checked,
+    passcode: clean($('#teacher-passcode').value),
     grade: Number($('#grade').value),
     category: $('#category').value || 'both',
     hide: $('#anon').checked,
@@ -1315,20 +1634,28 @@ form.addEventListener('submit', async (e) => {
       return say(t('err_duplicate'), 'warn');
     }
     if (out.status !== 'ok') {
-      const map = { invalid_name: 'err_name', invalid_grade: 'err_grade', invalid_consent: 'err_consent', invalid_note: 'err_note', rate_limited: 'err_rate' };
+      const map = {
+        invalid_name: 'err_name',
+        invalid_grade: 'err_grade',
+        invalid_consent: 'err_consent',
+        invalid_passcode: 'err_passcode',
+        invalid_note: 'err_note',
+        rate_limited: 'err_rate'
+      };
       return say(t(map[out.status] || 'err_general'), 'err');
     }
     state.receipt = {
       code: out.receipt_code || makeHashCode(`${v.name}:${v.grade}`),
       display: formatPublicDisplay(v.name, v.hide),
-      grade: v.grade,
+      grade: v.is_teacher ? 0 : v.grade,
+      is_teacher: v.is_teacher,
       at: new Date().toISOString()
     };
     store.set('petition:signed', '1');
     store.set('petition:receipt', JSON.stringify(state.receipt));
     form.reset();
     $('#note-count').textContent = '0/250';
-    updatePublicPreview();
+    applyTeacherMode();
     showThanks(true);
     $('#sign').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
     $('#thanks-h').focus({ preventScroll: true });
@@ -1440,6 +1767,16 @@ const actions = {
   'copy-receipt': async () => {
     const code = state.receipt ? state.receipt.code : 'SV-VERIFIED';
     toast((await copyText(code)) ? t('receipt_copied') : t('copy_failed'));
+  },
+  'copy-email': async () => {
+    const em = (state.stats && clean(state.stats.contact_email)) || 'bilalmehrez@outlook.com';
+    toast((await copyText(em)) ? t('email_copied') : t('copy_failed'));
+  },
+  'toggle-suggestions': () => {
+    state.sugVisible = !state.sugVisible;
+    $('#sug-list-wrap').classList.toggle('hidden', !state.sugVisible);
+    $('#toggle-sug-text').textContent = t(state.sugVisible ? 'hide_suggestions_btn' : 'show_suggestions_btn');
+    if (state.sugVisible) loadSuggestions();
   },
   qr: () => toggleQr(true),
   'close-qr': () => toggleQr(false),

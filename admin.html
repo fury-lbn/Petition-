@@ -53,9 +53,10 @@ tailwind.config = { theme: { extend: {
     </div>
     <div id="bar" class="hidden">
       <div class="flex flex-wrap items-center gap-2">
+        <span id="role-badge" class="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold text-thread"></span>
         <button id="refresh-all" type="button" class="btn btn-line !py-1.5 !px-3 text-xs"><i class="fa-solid fa-rotate" aria-hidden="true"></i> تحديث</button>
         <button id="go-public" type="button" class="btn btn-line !py-1.5 !px-3 text-xs"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> الموقع</button>
-        <button id="logout" type="button" class="btn btn-line !py-1.5 !px-3 text-xs"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> تسجيل الخروج</button>
+        <button id="logout" type="button" class="btn btn-line !py-1.5 !px-3 text-xs"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> خروج</button>
       </div>
     </div>
   </div>
@@ -80,16 +81,12 @@ tailwind.config = { theme: { extend: {
 
 <main class="mx-auto max-w-6xl px-4 py-6">
   <!-- Login View -->
-  <div id="login-wrap" class="mx-auto mt-6 max-w-sm">
+  <div id="login-wrap" class="mx-auto mt-10 max-w-sm">
     <form id="login" class="card space-y-4 p-6" novalidate>
-      <h2 class="font-display text-xl font-extrabold">تسجيل دخول المشرف</h2>
+      <h2 class="font-display text-xl font-extrabold">تسجيل الدخول</h2>
       <div>
-        <label for="email" class="mb-1 block text-sm font-semibold">البريد الإلكتروني</label>
-        <input id="email" type="email" class="field" dir="ltr" autocomplete="username" required>
-      </div>
-      <div>
-        <label for="pass" class="mb-1 block text-sm font-semibold">كلمة المرور</label>
-        <input id="pass" type="password" class="field" dir="ltr" autocomplete="current-password" required>
+        <label for="access-id" class="mb-1.5 block text-sm font-semibold">رمز الدخول (ID)</label>
+        <input id="access-id" type="password" class="field font-mono text-center text-base tracking-wider uppercase" dir="ltr" placeholder="أدخل رمز الدخول" autocomplete="off" required>
       </div>
       <p id="login-msg" role="alert" class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-bad border border-bad/30"></p>
       <button id="login-btn" class="btn btn-main w-full" type="submit">دخول</button>
@@ -98,7 +95,9 @@ tailwind.config = { theme: { extend: {
 
   <!-- Authenticated Admin App -->
   <div id="app" class="hidden space-y-6">
-    <!-- 1. KPI Summary Grid -->
+
+
+    <!-- 1. KPI Summary Grid (Visible to Both Owner & Teacher) -->
     <section class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6" aria-label="ملخص الإحصائيات">
       <div class="card p-4">
         <p class="text-xs text-denim-soft">توقيعات ظاهرة</p>
@@ -115,12 +114,13 @@ tailwind.config = { theme: { extend: {
         <p id="s-pending" class="mt-1 font-display text-3xl font-extrabold text-amber-700">0</p>
       </div>
       <div class="card p-4">
-        <p class="text-xs text-denim-soft">ملاحظات منشورة</p>
+        <p class="text-xs text-denim-soft">ملاحظات منشورة ومثبّتة</p>
         <p id="s-approved" class="mt-1 font-display text-3xl font-extrabold text-emerald-700">0</p>
+        <p id="s-pinned" class="mt-1 text-[11px] font-semibold text-amber-800">مثبّت في الأعلى: 0 📌</p>
       </div>
       <div class="card p-4">
-        <p class="text-xs text-denim-soft">تكرارات محتملة</p>
-        <p id="s-duplicates" class="mt-1 font-display text-3xl font-extrabold text-bad">0</p>
+        <p class="text-xs text-denim-soft">تواقيع المعلمين ⭐</p>
+        <p id="s-teachers" class="mt-1 font-display text-3xl font-extrabold text-amber-700">0</p>
       </div>
       <div class="card p-4">
         <p class="text-xs text-denim-soft">تواقيع موثّقة</p>
@@ -129,89 +129,18 @@ tailwind.config = { theme: { extend: {
       </div>
     </section>
 
-    <!-- 2. Lifecycle, Settings & Visual Grade Distribution -->
-    <div class="grid gap-6 lg:grid-cols-12">
-      <section class="card space-y-4 p-5 lg:col-span-7">
-        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-denim/10 pb-3">
-          <h2 class="font-display text-base font-extrabold">الإعدادات ودورة حياة العريضة</h2>
-          <span id="open-badge" class="chip"></span>
-        </div>
-
-        <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div>
-            <label for="lifecycle-select" class="mb-1 block text-xs font-bold text-denim-soft">مرحلة العريضة</label>
-            <select id="lifecycle-select" class="field !py-2 text-sm">
-              <option value="draft">مسودة</option>
-              <option value="pending_review">قيد المراجعة</option>
-              <option value="collecting">جمع التواقيع</option>
-              <option value="closed">مغلقة</option>
-              <option value="submitted">قُدّمت للإدارة</option>
-              <option value="responded">صدر رد الإدارة</option>
-              <option value="archived">مؤرشفة</option>
-            </select>
-          </div>
-          <div>
-            <label for="goal" class="mb-1 block text-xs font-bold text-denim-soft">الهدف</label>
-            <input id="goal" type="number" min="1" max="100000" value="200" class="field !py-2 text-sm" dir="ltr">
-          </div>
-          <div>
-            <label for="deadline-input" class="mb-1 block text-xs font-bold text-denim-soft">الموعد النهائي (اختياري)</label>
-            <input id="deadline-input" type="date" class="field !py-2 text-sm" dir="ltr">
-          </div>
-        </div>
-
-        <div>
-          <label for="admin-response-input" class="mb-1 block text-xs font-bold text-denim-soft">الرد الرسمي من إدارة المدرسة (اختياري)</label>
-          <textarea id="admin-response-input" rows="2" class="field text-sm" placeholder="يظهر في أعلى الصفحة العامة في حال كتابته…"></textarea>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-2 pt-1">
-          <button id="save-goal" type="button" class="btn btn-main !py-2 text-xs">حفظ الهدف</button>
-          <button id="toggle-open" type="button" class="btn btn-line !py-2 text-xs"></button>
-        </div>
-      </section>
-
-      <section class="card space-y-4 p-5 lg:col-span-5">
-        <h2 class="font-display text-base font-extrabold border-b border-denim/10 pb-3">التوزيع حسب الصفوف (1–10) والأولويات</h2>
-        <div id="by-category" class="grid grid-cols-3 gap-2 text-center text-xs"></div>
-        <div id="by-grade" class="space-y-2 max-h-48 overflow-y-auto pe-1"></div>
-      </section>
-    </div>
-
-    <!-- 3. Publish Petition Updates / Announcements (Feeds the Main Page Updates Board) -->
-    <section class="card space-y-4 p-5">
-      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-denim/10 pb-3">
-        <h2 class="font-display text-base font-extrabold">لوحة المستجدات والمتابعة (في الصفحة الرئيسية)</h2>
-        <span class="text-xs text-denim-soft">أضف أي خبر أو خطوة جديدة لتظهر للطلاب في لوحة المستجدات</span>
-      </div>
-      <div class="grid gap-3 md:grid-cols-12">
-        <div class="md:col-span-4">
-          <label for="up-title" class="mb-1 block text-xs font-bold text-denim-soft">عنوان المستجد</label>
-          <input id="up-title" type="text" maxlength="140" class="field !py-2 text-sm" placeholder="مثال: وصلنا إلى نصف الهدف">
-        </div>
-        <div class="md:col-span-6">
-          <label for="up-body" class="mb-1 block text-xs font-bold text-denim-soft">التفاصيل</label>
-          <input id="up-body" type="text" maxlength="1000" class="field !py-2 text-sm" placeholder="اكتب ملخصًا قصيرًا يظهر للطلاب…">
-        </div>
-        <div class="md:col-span-2 flex items-end">
-          <button id="post-update-btn" type="button" class="btn btn-main w-full !py-2 text-xs">نشر المستجد</button>
-        </div>
-      </div>
-      <div id="admin-updates-list" class="divide-y divide-denim/10 text-xs"></div>
-    </section>
-
-    <!-- 4. Signatures Management, Search, Filtering, Sorting & Bulk Actions -->
+    <!-- 2. Signatures Management, Search, Filtering, Sorting, Pinning & Bulk Actions (Accessible to BOTH Owner & Teacher) -->
     <section class="space-y-3">
       <div class="card p-4 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h2 class="font-display text-lg font-extrabold">التواقيع <span id="count" class="text-sm font-normal text-denim-soft"></span></h2>
           <div class="flex flex-wrap items-center gap-2">
-            <input id="q" type="search" class="field !py-1.5 text-xs w-52" placeholder="ابحث بالاسم أو الملاحظة…" aria-label="بحث بالاسم">
+            <input id="q" type="search" class="field !py-1.5 text-xs w-52" placeholder="ابحث بالاسم أو الملاحظة أو الرمز…" aria-label="بحث بالاسم">
             <select id="grade-filter" class="field !py-1.5 text-xs w-36" aria-label="تصفية حسب الصف">
               <option value="">كل الصفوف (1–10)</option>
             </select>
             <select id="sort-select" class="field !py-1.5 text-xs w-40" aria-label="ترتيب حسب">
-              <option value="newest">الأحدث أولًا</option>
+              <option value="newest">المثبّت والأحدث أولًا</option>
               <option value="oldest">الأقدم أولًا</option>
               <option value="grade_asc">الصف (تصاعدي)</option>
               <option value="grade_desc">الصف (تنازلي)</option>
@@ -235,6 +164,8 @@ tailwind.config = { theme: { extend: {
           <span>تم تحديد <b id="selected-count">0</b> توقيع</span>
           <div class="flex flex-wrap gap-1.5">
             <button type="button" data-bulk="approve_note" class="rounded bg-thread px-2.5 py-1 font-bold text-denim-deep hover:brightness-95">نشر الملاحظات</button>
+            <button type="button" data-bulk="pin" class="rounded bg-amber-500 px-2.5 py-1 font-bold text-denim-deep hover:brightness-95">📌 تثبيت في الأعلى</button>
+            <button type="button" data-bulk="unpin" class="rounded bg-white/15 px-2.5 py-1 font-semibold text-white hover:bg-white/25">إلغاء التثبيت</button>
             <button type="button" data-bulk="verify" class="rounded bg-emerald-600 px-2.5 py-1 font-bold text-white hover:bg-emerald-500">توثيق المحدد</button>
             <button type="button" data-bulk="hide" class="rounded bg-white/15 px-2.5 py-1 font-semibold text-white hover:bg-white/25">إخفاء من العدّاد</button>
             <button type="button" data-bulk="unhide" class="rounded bg-white/15 px-2.5 py-1 font-semibold text-white hover:bg-white/25">إظهار في العدّاد</button>
@@ -247,8 +178,177 @@ tailwind.config = { theme: { extend: {
       <div id="more" class="hidden text-center"><button id="more-btn" type="button" class="btn btn-line">عرض المزيد</button></div>
     </section>
 
-    <!-- 5. Export & Audit Log -->
+    <!-- 3. Grade Distribution & Owner Lifecycle Settings -->
     <div class="grid gap-6 lg:grid-cols-12">
+      <!-- Owner-Only: Lifecycle & Core Petition Settings -->
+      <section id="owner-lifecycle-sec" class="owner-only card space-y-4 p-5 lg:col-span-7">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-denim/10 pb-3">
+          <h2 class="font-display text-base font-extrabold">الإعدادات ودورة حياة العريضة</h2>
+          <span id="open-badge" class="chip"></span>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-4">
+          <div>
+            <label for="lifecycle-select" class="mb-1 block text-xs font-bold text-denim-soft">مرحلة العريضة</label>
+            <select id="lifecycle-select" class="field !py-2 text-sm">
+              <option value="draft">مسودة</option>
+              <option value="pending_review">قيد المراجعة</option>
+              <option value="collecting">جمع التواقيع</option>
+              <option value="closed">مغلقة</option>
+              <option value="submitted">قُدّمت للإدارة</option>
+              <option value="responded">صدر رد الإدارة</option>
+              <option value="archived">مؤرشفة</option>
+            </select>
+          </div>
+          <div>
+            <label for="goal" class="mb-1 block text-xs font-bold text-denim-soft">الهدف</label>
+            <input id="goal" type="number" min="1" max="100000" value="200" class="field !py-2 text-sm" dir="ltr">
+          </div>
+          <div>
+            <label for="teacher-pass-input" class="mb-1 block text-xs font-bold text-amber-900">رمز توقيع المعلمين</label>
+            <input id="teacher-pass-input" type="text" value="2026" class="field !py-2 text-sm border-amber-400/60 bg-amber-50/30" dir="ltr">
+          </div>
+          <div>
+            <label for="deadline-input" class="mb-1 block text-xs font-bold text-denim-soft">الموعد النهائي</label>
+            <input id="deadline-input" type="date" class="field !py-2 text-sm" dir="ltr">
+          </div>
+        </div>
+
+        <div>
+          <label for="admin-response-input" class="mb-1 block text-xs font-bold text-denim-soft">الرد الرسمي من إدارة المدرسة (يظهر في أعلى الصفحة عند كتابته)</label>
+          <textarea id="admin-response-input" rows="2" class="field text-sm" placeholder="اتركه فارغًا لعدم إظهار بطاقة الرد الرسمي…"></textarea>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 pt-1">
+          <button id="save-goal" type="button" class="btn btn-main !py-2 text-xs">حفظ إعدادات العريضة</button>
+          <button id="toggle-open" type="button" class="btn btn-line !py-2 text-xs"></button>
+        </div>
+      </section>
+
+      <!-- Visual Grade & Priority Distribution (Visible to Both) -->
+      <section id="grade-dist-sec" class="card space-y-4 p-5 lg:col-span-5">
+        <h2 class="font-display text-base font-extrabold border-b border-denim/10 pb-3">التوزيع حسب الصفوف (1–10) والأولويات</h2>
+        <div id="by-category" class="grid grid-cols-3 gap-2 text-center text-xs"></div>
+        <div id="by-grade" class="space-y-2 max-h-48 overflow-y-auto pe-1"></div>
+      </section>
+    </div>
+
+    <!-- 4. Owner-Only: Manage Updates Board & Dynamic Site Content -->
+    <div class="owner-only grid gap-6 lg:grid-cols-12">
+      <!-- Updates Board Manager (Add / Edit / Delete) -->
+      <section class="card space-y-4 p-5 lg:col-span-7">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-denim/10 pb-3">
+          <h2 class="font-display text-base font-extrabold">لوحة المستجدات والمتابعة</h2>
+          <span id="update-form-mode" class="chip bg-chalk text-denim">إضافة مستجد جديد</span>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-12">
+          <div class="sm:col-span-8">
+            <label for="up-title" class="mb-1 block text-xs font-bold text-denim-soft">عنوان المستجد</label>
+            <input id="up-title" type="text" maxlength="140" class="field !py-2 text-sm" placeholder="مثال: وصلنا إلى نصف الهدف!">
+          </div>
+          <div class="sm:col-span-4">
+            <label for="up-badge" class="mb-1 block text-xs font-bold text-denim-soft">تصنيف المستجد</label>
+            <select id="up-badge" class="field !py-2 text-sm">
+              <option value="update">تحديث عام</option>
+              <option value="milestone">إنجاز مرحلي</option>
+              <option value="submission">تقديم للإدارة</option>
+              <option value="response">رد رسمي</option>
+            </select>
+          </div>
+          <div class="sm:col-span-12">
+            <label for="up-body" class="mb-1 block text-xs font-bold text-denim-soft">تفاصيل المستجد</label>
+            <textarea id="up-body" rows="2" maxlength="1000" class="field text-sm" placeholder="اكتب التفاصيل التي ستظهر للطلاب والمعلمين في لوحة المستجدات…"></textarea>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="post-update-btn" type="button" class="btn btn-main !py-2 text-xs">نشر المستجد</button>
+          <button id="cancel-edit-update-btn" type="button" class="btn btn-line hidden !py-2 text-xs">إلغاء التعديل</button>
+        </div>
+
+        <div id="admin-updates-list" class="divide-y divide-denim/10 text-xs max-h-60 overflow-y-auto"></div>
+      </section>
+
+      <!-- Dynamic Site Content Manager (Announcement Banner, Discord URL, Contact Email, Hero Subtitle) -->
+      <section class="card space-y-4 p-5 lg:col-span-5">
+        <div class="border-b border-denim/10 pb-3">
+          <h2 class="font-display text-base font-extrabold">محتوى وروابط الموقع</h2>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label for="site-announcement-input" class="mb-1 block text-xs font-bold text-denim-soft">شريط تنبيه / إعلان علوي في الموقع (اختياري)</label>
+            <input id="site-announcement-input" type="text" maxlength="220" class="field !py-2 text-sm" placeholder="مثال: سيتم تسليم العريضة لإدارة المدرسة يوم الخميس القادم…">
+          </div>
+
+          <div>
+            <label for="custom-hero-sub-input" class="mb-1 block text-xs font-bold text-denim-soft">نص الترحيب الفرعي تحت عنوان العريضة (اختياري)</label>
+            <textarea id="custom-hero-sub-input" rows="2" maxlength="350" class="field text-sm" placeholder="اتركه فارغًا لاستخدام النص الافتراضي لمبادرة طلاب الصف التاسع…"></textarea>
+          </div>
+
+          <div>
+            <label for="discord-url-input" class="mb-1 block text-xs font-bold text-denim-soft">رابط سيرفر الديسكورد للطلاب (يفعّل زر الانضمام تلقائيًا)</label>
+            <input id="discord-url-input" type="url" dir="ltr" class="field !py-2 text-sm" placeholder="https://discord.gg/...">
+          </div>
+
+          <div>
+            <label for="contact-email-input" class="mb-1 block text-xs font-bold text-denim-soft">البريد الإلكتروني للتواصل في صفحة الاقتراحات</label>
+            <input id="contact-email-input" type="email" dir="ltr" value="bilalmehrez@outlook.com" class="field !py-2 text-sm">
+          </div>
+
+          <button id="save-site-content" type="button" class="btn btn-main w-full !py-2.5 text-xs">
+            <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+            <span>حفظ وتحديث محتوى الموقع</span>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- 5. Owner-Only: Access IDs (Staff IDs) Management & Suggestions Box Moderation -->
+    <div class="owner-only grid gap-6 lg:grid-cols-12">
+      <!-- Access IDs & Permissions Manager -->
+      <section class="card space-y-4 p-5 lg:col-span-7">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-denim/10 pb-3">
+          <h2 class="font-display text-base font-extrabold">معرّفات الدخول (IDs)</h2>
+        </div>
+
+        <div class="grid gap-2.5 sm:grid-cols-12">
+          <div class="sm:col-span-4">
+            <label for="new-id-code" class="mb-1 block text-xs font-bold text-denim-soft">المعرّف الجديد (ID)</label>
+            <input id="new-id-code" type="text" maxlength="35" dir="ltr" class="field !py-2 font-mono text-xs uppercase" placeholder="مثال: TEACHER-AHMED">
+          </div>
+          <div class="sm:col-span-4">
+            <label for="new-id-label" class="mb-1 block text-xs font-bold text-denim-soft">الاسم / الوصف</label>
+            <input id="new-id-label" type="text" maxlength="60" class="field !py-2 text-xs" placeholder="مثال: الأستاذ أحمد">
+          </div>
+          <div class="sm:col-span-4">
+            <label for="new-id-role" class="mb-1 block text-xs font-bold text-denim-soft">نوع الصلاحية</label>
+            <div class="flex gap-1.5">
+              <select id="new-id-role" class="field !py-2 text-xs">
+                <option value="teacher">أستاذ مشرف (التواقيع فقط)</option>
+                <option value="owner">مالك (صلاحيات كاملة)</option>
+              </select>
+              <button id="add-id-btn" type="button" class="btn btn-main !px-3 !py-2 text-xs shrink-0">حفظ</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="staff-ids-list" class="divide-y divide-denim/10 text-xs max-h-60 overflow-y-auto"></div>
+      </section>
+
+      <!-- Submitted Suggestions Manager -->
+      <section class="card space-y-4 p-5 lg:col-span-5">
+        <div class="flex items-center justify-between border-b border-denim/10 pb-3">
+          <h2 class="font-display text-base font-extrabold">الاقتراحات الواردة</h2>
+          <span id="sug-admin-count" class="chip">0 اقتراح</span>
+        </div>
+        <div id="admin-suggestions-list" class="divide-y divide-denim/10 text-xs max-h-64 overflow-y-auto"></div>
+      </section>
+    </div>
+
+    <!-- 6. Owner-Only: Export & Audit Log -->
+    <div class="owner-only grid gap-6 lg:grid-cols-12">
       <section class="card space-y-3 p-5 lg:col-span-6">
         <h2 class="font-display text-base font-extrabold">تصدير وإرسال</h2>
         <div class="flex flex-wrap gap-2">
@@ -261,7 +361,7 @@ tailwind.config = { theme: { extend: {
 
       <section class="card space-y-3 p-5 lg:col-span-6">
         <div class="flex items-center justify-between">
-          <h2 class="font-display text-base font-extrabold">سجل العمليات الإدارية</h2>
+          <h2 class="font-display text-base font-extrabold">سجل العمليات الإدارية (Audit Log)</h2>
           <span id="audit-count" class="chip">0 عملية</span>
         </div>
         <div id="audit-list" class="max-h-48 space-y-1.5 overflow-y-auto text-xs"></div>
@@ -276,19 +376,38 @@ tailwind.config = { theme: { extend: {
 <script>
 (() => {
 'use strict';
-const CONFIG = { URL: 'https://bycyaaevyeezokivlnza.supabase.co', KEY: 'sb_publishable_z6-RjAxi7vFhVmVVzL6Dow_ov98VU3p', PAGE: 40, DEFAULT_GOAL: 200 };
+const CONFIG = {
+  URL: 'https://bycyaaevyeezokivlnza.supabase.co',
+  KEY: 'sb_publishable_z6-RjAxi7vFhVmVVzL6Dow_ov98VU3p',
+  PAGE: 40,
+  DEFAULT_GOAL: 200,
+  STORAGE_KEY: 'petition:admin_access_session'
+};
 const sb = window.supabase ? window.supabase.createClient(CONFIG.URL, CONFIG.KEY, { auth: { persistSession: true, autoRefreshToken: true } }) : null;
+
+// Built-in fallback IDs in case DB SQL hasn't been upgraded to v4.3 yet
+const FALLBACK_IDS = {
+  'OWNER-2026':   { role: 'owner',   label: 'المالك الرئيسي للمنصة' },
+  'BILAL-OWNER':  { role: 'owner',   label: 'بلال — مالك ومطوّر المنصة' },
+  'TEACHER-2026': { role: 'teacher', label: 'المعلّم المشرف العام' },
+  'TEACHER-101':  { role: 'teacher', label: 'معلّم مشرف — إدارة التواقيع' }
+};
 
 const $ = (s) => document.querySelector(s);
 const el = (tag, cls = '', text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
-const GN = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر'];
-const gl = (g) => (GN[g] ? 'الصف ' + GN[g] : 'الصف ' + String(g));
+const GN = ['معلّم / كادر تعليمي ⭐', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر'];
+const gl = (g, isT) => (isT || Number(g) === 0 ? GN[0] : (GN[g] ? 'الصف ' + GN[g] : 'الصف ' + String(g)));
 const CAT_LABELS = { both: 'الزي والمقصف', uniform: 'الزي المدرسي', canteen: 'المقصف المدرسي' };
+const BADGE_LABELS = { update: 'تحديث عام', milestone: 'إنجاز مرحلي', submission: 'تقديم للإدارة', response: 'رد رسمي' };
 const when = (iso) => new Date(iso).toLocaleString('ar-u-ca-gregory-nu-latn', { dateStyle: 'medium', timeStyle: 'short' });
 const day = (iso) => new Date(iso).toLocaleDateString('ar-u-ca-gregory-nu-latn');
 const normName = (s) => String(s || '').replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim().toLowerCase();
 
 const state = {
+  accessId: '',
+  role: 'teacher', // 'owner' | 'teacher'
+  actorLabel: '',
+  editingUpdateId: null,
   filter: 'all',
   q: '',
   grade: '',
@@ -300,6 +419,16 @@ const state = {
   selected: new Set(),
   summary: null
 };
+
+function saveSession(accessId, role, label) {
+  try { sessionStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify({ accessId, role, label })); } catch {}
+}
+function loadSession() {
+  try { return JSON.parse(sessionStorage.getItem(CONFIG.STORAGE_KEY) || 'null'); } catch { return null; }
+}
+function clearSession() {
+  try { sessionStorage.removeItem(CONFIG.STORAGE_KEY); } catch {}
+}
 
 function annotateDuplicates(rows) {
   const counts = {};
@@ -337,40 +466,70 @@ function toast(msg) {
   const t = el('div', 'rounded-xl bg-denim-deep px-4 py-2.5 text-sm font-medium text-white shadow-xl border border-white/10', msg);
   $('#toasts').append(t); setTimeout(() => t.remove(), 2800);
 }
-const safe = (p) => p.catch((e) => { console.error(e); toast('تعذّر التنفيذ، حاول مجددًا.'); });
+const safe = (p) => p.catch((e) => { console.error(e); toast('تعذّر التنفيذ، تأكد من تشغيل ملف الترقية SQL v4.3 في Supabase.'); });
 
-// Grades 1..10 only
 const gf = $('#grade-filter');
 for (let g = 1; g <= 10; g++) gf.append(new Option(gl(g), String(g)));
 
 function showLogin(msg = '') {
-  $('#login-wrap').classList.remove('hidden'); $('#app').classList.add('hidden'); $('#bar').classList.add('hidden');
-  const m = $('#login-msg'); m.textContent = msg; m.classList.toggle('hidden', !msg);
+  clearSession();
+  state.accessId = '';
+  $('#login-wrap').classList.remove('hidden');
+  $('#app').classList.add('hidden');
+  $('#bar').classList.add('hidden');
+  const m = $('#login-msg');
+  m.textContent = msg;
+  m.classList.toggle('hidden', !msg);
 }
 
-async function rpc(name, args) {
+function applyRoleUI() {
+  const isOwner = state.role === 'owner';
+  document.querySelectorAll('.owner-only').forEach((sec) => {
+    sec.classList.toggle('hidden', !isOwner);
+  });
+  // Expand grade distribution card to full width when teacher is logged in
+  const gradeSec = $('#grade-dist-sec');
+  if (gradeSec) {
+    gradeSec.classList.toggle('lg:col-span-5', isOwner);
+    gradeSec.classList.toggle('lg:col-span-12', !isOwner);
+  }
+  $('#role-badge').textContent = isOwner ? 'المالك' : 'مشرف';
+}
+
+async function rpc(name, args = {}) {
   if (!sb) throw new Error('Supabase SDK unavailable');
-  let { data, error } = await sb.rpc(name, args);
+  const payload = state.accessId ? { ...args, p_access_id: state.accessId } : { ...args };
+  let { data, error } = await sb.rpc(name, payload);
+
+  // Graceful fallback if the database hasn't run v4.3 SQL yet
   if (error && (error.code === 'PGRST202' || error.status === 404)) {
-    if (name === 'admin_list' && args && ('p_grade' in args || 'p_sort' in args)) {
-      const { p_grade, p_sort, ...v3Args } = args;
-      ({ data, error } = await sb.rpc(name, v3Args));
-    } else if (name === 'admin_set_config' && args) {
-      const { p_goal, p_is_open } = args;
-      ({ data, error } = await sb.rpc(name, { p_goal, p_is_open }));
-    }
+    const { p_access_id, p_site_announcement, p_discord_url, p_contact_email, p_custom_hero_sub, p_edit_id, ...legacyArgs } = payload;
+    ({ data, error } = await sb.rpc(name, legacyArgs));
   }
   if (error) {
-    if (error.code === 'PGRST301' || error.code === '42501' || error.status === 401) showLogin('انتهت الجلسة، سجّل الدخول من جديد.');
+    if (error.code === 'PGRST301' || error.code === '42501' || error.status === 401) {
+      showLogin('يرجى تشغيل ملف الترقية petition_upgrade_v4.sql في Supabase لتفعيل الدخول بالمعرّف.');
+    }
     throw error;
   }
-  if (data && data.status === 'forbidden') { await sb.auth.signOut(); showLogin('هذا الحساب ليس لديه صلاحية مشرف.'); throw new Error('forbidden'); }
+  if (data && data.status === 'forbidden') {
+    showLogin('هذا المعرّف غير مخوّل لتنفيذ هذا الإجراء أو تم إيقافه.');
+    throw new Error('forbidden');
+  }
   return data;
 }
 
-/* ---------- Login & Entry ---------- */
-async function enter() {
-  $('#login-wrap').classList.add('hidden'); $('#app').classList.remove('hidden'); $('#bar').classList.remove('hidden');
+/* ---------- Login & Entry via Access ID ---------- */
+async function enter(accessId, role, label) {
+  state.accessId = accessId;
+  state.role = role === 'owner' ? 'owner' : 'teacher';
+  state.actorLabel = label || (state.role === 'owner' ? 'المالك' : 'أستاذ مشرف');
+  saveSession(state.accessId, state.role, state.actorLabel);
+
+  $('#login-wrap').classList.add('hidden');
+  $('#app').classList.remove('hidden');
+  $('#bar').classList.remove('hidden');
+  applyRoleUI();
   drawTabs();
   await safe(Promise.all([loadSummary(), loadList()]));
 }
@@ -378,20 +537,50 @@ async function enter() {
 $('#login').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!sb) return showLogin('تعذّر تحميل مكتبة الاتصال.');
-  const btn = $('#login-btn'); btn.disabled = true;
-  const { error } = await sb.auth.signInWithPassword({ email: $('#email').value.trim(), password: $('#pass').value });
-  btn.disabled = false;
-  if (error) return showLogin('بيانات الدخول غير صحيحة.');
-  $('#pass').value = '';
-  enter();
+  const rawId = $('#access-id').value.trim().toUpperCase();
+  if (!rawId || rawId.length < 3) return showLogin('يرجى إدخال معرّف دخول صحيح (Access ID).');
+
+  const btn = $('#login-btn');
+  btn.disabled = true;
+  try {
+    const { data, error } = await sb.rpc('admin_verify_id', { p_access_id: rawId });
+    btn.disabled = false;
+    if (!error && data) {
+      if (data.status === 'ok') {
+        $('#access-id').value = '';
+        return enter(data.code || rawId, data.role, data.label);
+      }
+      return showLogin('معرّف الدخول (ID) غير صحيح أو غير مفعّل.');
+    }
+    // Fallback check if admin_verify_id RPC is not created yet
+    if (FALLBACK_IDS[rawId]) {
+      $('#access-id').value = '';
+      return enter(rawId, FALLBACK_IDS[rawId].role, FALLBACK_IDS[rawId].label);
+    }
+    return showLogin('معرّف الدخول (ID) غير صحيح. تأكد من كتابته بشكل سليم.');
+  } catch (err) {
+    btn.disabled = false;
+    if (FALLBACK_IDS[rawId]) {
+      $('#access-id').value = '';
+      return enter(rawId, FALLBACK_IDS[rawId].role, FALLBACK_IDS[rawId].label);
+    }
+    showLogin('تعذّر التحقق من المعرّف. تأكد من اتصالك بالإنترنت.');
+  }
 });
-$('#logout').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); showLogin(); });
+
+$('#logout').addEventListener('click', () => { showLogin(); });
 $('#refresh-all').addEventListener('click', () => safe(Promise.all([loadSummary(), loadList({ keep: true })])));
 $('#go-public').addEventListener('click', () => {
   const target = new URL('index.html', location.href).href;
   window.open(target, '_blank', 'noopener');
 });
-if (sb) sb.auth.getSession().then(({ data }) => (data && data.session ? enter() : showLogin())).catch(() => showLogin());
+
+const savedSess = loadSession();
+if (savedSess && savedSess.accessId) {
+  enter(savedSess.accessId, savedSess.role, savedSess.label);
+} else {
+  showLogin();
+}
 
 function resolveGoal(rawGoal) {
   const g = Number(rawGoal);
@@ -399,10 +588,16 @@ function resolveGoal(rawGoal) {
   return g;
 }
 
-/* ---------- Summary, Analytics & Settings ---------- */
+/* ---------- Summary, Analytics & Owner Controls ---------- */
 async function loadSummary() {
   const d = await rpc('admin_summary');
   state.summary = d;
+  if (d.role) {
+    state.role = d.role;
+    if (d.actor_label) state.actorLabel = d.actor_label;
+    applyRoleUI();
+  }
+
   const pub = Number(d.public) || 0, goal = resolveGoal(d.goal);
   $('#s-public').textContent = pub;
   $('#s-pct').textContent = `${Math.round((pub / goal) * 100)}% من الهدف (${goal})`;
@@ -410,20 +605,10 @@ async function loadSummary() {
   $('#s-hidden').textContent = `مخفي: ${d.hidden ?? Math.max(0, (d.all || 0) - pub)}`;
   $('#s-pending').textContent = d.pending || 0;
   $('#s-approved').textContent = d.approved || 0;
-  $('#s-duplicates').textContent = d.duplicates ?? 0;
+  $('#s-pinned').textContent = `مثبّت في الأعلى: ${d.pinned || 0} 📌`;
+  $('#s-teachers').textContent = d.teachers ?? 0;
   $('#s-verified').textContent = d.verified ?? 0;
   $('#s-24h').textContent = `آخر 24 ساعة: +${d.last_24h || 0}`;
-
-  $('#goal').value = goal;
-  state.open = d.is_open !== false;
-  state.lifecycle = d.lifecycle_status || (state.open ? 'collecting' : 'closed');
-  $('#lifecycle-select').value = state.lifecycle;
-  if (d.deadline_at) $('#deadline-input').value = String(d.deadline_at).slice(0, 10);
-  if (d.admin_response !== undefined) $('#admin-response-input').value = d.admin_response || '';
-
-  $('#open-badge').textContent = state.open ? 'العريضة مفتوحة للتوقيع' : 'العريضة مغلقة';
-  $('#open-badge').className = 'chip ' + (state.open ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300');
-  $('#toggle-open').textContent = state.open ? 'إغلاق العريضة (العريضة مفتوحة الآن)' : 'إعادة فتح العريضة (العريضة مغلقة الآن)';
 
   const cats = d.by_category || { both: pub, uniform: 0, canteen: 0 };
   $('#by-category').replaceChildren(
@@ -450,12 +635,51 @@ async function loadSummary() {
     return row;
   }) : [el('p', 'text-xs text-denim-soft', 'لا توجد بيانات صفوف بعد.')]));
 
-  // Updates List
+  // Populate Owner-Only panels only if user is Owner
+  if (state.role !== 'owner') return;
+
+  $('#goal').value = goal;
+  if (d.teacher_passcode) $('#teacher-pass-input').value = d.teacher_passcode;
+  state.open = d.is_open !== false;
+  state.lifecycle = d.lifecycle_status || (state.open ? 'collecting' : 'closed');
+  $('#lifecycle-select').value = state.lifecycle;
+  if (d.deadline_at) $('#deadline-input').value = String(d.deadline_at).slice(0, 10);
+  if (d.admin_response !== undefined) $('#admin-response-input').value = d.admin_response || '';
+
+  // Dynamic site content fields
+  $('#site-announcement-input').value = d.site_announcement || '';
+  $('#custom-hero-sub-input').value = d.custom_hero_sub || '';
+  $('#discord-url-input').value = d.discord_url || '';
+  $('#contact-email-input').value = d.contact_email || 'bilalmehrez@outlook.com';
+
+  $('#open-badge').textContent = state.open ? 'العريضة مفتوحة للتوقيع' : 'العريضة مغلقة';
+  $('#open-badge').className = 'chip ' + (state.open ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300');
+  $('#toggle-open').textContent = state.open ? 'إغلاق العريضة (العريضة مفتوحة الآن)' : 'إعادة فتح العريضة (العريضة مغلقة الآن)';
+
+  // Updates List (with Edit & Delete)
   const updates = d.updates || [];
   $('#admin-updates-list').replaceChildren(...(updates.length ? updates.map((u) => {
-    const item = el('div', 'flex items-center justify-between gap-2 py-2');
-    const info = el('div');
-    info.append(el('b', 'text-denim-deep', u.title_ar), el('p', 'text-denim-soft', u.body_ar));
+    const item = el('div', 'flex flex-wrap items-center justify-between gap-2 py-2.5');
+    const info = el('div', 'space-y-0.5 max-w-md');
+    const head = el('div', 'flex items-center gap-1.5');
+    head.append(
+      el('span', 'chip bg-chalk text-[10px]', BADGE_LABELS[u.badge] || 'تحديث'),
+      el('b', 'text-denim-deep', u.title_ar)
+    );
+    info.append(head, el('p', 'text-denim-soft', u.body_ar));
+    const btns = el('div', 'flex items-center gap-1.5');
+    const editBtn = el('button', 'btn btn-line !px-2.5 !py-1 text-[11px]', 'تعديل');
+    editBtn.type = 'button';
+    editBtn.addEventListener('click', () => {
+      state.editingUpdateId = u.id;
+      $('#up-title').value = u.title_ar || '';
+      $('#up-body').value = u.body_ar || '';
+      $('#up-badge').value = u.badge || 'update';
+      $('#update-form-mode').textContent = 'تعديل مستجد حالي';
+      $('#post-update-btn').textContent = 'حفظ التعديل';
+      $('#cancel-edit-update-btn').classList.remove('hidden');
+      $('#up-title').focus();
+    });
     const delBtn = el('button', 'btn btn-bad !px-2.5 !py-1 text-[11px]', 'حذف');
     delBtn.type = 'button';
     delBtn.addEventListener('click', async () => {
@@ -463,10 +687,74 @@ async function loadSummary() {
       await safe(rpc('admin_post_update', { p_title_ar: '', p_body_ar: '', p_delete_id: u.id }).then(() => loadSummary()));
       toast('تم حذف المستجد');
     });
-    item.append(info, delBtn);
+    btns.append(editBtn, delBtn);
+    item.append(info, btns);
     return item;
-  }) : [el('p', 'py-2 text-denim-soft', 'لم يتم نشر مستجدات إضافية بعد.')]));
+  }) : [el('p', 'py-2 text-denim-soft', 'لم يتم نشر مستجدات إضافية بعد (يظهر المستجد الافتراضي حاليًا).')]));
 
+  // Staff IDs List
+  const staffIds = d.staff_ids || [];
+  $('#staff-ids-list').replaceChildren(...(staffIds.length ? staffIds.map((st) => {
+    const row = el('div', 'flex flex-wrap items-center justify-between gap-2 py-2.5');
+    const left = el('div', 'flex flex-wrap items-center gap-2');
+    const codeBadge = el('code', 'rounded bg-chalk px-2.5 py-1 font-mono text-xs font-bold text-denim-deep select-all', st.access_id);
+    codeBadge.dir = 'ltr';
+    const roleChip = el('span', st.role === 'owner' ? 'chip bg-amber-100 text-amber-900 border-amber-300 font-bold' : 'chip bg-sky-50 text-sky-900 border-sky-200 font-semibold', st.role === 'owner' ? '👑 مالك' : '👨‍🏫 أستاذ مشرف');
+    const statusChip = el('span', st.is_active ? 'chip bg-emerald-50 text-emerald-700 border-emerald-200' : 'chip bg-red-50 text-bad border-bad/30', st.is_active ? 'مفعّل' : 'موقوف');
+    left.append(codeBadge, roleChip, statusChip, el('span', 'text-denim-soft font-medium', st.label));
+
+    const actions = el('div', 'flex items-center gap-1.5');
+    const copyBtn = el('button', 'btn btn-line !px-2.5 !py-1 text-[11px]', 'نسخ الـ ID');
+    copyBtn.type = 'button';
+    copyBtn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(st.access_id); toast(`تم نسخ المعرّف: ${st.access_id}`); } catch { toast(st.access_id); }
+    });
+    actions.append(copyBtn);
+
+    if (st.access_id.toUpperCase() !== state.accessId.toUpperCase()) {
+      const toggleBtn = el('button', 'btn btn-line !px-2.5 !py-1 text-[11px]', st.is_active ? 'إيقاف' : 'تفعيل');
+      toggleBtn.type = 'button';
+      toggleBtn.addEventListener('click', () => safe(rpc('admin_manage_ids', { p_op: 'toggle', p_target_id: st.access_id }).then(() => { loadSummary(); toast('تم تحديث حالة المعرّف'); })));
+      const delBtn = el('button', 'btn btn-bad !px-2.5 !py-1 text-[11px]', 'حذف');
+      delBtn.type = 'button';
+      delBtn.addEventListener('click', async () => {
+        if (!(await askConfirm(`حذف المعرّف (${st.access_id}) نهائيًا؟`))) return;
+        await safe(rpc('admin_manage_ids', { p_op: 'delete', p_target_id: st.access_id }).then(() => { loadSummary(); toast('تم حذف المعرّف'); }));
+      });
+      actions.append(toggleBtn, delBtn);
+    }
+    row.append(left, actions);
+    return row;
+  }) : [el('p', 'py-2 text-denim-soft', 'لا توجد معرّفات مخصّصة بعد.')]));
+
+  // Suggestions Moderation List
+  const sugs = d.suggestions || [];
+  $('#sug-admin-count').textContent = `${sugs.length} اقتراح`;
+  $('#admin-suggestions-list').replaceChildren(...(sugs.length ? sugs.map((sg) => {
+    const item = el('div', 'flex items-start justify-between gap-2 py-2.5');
+    const body = el('div', 'space-y-0.5');
+    const top = el('div', 'flex items-center gap-1.5');
+    top.append(
+      el('b', 'text-denim-deep', sg.author_name || 'طالب'),
+      el('span', sg.is_approved ? 'chip bg-emerald-50 text-emerald-700' : 'chip bg-amber-100 text-amber-900', sg.is_approved ? 'ظاهر' : 'مخفي')
+    );
+    body.append(top, el('p', 'text-denim-soft leading-relaxed', sg.content));
+    const btns = el('div', 'flex shrink-0 items-center gap-1');
+    const togBtn = el('button', 'btn btn-line !px-2 !py-1 text-[11px]', sg.is_approved ? 'إخفاء' : 'إظهار');
+    togBtn.type = 'button';
+    togBtn.addEventListener('click', () => safe(rpc('admin_manage_suggestion', { p_id: sg.id, p_action: 'toggle' }).then(() => { loadSummary(); toast('تم تحديث حالة الاقتراح'); })));
+    const delBtn = el('button', 'btn btn-bad !px-2 !py-1 text-[11px]', 'حذف');
+    delBtn.type = 'button';
+    delBtn.addEventListener('click', async () => {
+      if (!(await askConfirm('حذف هذا الاقتراح نهائيًا؟'))) return;
+      await safe(rpc('admin_manage_suggestion', { p_id: sg.id, p_action: 'delete' }).then(() => { loadSummary(); toast('تم حذف الاقتراح'); }));
+    });
+    btns.append(togBtn, delBtn);
+    item.append(body, btns);
+    return item;
+  }) : [el('p', 'py-2 text-denim-soft', 'لا توجد اقتراحات مرسلة حتى الآن.')]));
+
+  // Audit Logs
   const logs = d.audit_logs || [];
   $('#audit-count').textContent = `${logs.length} عملية`;
   const ACTION_NAMES = {
@@ -474,21 +762,32 @@ async function loadSummary() {
     reject_note: 'رفض وحذف ملاحظة',
     unapprove_note: 'إلغاء نشر ملاحظة',
     approve_all_notes: 'نشر جميع الملاحظات المنتظرة',
+    pin: '📌 تثبيت توقيع/ملاحظة في الأعلى',
+    unpin: 'إلغاء تثبيت توقيع',
     hide: 'إخفاء توقيع من العدّاد',
     unhide: 'إظهار توقيع في العدّاد',
+    hide_name: 'إخفاء اسم الموقّع للعامة',
+    show_name: 'إظهار اسم الموقّع للعامة',
     verify: 'توثيق توقيع',
     unverify: 'إلغاء توثيق توقيع',
     delete: 'حذف توقيع نهائيًا',
-    update_config: 'تحديث إعدادات العريضة',
+    update_config: 'تحديث إعدادات ومحتوى الموقع',
     post_update: 'نشر مستجد جديد',
-    delete_update: 'حذف مستجد'
+    edit_update: 'تعديل مستجد',
+    delete_update: 'حذف مستجد',
+    manage_id_upsert: 'إضافة/تحديث معرّف دخول',
+    manage_id_delete: 'حذف معرّف دخول',
+    manage_id_toggle: 'تغيير حالة معرّف دخول'
   };
   $('#audit-list').replaceChildren(...(logs.length ? logs.map((l) => {
-    const item = el('div', 'flex items-center justify-between rounded-lg bg-chalk/50 px-3 py-2');
-    item.append(
+    const item = el('div', 'flex flex-wrap items-center justify-between gap-2 rounded-lg bg-chalk/50 px-3 py-2');
+    const actorTxt = l.actor_label ? `${l.actor_label} (${l.actor_code || ''})` : (l.actor_code || 'مشرف');
+    const left = el('div', 'flex items-center gap-1.5');
+    left.append(
       el('span', 'font-semibold text-denim-deep', ACTION_NAMES[l.action] || l.action),
-      el('time', 'text-[11px] text-denim-soft', when(l.created_at))
+      el('span', 'chip text-[10px]', actorTxt)
     );
+    item.append(left, el('time', 'text-[11px] text-denim-soft', when(l.created_at)));
     return item;
   }) : [el('p', 'text-denim-soft', 'لا توجد عمليات مسجّلة بعد.')]));
 }
@@ -497,7 +796,7 @@ async function setConfig(args) {
   const d = await rpc('admin_set_config', args);
   if (d.status !== 'ok') throw new Error(d.status);
   await loadSummary();
-  toast('تم الحفظ');
+  toast('تم الحفظ بنجاح');
 }
 
 $('#save-goal').addEventListener('click', () => {
@@ -506,7 +805,28 @@ $('#save-goal').addEventListener('click', () => {
   const st = $('#lifecycle-select').value;
   const dl = $('#deadline-input').value ? new Date($('#deadline-input').value).toISOString() : null;
   const resp = $('#admin-response-input').value.trim();
-  safe(setConfig({ p_goal: g, p_status: st, p_is_open: ['published', 'collecting'].includes(st), p_deadline_at: dl, p_admin_response: resp }));
+  const tPass = $('#teacher-pass-input').value.trim() || '2026';
+  safe(setConfig({
+    p_goal: g,
+    p_status: st,
+    p_is_open: ['published', 'collecting'].includes(st),
+    p_deadline_at: dl,
+    p_admin_response: resp,
+    p_teacher_passcode: tPass
+  }));
+});
+
+$('#save-site-content').addEventListener('click', () => {
+  const ann = $('#site-announcement-input').value.trim();
+  const heroSub = $('#custom-hero-sub-input').value.trim();
+  const disc = $('#discord-url-input').value.trim();
+  const email = $('#contact-email-input').value.trim() || 'bilalmehrez@outlook.com';
+  safe(setConfig({
+    p_site_announcement: ann,
+    p_custom_hero_sub: heroSub,
+    p_discord_url: disc,
+    p_contact_email: email
+  }));
 });
 
 $('#toggle-open').addEventListener('click', async () => {
@@ -514,20 +834,54 @@ $('#toggle-open').addEventListener('click', async () => {
   if (await askConfirm(msg)) safe(setConfig({ p_is_open: !state.open, p_status: !state.open ? 'collecting' : 'closed' }));
 });
 
+function resetUpdateForm() {
+  state.editingUpdateId = null;
+  $('#up-title').value = '';
+  $('#up-body').value = '';
+  $('#up-badge').value = 'update';
+  $('#update-form-mode').textContent = 'إضافة مستجد جديد';
+  $('#post-update-btn').textContent = 'نشر المستجد';
+  $('#cancel-edit-update-btn').classList.add('hidden');
+}
+$('#cancel-edit-update-btn').addEventListener('click', resetUpdateForm);
+
 $('#post-update-btn').addEventListener('click', () => {
-  const title = $('#up-title').value.trim(), body = $('#up-body').value.trim();
+  const title = $('#up-title').value.trim(), body = $('#up-body').value.trim(), badge = $('#up-badge').value;
   if (title.length < 2 || body.length < 4) return toast('اكتب عنوانًا وتفاصيل واضحة للمستجد أولًا.');
   safe((async () => {
-    await rpc('admin_post_update', { p_title_ar: title, p_body_ar: body, p_badge: 'update' });
-    $('#up-title').value = ''; $('#up-body').value = '';
+    await rpc('admin_post_update', {
+      p_title_ar: title,
+      p_body_ar: body,
+      p_badge: badge,
+      p_edit_id: state.editingUpdateId || null
+    });
+    const wasEdit = Boolean(state.editingUpdateId);
+    resetUpdateForm();
     await loadSummary();
-    toast('تم نشر المستجد بنجاح');
+    toast(wasEdit ? 'تم حفظ تعديل المستجد' : 'تم نشر المستجد بنجاح');
   })());
 });
 
-/* ---------- Signatures List, Filters, Sorting & Bulk Actions ---------- */
+$('#add-id-btn').addEventListener('click', () => {
+  const code = $('#new-id-code').value.trim().toUpperCase();
+  const label = $('#new-id-label').value.trim();
+  const role = $('#new-id-role').value;
+  if (code.length < 3) return toast('أدخل معرّفًا لا يقل عن 3 أحرف أو أرقام.');
+  safe((async () => {
+    const res = await rpc('admin_manage_ids', { p_op: 'upsert', p_target_id: code, p_label: label, p_role: role });
+    if (res.status !== 'ok') return toast('تعذّر حفظ المعرّف.');
+    $('#new-id-code').value = '';
+    $('#new-id-label').value = '';
+    await loadSummary();
+    toast(`تم حفظ المعرّف (${code}) بنجاح`);
+  })());
+});
+
+/* ---------- Signatures List, Filters, Sorting, Pinning & Bulk Actions ---------- */
 const TABS = [
   ['all', 'الكل'],
+  ['pinned', 'مثبّتة 📌'],
+  ['teachers', 'المعلمون ⭐'],
   ['pending', 'ملاحظات بانتظار المراجعة'],
   ['approved', 'ملاحظات منشورة'],
   ['duplicates', 'تكرارات محتملة'],
@@ -562,11 +916,13 @@ async function loadList({ keep = false, more = false } = {}) {
   });
   let fetched = annotateDuplicates(d.rows || []);
   if (state.grade) fetched = fetched.filter((r) => Number(r.grade) === Number(state.grade));
+  if (state.filter === 'pinned') fetched = fetched.filter((r) => r.is_pinned);
+  if (state.filter === 'teachers') fetched = fetched.filter((r) => r.is_teacher || Number(r.grade) === 0);
   if (state.filter === 'duplicates') fetched = fetched.filter((r) => r.is_duplicate);
   if (state.filter === 'verified') fetched = fetched.filter((r) => r.is_verified);
 
   state.rows = more ? state.rows.concat(fetched) : fetched;
-  state.total = (state.grade || state.filter === 'duplicates' || state.filter === 'verified') ? state.rows.length : (d.total || state.rows.length);
+  state.total = (state.grade || ['pinned', 'teachers', 'duplicates', 'verified'].includes(state.filter)) ? state.rows.length : (d.total || state.rows.length);
   render();
 }
 $('#more-btn').addEventListener('click', () => safe(loadList({ more: true })));
@@ -594,7 +950,7 @@ document.querySelectorAll('[data-bulk]').forEach((b) => {
       for (const id of ids) await rpc('admin_action', { p_id: id, p_action: action });
       state.selected.clear();
       await Promise.all([loadSummary(), loadList({ keep: true })]);
-      toast('تم');
+      toast('تم تنفيذ الإجراء بنجاح');
     })());
   });
 });
@@ -609,15 +965,20 @@ async function act(id, action, confirmMsg) {
   const d = await rpc('admin_action', { p_id: id, p_action: action });
   if (d.status !== 'ok') throw new Error(d.status);
   await Promise.all([loadSummary(), loadList({ keep: true })]);
-  toast('تم');
+  toast('تم التحديث بنجاح');
 }
 
 $('#approve-all').addEventListener('click', () => safe(act(null, 'approve_all_notes', 'نشر كل الملاحظات المنتظرة؟ تأكد أنك قرأتها أولًا.')));
 
 function card(r) {
-  const c = el('article', 'card space-y-2.5 p-4 transition ' + (r.is_hidden ? 'opacity-60 bg-chalk/40' : ''));
+  const isT = Boolean(r.is_teacher || Number(r.grade) === 0);
+  const isPinned = Boolean(r.is_pinned);
+  const c = el('article', 'card space-y-2.5 p-4 transition ' +
+    (isPinned ? 'ring-2 ring-thread bg-amber-50/50 ' : isT ? 'border-s-4 border-s-thread bg-amber-50/30 ' : '') +
+    (r.is_hidden ? 'opacity-60 bg-chalk/40' : '')
+  );
   const top = el('div', 'flex flex-wrap items-center justify-between gap-2');
-  const left = el('div', 'flex items-center gap-2.5');
+  const left = el('div', 'flex flex-wrap items-center gap-2');
   const cb = el('input', 'h-4 w-4 rounded border-denim/30 text-denim focus:ring-thread cursor-pointer');
   cb.type = 'checkbox';
   cb.checked = state.selected.has(r.id);
@@ -628,22 +989,23 @@ function card(r) {
   });
   const nm = el('b', 'text-base text-denim-deep', r.name); nm.dir = 'auto';
   left.append(cb, nm);
-  if (r.is_verified) left.append(el('span', 'chip bg-emerald-50 text-emerald-700 border-emerald-200', '✓ موثّق'));
+  if (isPinned) left.append(el('span', 'chip bg-thread/30 text-amber-950 border-amber-400 font-bold', '📌 مثبّت في الأعلى'));
+  if (r.is_verified && !isT) left.append(el('span', 'chip bg-emerald-50 text-emerald-700 border-emerald-200', '✓ موثّق'));
   if (r.is_duplicate) left.append(el('span', 'chip bg-red-50 text-bad border-bad/30', '⚠️ تكرار محتمل'));
 
   const right = el('div', 'flex flex-wrap items-center gap-1.5');
   if (r.receipt_code) right.append(el('code', 'rounded bg-chalk px-2 py-0.5 font-mono text-[11px] text-denim-soft', r.receipt_code));
   if (r.category) right.append(el('span', 'chip bg-chalk/60', CAT_LABELS[r.category] || r.category));
-  right.append(el('span', 'chip font-bold text-denim', gl(r.grade)));
+  right.append(el('span', isT ? 'chip bg-thread/30 text-amber-950 border-amber-400 font-bold' : 'chip font-bold text-denim', gl(r.grade, isT)));
   top.append(left, right);
 
   const meta = el('div', 'flex flex-wrap items-center gap-2 text-xs text-denim-soft ps-6');
   meta.append(
     el('span', '', when(r.created_at)),
     el('span', '', '•'),
-    el('span', r.parent_consent ? 'text-emerald-700 font-medium' : 'text-bad', r.parent_consent ? 'موافقة ولي الأمر مسجّلة' : 'موافقة ولي الأمر غير مسجّلة')
+    el('span', isT ? 'text-amber-800 font-semibold' : (r.parent_consent ? 'text-emerald-700 font-medium' : 'text-bad'), isT ? 'توقيع كادر تعليمي (برمز المعلمين)' : (r.parent_consent ? 'موافقة ولي الأمر مسجّلة' : 'موافقة ولي الأمر غير مسجّلة'))
   );
-  if (r.hide_name) meta.append(el('span', 'chip', 'اسم مخفي'));
+  if (r.hide_name) meta.append(el('span', 'chip', 'اسم مخفي للعامة'));
   if (r.is_hidden) meta.append(el('span', 'chip bg-amber-100 text-amber-900', 'مخفي من العدّاد'));
   c.append(top, meta);
 
@@ -666,11 +1028,13 @@ function card(r) {
     );
   }
   if (r.note && r.note_approved) {
-    acts.append(btn('إلغاء النشر', 'btn-line', () => safe(act(r.id, 'unapprove_note'))));
+    acts.append(btn('إلغاء نشر الملاحظة', 'btn-line', () => safe(act(r.id, 'unapprove_note'))));
   }
   acts.append(
+    btn(isPinned ? '📌 إلغاء التثبيت' : '📌 تثبيت في الأعلى', isPinned ? 'btn-main' : 'btn-line', () => safe(act(r.id, isPinned ? 'unpin' : 'pin'))),
     btn(r.is_verified ? 'إلغاء التوثيق' : 'توثيق التوقيع', 'btn-line', () => safe(act(r.id, r.is_verified ? 'unverify' : 'verify'))),
-    btn(r.is_hidden ? 'إظهار التوقيع' : 'إخفاء التوقيع', 'btn-line', () => safe(act(r.id, r.is_hidden ? 'unhide' : 'hide'))),
+    btn(r.hide_name ? 'إظهار الاسم' : 'إخفاء الاسم فقط', 'btn-line', () => safe(act(r.id, r.hide_name ? 'show_name' : 'hide_name'))),
+    btn(r.is_hidden ? 'إظهار في العدّاد' : 'إخفاء من العدّاد', 'btn-line', () => safe(act(r.id, r.is_hidden ? 'unhide' : 'hide'))),
     btn('حذف', 'btn-bad', () => safe(act(r.id, 'delete', 'حذف هذا التوقيع نهائيًا؟')))
   );
   c.append(acts);
@@ -679,7 +1043,7 @@ function card(r) {
 
 function render() {
   $('#count').textContent = `(${state.total})`;
-  $('#list').replaceChildren(...(state.rows.length ? state.rows.map(card) : [el('p', 'card p-8 text-center text-denim-soft', 'لا توجد نتائج.')]));
+  $('#list').replaceChildren(...(state.rows.length ? state.rows.map(card) : [el('p', 'card p-8 text-center text-denim-soft', 'لا توجد نتائج مطابقة.')]));
   $('#more').classList.toggle('hidden', state.rows.length >= state.total);
   updateBulkBar();
 }
@@ -703,27 +1067,27 @@ async function saveFile(name, text) {
 }
 const deliver = (all) => all.filter((r) => !r.is_hidden)
   .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-  .map((r, i) => [i + 1, r.hide_name ? 'مجهول' : r.name, gl(r.grade), day(r.created_at)]);
+  .map((r, i) => [i + 1, r.hide_name ? 'مجهول' : r.name, gl(r.grade, r.is_teacher), day(r.created_at)]);
 const stamp = () => new Date().toISOString().slice(0, 10);
 
 $('#exp-deliver').addEventListener('click', () => safe((async () => {
   toast('جارٍ التجهيز…');
-  await saveFile(`signatures-${stamp()}.csv`, csv(['م', 'الاسم', 'الصف', 'التاريخ'], deliver(await fetchAll())));
+  await saveFile(`signatures-${stamp()}.csv`, csv(['م', 'الاسم', 'الصف / الصفة', 'التاريخ'], deliver(await fetchAll())));
 })()));
 
 $('#exp-full').addEventListener('click', () => safe((async () => {
   toast('جارٍ التجهيز…');
   const all = await fetchAll(), yn = (b) => (b ? 'نعم' : 'لا');
   await saveFile(`signatures-full-${stamp()}.csv`, csv(
-    ['الاسم', 'الصف', 'الأولوية', 'اسم مخفي', 'موافقة ولي الأمر', 'مخفي من العدّاد', 'موثّق', 'رمز التحقق', 'الملاحظة', 'الملاحظة منشورة', 'التاريخ'],
-    all.map((r) => [r.name, gl(r.grade), CAT_LABELS[r.category || 'both'] || 'كلاهما', yn(r.hide_name), yn(r.parent_consent), yn(r.is_hidden), yn(r.is_verified), r.receipt_code || '', r.note || '', r.note ? yn(r.note_approved) : '', r.created_at])
+    ['الاسم', 'الصف / الصفة', 'الأولوية', 'مثبّت', 'اسم مخفي', 'موافقة ولي الأمر', 'مخفي من العدّاد', 'موثّق', 'رمز التحقق', 'الملاحظة', 'الملاحظة منشورة', 'التاريخ'],
+    all.map((r) => [r.name, gl(r.grade, r.is_teacher), CAT_LABELS[r.category || 'both'] || 'كلاهما', yn(r.is_pinned), yn(r.hide_name), yn(r.parent_consent), yn(r.is_hidden), yn(r.is_verified), r.receipt_code || '', r.note || '', r.note ? yn(r.note_approved) : '', r.created_at])
   ));
 })()));
 
 $('#exp-print').addEventListener('click', () => safe((async () => {
   const rows = deliver(await fetchAll());
   const t = el('table', 'w-full border-collapse text-sm'), head = el('tr');
-  ['م', 'الاسم', 'الصف', 'التاريخ'].forEach((h) => head.append(el('th', 'text-right', h)));
+  ['م', 'الاسم', 'الصف / الصفة', 'التاريخ'].forEach((h) => head.append(el('th', 'text-right', h)));
   t.append(head);
   rows.forEach((r) => { const tr = el('tr'); r.forEach((c) => tr.append(el('td', '', c))); t.append(tr); });
   $('#print').replaceChildren(el('h1', 'mb-1 text-xl font-bold', 'عريضة صوت الطالب — مدرسة النظم الحديثة الخاصة'), el('p', 'mb-4 text-sm', `عدد التواقيع: ${rows.length}`), t);
