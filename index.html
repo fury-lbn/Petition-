@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>عريضة صوت الطالب — مدرسة النظم الحديثة الخاصة</title>
-<meta name="description" content="اقتراح طلابي لتحسين خامة الزي المدرسي وتوفير وجبات حقيقية وأصناف أكثر في المقصف. وقّع وشارك العريضة.">
+<meta name="description" content="مبادرة طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة لتحسين خامة الزي المدرسي وتوفير وجبات حقيقية وأصناف أكثر في المقصف. وقّع وشارك العريضة.">
 <meta name="theme-color" content="#0F1B33">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ar_AR">
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:title" content="اقتراح طلابي: زيّ بخامة أفضل ووجبات حقيقية في المقصف">
-<meta property="og:description" content="وقّع على الاقتراح وشاركه مع زملائك في مدرسة النظم الحديثة الخاصة.">
+<meta property="og:description" content="مبادرة طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة — وقّع على الاقتراح وشاركه مع زملائك.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧵%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,13 +95,17 @@ html.no-scroll { overflow: hidden; }
           <i class="fa-solid fa-circle-dot text-[10px]" aria-hidden="true"></i>
           <span id="lifecycle-text">مفتوحة لجمع التواقيع</span>
         </span>
+        <span class="badge bg-thread/20 text-thread border border-thread/30">
+          <i class="fa-solid fa-users text-[10px]" aria-hidden="true"></i>
+          <span data-i18n="grade9_badge">مبادرة طلاب الصف التاسع</span>
+        </span>
         <span id="deadline-badge" class="badge hidden bg-white/10 text-white/85">
           <i class="fa-regular fa-clock" aria-hidden="true"></i>
           <span id="deadline-text"></span>
         </span>
       </div>
       <h1 class="font-display text-3xl font-extrabold leading-snug sm:text-5xl sm:leading-tight" data-i18n="hero_title">نقترح زيًّا مدرسيًا بخامة أفضل، ومقصفًا فيه وجبات حقيقية</h1>
-      <p class="mt-4 max-w-xl text-base leading-loose text-white/80" data-i18n="hero_sub">مبادرة طلابية في مدرسة النظم الحديثة الخاصة، نقدّمها بروح التعاون مع الإدارة. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.</p>
+      <p class="mt-4 max-w-xl text-base leading-loose text-white/80" data-i18n="hero_sub">مبادرة طلابية أطلقها طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة باسم زملائهم من الصف الأول حتى العاشر، نقدّمها بروح التعاون مع الإدارة لتحسين بيئتنا المدرسية اليومية. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.</p>
 
       <!-- Compact Lifecycle Stepper -->
       <div class="mt-6 rounded-xl border border-white/15 bg-white/5 p-3.5 backdrop-blur-sm">
@@ -124,7 +128,7 @@ html.no-scroll { overflow: hidden; }
           <p id="count" class="font-display text-5xl font-extrabold leading-none">0</p>
           <p id="pct-label" class="mt-1 text-xs font-semibold text-denim-soft">0%</p>
         </div>
-        <p class="text-sm text-denim-soft"><span data-i18n="signatures_of">توقيع من أصل</span> <span id="goal" class="font-bold text-denim-deep">150</span></p>
+        <p class="text-sm text-denim-soft"><span data-i18n="signatures_of">توقيع من أصل</span> <span id="goal" class="font-bold text-denim-deep">200</span></p>
       </div>
       <div id="bar-wrap" class="seam mt-3" role="progressbar" data-i18n-label="aria_progress" aria-label="التقدم نحو الهدف" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="bar"></i></div>
       <div class="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-denim-soft">
@@ -158,7 +162,7 @@ html.no-scroll { overflow: hidden; }
   </div>
 </section>
 
-<!-- Drawer & Overlay (Clean Menu without any Developer/Mode Controls) -->
+<!-- Drawer & Overlay (Clean Menu: Only Home, Why We Started, Privacy, and Students' Discord) -->
 <div id="sidebar-overlay" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" aria-hidden="true"></div>
 <aside id="sidebar" role="dialog" aria-modal="true" aria-labelledby="menu-title" class="z-50 flex flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl">
   <div>
@@ -178,10 +182,9 @@ html.no-scroll { overflow: hidden; }
       <div class="space-y-1.5 pt-1">
         <h3 class="px-1 text-xs font-bold text-denim-soft" data-i18n="important_links">صفحات المنصة</h3>
         <button type="button" data-page="home" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-house w-5" aria-hidden="true"></i><span data-i18n="link_home">الصفحة الرئيسية</span></button>
-        <button type="button" data-page="analytics" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-chart-pie w-5" aria-hidden="true"></i><span data-i18n="link_analytics">إحصائيات وتوزيع الأصوات</span></button>
         <button type="button" data-page="why-started" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-circle-question w-5" aria-hidden="true"></i><span data-i18n="link_why">لماذا بدأنا؟</span></button>
         <button type="button" data-page="privacy" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-solid fa-shield-halved w-5" aria-hidden="true"></i><span data-i18n="link_privacy">الخصوصية والأمان</span></button>
-        <button type="button" data-page="discord" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-brands fa-discord w-5" aria-hidden="true"></i><span data-i18n="link_discord">منتدى ديسكورد</span></button>
+        <button type="button" data-page="discord" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-denim transition hover:bg-chalk"><i class="fa-brands fa-discord w-5" aria-hidden="true"></i><span data-i18n="link_discord">سيرفر الطلاب (ديسكورد)</span></button>
       </div>
     </nav>
   </div>
@@ -207,13 +210,13 @@ html.no-scroll { overflow: hidden; }
   </div>
 </div>
 
-<!-- ================= PAGE 1: MAIN PETITION PAGE (Compact & Focused) ================= -->
+<!-- ================= PAGE 1: MAIN PETITION PAGE ================= -->
 <main id="page-home" class="mx-auto grid max-w-6xl gap-x-10 gap-y-8 px-4 py-8 lg:grid-cols-12">
-  <!-- Left Column: Concise Problem & Proposal Overview -->
+  <!-- Left Column: Enriched Problem & Proposal Overview -->
   <section class="lg:col-span-7">
     <h2 class="font-display text-2xl font-extrabold" data-i18n="why_title"></h2>
-    <p class="mt-2 max-w-prose text-sm leading-relaxed text-denim-soft" data-i18n="why_desc"></p>
-    <p class="mt-3 rounded-e-xl border-s-4 border-thread bg-white/70 px-4 py-2.5 text-sm font-semibold leading-relaxed shadow-sm" data-i18n="respect_note"></p>
+    <p class="mt-3 max-w-prose text-sm leading-loose text-denim-deep/90" data-i18n="why_desc"></p>
+    <p class="mt-3 rounded-e-xl border-s-4 border-thread bg-white/80 px-4 py-3 text-sm font-semibold leading-relaxed shadow-sm" data-i18n="respect_note"></p>
 
     <div class="mt-6 grid gap-5 sm:grid-cols-2">
       <div class="rounded-xl border border-denim/15 bg-white p-4">
@@ -237,11 +240,20 @@ html.no-scroll { overflow: hidden; }
         <ul data-list="asks_canteen" data-icon="fa-circle-check text-emerald-600" class="mt-2 divide-y divide-denim/10"></ul>
       </div>
     </div>
+
+    <!-- Updates Board on Main Page -->
+    <div id="updates-sec" class="mt-8 scroll-mt-6 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm">
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="font-display text-xl font-extrabold" data-i18n="updates_title">لوحة المستجدات والمتابعة</h2>
+        <span class="badge bg-thread/20 text-denim-deep"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i> <span id="updates-count">1</span></span>
+      </div>
+      <ol id="updates-list" class="mt-4 space-y-3 border-s-2 border-denim/15 ps-4"></ol>
+    </div>
   </section>
 
-  <!-- Right Column: Sticky Signature Form & Receipt Card -->
-  <aside class="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1">
-    <div id="sign" class="scroll-mt-4 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-7 lg:sticky lg:top-6">
+  <!-- Right Column: Signature Form + Analytics Directly Below Signing Section -->
+  <aside class="space-y-6 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1">
+    <div id="sign" class="scroll-mt-4 rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-7">
       <div id="closed" class="hidden rounded-xl border border-denim/20 bg-chalk/70 p-5 text-center">
         <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-denim/10 text-xl text-denim"><i class="fa-solid fa-lock" aria-hidden="true"></i></div>
         <p class="font-display text-base font-extrabold text-denim-deep" id="closed-heading" data-i18n="closed_heading">العريضة مغلقة حاليًا لجمع التواقيع</p>
@@ -276,7 +288,7 @@ html.no-scroll { overflow: hidden; }
       <form id="form" novalidate class="space-y-4">
         <div>
           <h2 class="font-display text-2xl font-extrabold" data-i18n="form_title">وقّع على العريضة</h2>
-          <p class="mt-1 text-sm text-denim-soft" data-i18n="form_sub">اكتب اسمك الثنائي على الأقل واختر صفّك.</p>
+          <p class="mt-1 text-sm text-denim-soft" data-i18n="form_sub">اكتب اسمك الثنائي على الأقل واختر صفّك (من الأول للعاشر).</p>
         </div>
         <div>
           <label for="name" class="mb-1.5 block text-sm font-semibold" data-i18n="label_name">الاسم الكامل</label>
@@ -335,6 +347,20 @@ html.no-scroll { overflow: hidden; }
         <p class="text-center text-xs"><a href="#privacy" data-page="privacy" class="font-semibold text-denim underline" data-i18n="privacy_link_form">اقرأ تفاصيل الخصوصية والأمان</a></p>
       </form>
     </div>
+
+    <!-- Analytics & Vote Distribution Section (Placed directly below Signing Section on Main Page) -->
+    <div id="analytics" class="rounded-2xl border border-denim/15 bg-white p-6 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h2 class="font-display text-lg font-extrabold" data-i18n="analytics_title">توزيع الأصوات وأولويات الطلاب</h2>
+        <span class="badge bg-chalk text-denim-soft"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> <span data-i18n="live_stats_badge">إحصائيات حية</span></span>
+      </div>
+      <p class="mt-1 text-xs text-denim-soft" data-i18n="analytics_sub">نسبة تأييد محاور العريضة وتوزيع المشاركين حسب الصفوف (من الأول للعاشر).</p>
+      <div class="mt-4 space-y-2.5" id="cat-bars"></div>
+      <div class="mt-5 border-t border-denim/10 pt-4">
+        <h3 class="text-xs font-bold text-denim-soft" data-i18n="grade_dist_title">المشاركون حسب الصف الدراسي</h3>
+        <div id="grade-bars" class="mt-3 grid grid-cols-2 gap-2"></div>
+      </div>
+    </div>
   </aside>
 
   <!-- Public Signatures Wall with Search & Filtering -->
@@ -378,20 +404,6 @@ html.no-scroll { overflow: hidden; }
     <a href="#sign" data-page="home" class="btn btn-main !px-4 !py-2 text-xs" data-i18n="sign_now">وقّع الآن</a>
   </div>
 
-  <!-- Sub-page: Analytics & Grade Distribution -->
-  <section id="analytics" class="hidden rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-8">
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <h2 class="font-display text-2xl font-extrabold" data-i18n="analytics_title">توزيع الأصوات وأولويات الطلاب</h2>
-      <span class="badge bg-chalk text-denim-soft"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> <span data-i18n="live_stats_badge">إحصائيات حية</span></span>
-    </div>
-    <p class="mt-2 text-sm text-denim-soft" data-i18n="analytics_sub">نسبة تأييد محاور العريضة وتوزيع المشاركين حسب الصفوف الدراسية.</p>
-    <div class="mt-6 space-y-3" id="cat-bars"></div>
-    <div class="mt-8 border-t border-denim/10 pt-6">
-      <h3 class="text-sm font-bold text-denim-soft" data-i18n="grade_dist_title">المشاركون حسب الصف الدراسي</h3>
-      <div id="grade-bars" class="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3"></div>
-    </div>
-  </section>
-
   <!-- Sub-page: Why We Started & Next Steps -->
   <section id="why-started" class="hidden rounded-2xl border border-denim/15 bg-white p-6 shadow-sm sm:p-8">
     <div class="grid gap-8 md:grid-cols-12">
@@ -415,7 +427,7 @@ html.no-scroll { overflow: hidden; }
     <p class="mt-4 text-xs text-denim-soft" data-i18n="privacy_note"></p>
   </section>
 
-  <!-- Sub-page: Discord Forum -->
+  <!-- Sub-page: Student Discord Community Server -->
   <section id="discord" class="hidden rounded-2xl bg-denim-deep p-6 text-white shadow-xl sm:p-8">
     <div class="grid gap-8 md:grid-cols-12 md:items-center">
       <div class="md:col-span-7">
@@ -437,7 +449,6 @@ html.no-scroll { overflow: hidden; }
   <p class="mb-3 font-semibold" dir="ltr" lang="en">Modern Systems Private School</p>
   <nav class="mb-2 flex flex-wrap justify-center gap-5 font-semibold text-denim">
     <a class="hover:underline" href="#page-home" data-page="home" data-i18n="link_home"></a>
-    <a class="hover:underline" href="#analytics" data-page="analytics" data-i18n="link_analytics"></a>
     <a class="hover:underline" href="#why-started" data-page="why-started" data-i18n="link_why"></a>
     <a class="hover:underline" href="#privacy" data-page="privacy" data-i18n="link_privacy"></a>
     <a class="hover:underline" href="#discord" data-page="discord" data-i18n="link_discord"></a>
@@ -460,19 +471,20 @@ const CONFIG = {
   SUPABASE_URL: 'https://bycyaaevyeezokivlnza.supabase.co',
   SUPABASE_ANON_KEY: 'sb_publishable_z6-RjAxi7vFhVmVVzL6Dow_ov98VU3p',
   RPC_SIGN: 'sign_petition', RPC_STATS: 'petition_stats', RPC_LIST: 'recent_signatures',
-  GRADE_MIN: 1, GRADE_MAX: 12,
-  MILESTONES: [0.2, 0.5, 0.75, 1],
+  GRADE_MIN: 1, GRADE_MAX: 10,
+  DEFAULT_GOAL: 200,
+  MILESTONES: [0.25, 0.5, 0.75, 1],
   PAGE_SIZE: 15, MAX_ROWS: 50,
   REFRESH_MS: 60000, REQUEST_TIMEOUT_MS: 15000,
   DEFAULT_LANG: 'ar',
   DISCORD_URL: ''
 };
 
-/* ================= Concise, Scannable Translations ================= */
+/* ================= Translations ================= */
 const I18N = {
   ar: {
     doc_title: 'عريضة صوت الطالب — مدرسة النظم الحديثة الخاصة',
-    meta_desc: 'اقتراح طلابي لتحسين خامة الزي المدرسي وتوفير وجبات حقيقية وأصناف أكثر في المقصف. وقّع وشارك العريضة.',
+    meta_desc: 'مبادرة طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة لتحسين خامة الزي المدرسي وتوفير وجبات حقيقية وأصناف أكثر في المقصف.',
     skip_link: 'انتقل إلى نموذج التوقيع',
     brand_title: 'صوت الطالب', brand_school: 'مدرسة النظم الحديثة الخاصة',
     connecting: 'جارٍ الاتصال…', connected: 'متصل',
@@ -480,8 +492,9 @@ const I18N = {
     menu_btn: 'القائمة', close_menu: 'إغلاق القائمة', close_btn: 'إغلاق',
     back_home: 'العودة إلى صفحة العريضة',
     link_home: 'الصفحة الرئيسية',
+    grade9_badge: 'مبادرة طلاب الصف التاسع',
     hero_title: 'نقترح زيًّا مدرسيًا بخامة أفضل، ومقصفًا فيه وجبات حقيقية',
-    hero_sub: 'مبادرة طلابية في مدرسة النظم الحديثة الخاصة، نقدّمها بروح التعاون مع الإدارة. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.',
+    hero_sub: 'مبادرة طلابية أطلقها طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة باسم زملائهم من الصف الأول حتى العاشر، نقدّمها بروح التعاون مع الإدارة لتحسين بيئتنا المدرسية اليومية. إن كنت توافق، وقّع وشارك الاقتراح مع زملائك.',
     lifecycle_title: 'مراحل مسار العريضة',
     stage_count: 'المرحلة {cur} من {max}',
     stages: ['صياغة المبادرة', 'جمع التواقيع', 'تقديم للإدارة', 'رد الإدارة'],
@@ -503,16 +516,18 @@ const I18N = {
     official_badge: 'رد رسمي',
     menu_title: 'القائمة والإعدادات', lang_label: 'Language / اللغة',
     important_links: 'صفحات المنصة',
-    link_analytics: 'إحصائيات وتوزيع الأصوات',
     link_privacy: 'الخصوصية والأمان', link_why: 'لماذا بدأنا؟',
     why_title: 'لماذا نقدّم هذا الاقتراح؟',
-    why_desc: 'نقضي أكثر من 25 ساعة أسبوعيًا في المدرسة، فما نلبسه وما نأكله يؤثر مباشرةً على راحتنا وتركيزنا اليومي.',
-    respect_note: 'نقدّم هذا الاقتراح بروح التعاون والتقدير لإدارة مدرسة النظم الحديثة الخاصة.',
+    why_desc: 'نقضي كطلاب أكثر من 25 ساعة أسبوعيًا داخل المدرسة بين الحصص الدراسية والأنشطة والفسح، ولذلك فإن جودة القماش الذي نرتديه ونوعية الطعام المتوفر في المقصف يؤثران بشكل مباشر على راحتنا الجسدية، وصحتنا، وقدرتنا على التركيز طوال اليوم. انطلقت هذه المبادرة من طلاب الصف التاسع بعد ملاحظة معاناة يومية مشتركة بين الطلاب في مسألتين أساسيتين هما خامة الزي المدرسي وخيارات المقصف، فاخترنا صياغة هذا المقترح المنظّم ليعبّر عن صوت الطلاب بطريقة حضارية وواضحة.',
+    respect_note: 'نقدّر جهود إدارة مدرسة النظم الحديثة الخاصة ومعلمينا، ونطرح هذه المبادرة الطلابية بروح التعاون والحوار الإيجابي لما فيه مصلحة الطلاب والمدرسة معًا.',
     proposals_heading: 'ما نطلبه باختصار',
     analytics_title: 'توزيع الأصوات وأولويات الطلاب',
     live_stats_badge: 'إحصائيات حية',
-    analytics_sub: 'نسبة تأييد محاور العريضة وتوزيع المشاركين حسب الصفوف الدراسية.',
+    analytics_sub: 'نسبة تأييد محاور العريضة وتوزيع المشاركين حسب الصفوف (من الأول للعاشر).',
     grade_dist_title: 'المشاركون حسب الصف الدراسي',
+    updates_title: 'لوحة المستجدات والمتابعة',
+    default_update_title: 'انطلاق مبادرة طلاب الصف التاسع (الهدف: 200 توقيع)',
+    default_update_body: 'بدأت مرحلة جمع التواقيع من طلاب الصفوف الأول حتى العاشر وبموافقة أولياء الأمور، تمهيدًا لتقديم المقترح لإدارة المدرسة.',
     closed_heading: 'العريضة مغلقة حاليًا لجمع التواقيع',
     closed_msg: 'انتهى جمع التواقيع وأُغلقت العريضة. شكرًا لكل من شارك وساهم بصوته.',
     thanks_title: 'شكرًا، وصل صوتك',
@@ -525,7 +540,7 @@ const I18N = {
     copy_receipt_btn: 'نسخ رمز الإيصال',
     receipt_copied: 'تم نسخ رمز إيصال التوقيع',
     share_petition: 'شارك العريضة',
-    form_title: 'وقّع على العريضة', form_sub: 'اكتب اسمك الثنائي على الأقل واختر صفّك.',
+    form_title: 'وقّع على العريضة', form_sub: 'اكتب اسمك الثنائي على الأقل واختر صفّك (من الأول للعاشر).',
     label_name: 'الاسم الكامل', placeholder_name: 'مثال: يوسف أحمد',
     label_grade: 'الصف', select_grade_default: 'اختر صفّك',
     label_category: 'الأولوية بالنسبة لك',
@@ -538,20 +553,20 @@ const I18N = {
     wall_title: 'من وقّعوا حتى الآن', refresh: 'تحديث', show_more: 'عرض المزيد',
     wall_showing: 'عرض {shown} من أصل {total}',
     wall_search_ph: 'ابحث بالاسم أو نص الملاحظة…',
-    all_grades: 'كل الصفوف',
+    all_grades: 'كل الصفوف (1–10)',
     filter_all: 'كل التواقيع', filter_notes: 'مع ملاحظات فقط',
     verified_badge: 'موثّق',
-    footer_text: 'مبادرة طلابية فردية لتقديم اقتراح، وهي ليست جهة رسمية ولا تمثّل المدرسة أو إدارتها.',
+    footer_text: 'مبادرة طلابية أطلقها طلاب الصف التاسع لتقديم اقتراح بنّاء، وهي ليست جهة رسمية ولا تمثّل المدرسة أو إدارتها.',
     anonymous: 'مجهول', no_signatures: 'لا توجد تواقيع بعد', be_first: 'كن أول من يوقّع على العريضة.',
     retry: 'إعادة المحاولة', err_load: 'تعذّر تحميل التواقيع', check_conn: 'تحقق من الاتصال ثم حاول مجددًا.',
-    next_goal: 'الهدف القادم {goal}، ويتبقى {rem}.', goal_passed: 'تجاوزنا الهدف، شكرًا لكل صوت!',
+    next_goal: 'الهدف المرحلي القادم {goal}، ويتبقى {rem}.', goal_passed: 'تجاوزنا الهدف (200 توقيع)، شكرًا لكل صوت!',
     last_24h: 'آخر 24 ساعة: +{count}', just_now: 'الآن',
     copied: 'تم نسخ الرابط بنجاح', copy_failed: 'تعذّر النسخ، انسخ الرابط من شريط العنوان.',
-    share_text: 'وقّع معنا على اقتراح طلاب مدرسة النظم الحديثة الخاصة: زيّ بخامة أفضل ووجبات حقيقية في المقصف',
+    share_text: 'وقّع معنا على مبادرة طلاب الصف التاسع في مدرسة النظم الحديثة الخاصة: زيّ بخامة أفضل ووجبات حقيقية في المقصف',
     signed_already: 'لقد قمت بالتوقيع مسبقًا من هذا المتصفح.',
     err_duplicate: 'هذا الاسم مسجّل مسبقًا في نفس الصف الدراسي. شكرًا لدعمك!',
     err_name: 'الاسم غير مقبول: اكتب اسمك الثنائي بحروف فقط، بدون أرقام أو رموز.',
-    err_grade: 'اختر صفًّا صحيحًا.', err_consent: 'يجب الموافقة على علم ولي الأمر لإتمام التصويت.',
+    err_grade: 'اختر صفًّا صحيحًا (من الأول للعاشر).', err_consent: 'يجب الموافقة على علم ولي الأمر لإتمام التصويت.',
     err_rate: 'محاولات كثيرة من هذه الشبكة. انتظر قليلًا ثم حاول مجددًا.',
     err_offline: 'لا يوجد اتصال بالإنترنت. تحقق من الاتصال وحاول مجددًا.',
     err_general: 'تعذّر إرسال التوقيع. حاول مجددًا بعد قليل.',
@@ -576,7 +591,7 @@ const I18N = {
       ['تنوّع وخيارات صحية', 'قائمة متجددة تلبي احتياجات الطلاب اليومية.']
     ],
     why_started_title: 'لماذا بدأنا هذه المبادرة؟',
-    why_started_intro: 'نريد بيئة مدرسية أفضل لنا ولزملائنا بطريقة منظّمة وهادئة.',
+    why_started_intro: 'انطلقت هذه الخطوة من طلاب الصف التاسع لأننا نريد بيئة مدرسية أفضل لنا ولزملائنا بطريقة منظّمة وهادئة.',
     why_started_points: [
       ['صوت واحد منظّم', 'جمع آراء الطلاب في مكان واحد بأرقام واضحة بدل الشكاوى المتفرقة.'],
       ['اقتراح بنّاء', 'تقديم طلب مدروس يفتح حوارًا إيجابيًا مع الإدارة.'],
@@ -584,7 +599,7 @@ const I18N = {
     ],
     next_title: 'ماذا بعد التوقيع؟',
     next_steps: [
-      ['جمع التواقيع', 'مشاركة العريضة بين الطلاب للوصول إلى العدد المستهدف.'],
+      ['جمع 200 توقيع', 'مشاركة العريضة بين طلاب الصفوف الأول حتى العاشر للوصول للهدف.'],
       ['تقديم المقترح', 'رفع النتيجة والمطالب لإدارة المدرسة باحترام.'],
       ['متابعة الحوار', 'التعاون مع الإدارة للوصول إلى أفضل حل ممكن.']
     ],
@@ -598,23 +613,24 @@ const I18N = {
     ],
     privacy_note: 'لطلب حذف توقيعك أو تعديله، تواصل مع القائمين على المبادرة.',
     privacy_link_form: 'اقرأ تفاصيل الخصوصية والأمان',
-    discord_title: 'منتدى المدرسة على ديسكورد',
-    discord_desc: 'مساحة لطلاب المدرسة للنقاش وطرح الأفكار ومتابعة أخبار العريضة باحترام.',
+    discord_title: 'سيرفر طلاب المدرسة على ديسكورد',
+    discord_desc: 'مساحة طلابية تجمعنا خارج أوقات الدوام لتبادل الأفكار، ومشاركة المقترحات التي تهمنا كطلاب، ومتابعة ما يستجد حول المبادرة بروح الزمالة والاحترام.',
     discord_points: [
-      ['نقاش مفتوح', 'طرح الأفكار والاقتراحات حول الزي والمقصف.', 'fa-comments'],
-      ['متابعة المستجدات', 'معرفة أخبار العريضة ونتائج التواصل مع الإدارة.', 'fa-bullhorn']
+      ['مساحة طلابية بين الزملاء', 'نتشارك فيها الأفكار والمقترحات التي تحسّن يومنا الدراسي بشكل ودّي ومنظّم.', 'fa-users'],
+      ['متابعة خطوات المبادرة', 'نعرف معًا وين وصلت العريضة وأي خطوة قادمة نجهزها كطلاب.', 'fa-bullhorn'],
+      ['بيئة محترمة وآمنة', 'سيرفر يديره الطلاب بقواعد واضحة تحفظ الاحترام والخصوصية بين الجميع.', 'fa-handshake']
     ],
-    discord_join: 'انضم إلى المنتدى', discord_soon: 'رابط المنتدى قيد التجهيز وسيُضاف قريبًا.',
-    link_discord: 'منتدى ديسكورد',
+    discord_join: 'انضم لسيرفر الطلاب', discord_soon: 'رابط السيرفر قيد التجهيز وسيُضاف قريبًا.',
+    link_discord: 'سيرفر الطلاب (ديسكورد)',
     label_note: 'ملاحظتك أو سبب تأييدك', optional_tag: '(اختياري)',
     placeholder_note: 'مثال: القماش حارّ ويتعبنا في الصيف…',
     note_hint: 'تظهر الملاحظة للعامة بعد مراجعتها فقط. لا تكتب معلومات شخصية ولا إساءة لأحد.',
     err_note: 'الملاحظة غير مقبولة: بحد أقصى 250 حرفًا، وبدون روابط أو رموز.',
-    grades: ['', 'الصف الأول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس', 'الصف السادس', 'الصف السابع', 'الصف الثامن', 'الصف التاسع', 'الصف العاشر', 'الصف الحادي عشر', 'الصف الثاني عشر']
+    grades: ['', 'الصف الأول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس', 'الصف السادس', 'الصف السابع', 'الصف الثامن', 'الصف التاسع', 'الصف العاشر']
   },
   en: {
     doc_title: 'Student Voice Petition — Modern Systems Private School',
-    meta_desc: 'A student proposal for a better uniform fabric, plus real meals and more variety in the canteen. Sign and share the petition.',
+    meta_desc: 'A 9th-grade student initiative at Modern Systems Private School for a better uniform fabric and real meals in the canteen.',
     skip_link: 'Skip to signature form',
     brand_title: 'Student Voice', brand_school: 'Modern Systems Private School',
     connecting: 'Connecting…', connected: 'Connected',
@@ -622,8 +638,9 @@ const I18N = {
     menu_btn: 'Menu', close_menu: 'Close menu', close_btn: 'Close',
     back_home: 'Back to Petition Page',
     link_home: 'Home Page',
+    grade9_badge: '9th Grade Student Initiative',
     hero_title: 'Proposing a better uniform fabric and real meals in the canteen',
-    hero_sub: 'A student initiative at Modern Systems Private School, offered in a spirit of cooperation with the administration. If you agree, sign it and share it with your classmates.',
+    hero_sub: 'A student initiative launched by 9th-grade students at Modern Systems Private School on behalf of classmates from 1st to 10th grade, offered in a spirit of cooperation with the administration to improve our daily school experience. If you agree, sign and share it.',
     lifecycle_title: 'Petition Lifecycle Progress',
     stage_count: 'Stage {cur} of {max}',
     stages: ['Drafted', 'Collecting Signatures', 'Submitted to Admin', 'Official Response'],
@@ -645,16 +662,18 @@ const I18N = {
     official_badge: 'Official Response',
     menu_title: 'Menu & Settings', lang_label: 'Language / اللغة',
     important_links: 'Platform Pages',
-    link_analytics: 'Vote Breakdown & Analytics',
     link_privacy: 'Privacy & Security', link_why: 'Why We Started',
     why_title: 'Why are we making this proposal?',
-    why_desc: 'We spend over 25 hours a week at school, so what we wear and eat directly impacts our daily comfort and focus.',
-    respect_note: 'We present this proposal in a spirit of cooperation and respect for Modern Systems Private School.',
+    why_desc: 'As students, we spend more than 25 hours a week at school across classes, activities, and breaks. The fabric we wear and the food available in the canteen directly affect our physical comfort, health, and concentration throughout the day. Launched by 9th-grade students after noticing shared daily challenges with the current +60% polyester uniform and snack-only canteen, this organized proposal expresses student feedback in a constructive, respectful way.',
+    respect_note: 'We appreciate the efforts of Modern Systems Private School’s administration and teachers, and present this student initiative in a spirit of positive cooperation.',
     proposals_heading: 'What we are asking for',
     analytics_title: 'Vote Distribution & Student Priorities',
     live_stats_badge: 'Live Metrics',
-    analytics_sub: 'Breakdown of student priorities and participation across school grades.',
+    analytics_sub: 'Breakdown of student priorities and participation across grades (1st to 10th Grade).',
     grade_dist_title: 'Participation by Grade',
+    updates_title: 'Updates & Progress Board',
+    default_update_title: '9th Grade Student Initiative Launched (Target: 200 Signatures)',
+    default_update_body: 'Signature collection is open for students in grades 1 through 10 with parental consent, ahead of presenting the proposal to the school administration.',
     closed_heading: 'Signature Collection is Currently Closed',
     closed_msg: 'The petition has ended and signature collection is closed. Thank you to everyone who participated.',
     thanks_title: 'Thank you! Your voice was heard',
@@ -667,7 +686,7 @@ const I18N = {
     copy_receipt_btn: 'Copy Receipt Code',
     receipt_copied: 'Receipt code copied to clipboard',
     share_petition: 'Share Petition',
-    form_title: 'Sign the Petition', form_sub: 'Enter at least your first and last name, then select your grade.',
+    form_title: 'Sign the Petition', form_sub: 'Enter at least your first and last name, then select your grade (1st to 10th).',
     label_name: 'Full Name', placeholder_name: 'e.g. Yousef Ahmed',
     label_grade: 'Grade', select_grade_default: 'Select your grade',
     label_category: 'Your Top Priority',
@@ -680,20 +699,20 @@ const I18N = {
     wall_title: 'Recent Signatures', refresh: 'Refresh', show_more: 'Show More',
     wall_showing: 'Showing {shown} of {total}',
     wall_search_ph: 'Search by name or note…',
-    all_grades: 'All Grades',
+    all_grades: 'All Grades (1–10)',
     filter_all: 'All Signatures', filter_notes: 'With Notes Only',
     verified_badge: 'Verified',
-    footer_text: 'An independent student initiative to present a proposal; not an official entity, and does not represent the school or its administration.',
+    footer_text: 'An independent student initiative launched by 9th-grade students; not an official entity, and does not represent the school or its administration.',
     anonymous: 'Anonymous', no_signatures: 'No signatures yet', be_first: 'Be the first to sign the petition.',
     retry: 'Retry', err_load: 'Failed to load signatures', check_conn: 'Check your connection and try again.',
-    next_goal: 'Next milestone is {goal}, {rem} to go.', goal_passed: 'Goal reached! Thank you for every vote.',
+    next_goal: 'Next milestone is {goal}, {rem} to go.', goal_passed: 'Goal reached (200 signatures)! Thank you for every vote.',
     last_24h: 'Last 24h: +{count}', just_now: 'just now',
     copied: 'Link copied!', copy_failed: 'Could not copy. Copy the link from the address bar.',
-    share_text: 'Sign the Modern Systems Private School student proposal: a better uniform fabric and real meals in the canteen',
+    share_text: 'Sign the 9th-grade student proposal at Modern Systems Private School: a better uniform fabric and real meals in the canteen',
     signed_already: 'You have already signed from this browser.',
     err_duplicate: 'This name is already registered in the same grade. Thank you for your support!',
     err_name: 'Invalid name: enter at least first and last name, letters only, no numbers or symbols.',
-    err_grade: 'Please select a valid grade.', err_consent: 'Parental consent is required to submit your vote.',
+    err_grade: 'Please select a valid grade (1st to 10th).', err_consent: 'Parental consent is required to submit your vote.',
     err_rate: 'Too many attempts from this network. Please wait a moment and try again.',
     err_offline: 'You appear to be offline. Check your connection and try again.',
     err_general: 'Failed to submit your signature. Please try again shortly.',
@@ -718,7 +737,7 @@ const I18N = {
       ['Healthy variety', 'A rotating menu with nutritious daily options.']
     ],
     why_started_title: 'Why did we start this?',
-    why_started_intro: 'We want a better school environment for everyone in a calm, organized way.',
+    why_started_intro: 'Started by 9th-grade students because we want a better school environment for everyone in a calm, organized way.',
     why_started_points: [
       ['One organized voice', 'Gathering student voices in one place with clear numbers instead of scattered complaints.'],
       ['Constructive proposal', 'Presenting a thoughtful request to open a positive dialogue with the administration.'],
@@ -726,7 +745,7 @@ const I18N = {
     ],
     next_title: 'What happens after you sign?',
     next_steps: [
-      ['Collect signatures', 'Share the petition among classmates until we reach our target.'],
+      ['Collect 200 signatures', 'Share the petition among students in grades 1 to 10 until we reach our target.'],
       ['Present the proposal', 'Respectfully submit the numbers and requests to the administration.'],
       ['Follow up', 'Collaborate constructively on practical solutions.']
     ],
@@ -740,19 +759,20 @@ const I18N = {
     ],
     privacy_note: 'To request deletion or correction of your signature, contact the initiative organizers.',
     privacy_link_form: 'Read the privacy and security details',
-    discord_title: 'The school forum on Discord',
-    discord_desc: 'A respectful space for students to discuss ideas and follow petition news.',
+    discord_title: 'School Students’ Server on Discord',
+    discord_desc: 'A student-run space outside school hours where classmates can share ideas, discuss suggestions that improve our school day, and follow the initiative’s progress in a friendly, respectful atmosphere.',
     discord_points: [
-      ['Open discussion', 'Share ideas regarding the school uniform and canteen.', 'fa-comments'],
-      ['Initiative updates', 'Follow progress and official responses.', 'fa-bullhorn']
+      ['By students, for students', 'A organized space among classmates to exchange ideas and practical suggestions.', 'fa-users'],
+      ['Follow our progress', 'Stay updated on how the petition is going and what steps we are preparing next.', 'fa-bullhorn'],
+      ['Respectful & welcoming', 'Simple student-moderated rules that keep discussions positive and protect everyone’s privacy.', 'fa-handshake']
     ],
-    discord_join: 'Join the forum', discord_soon: 'The forum link is being prepared and will be added soon.',
-    link_discord: 'Discord Forum',
+    discord_join: 'Join the Student Server', discord_soon: 'The server invite link is being prepared and will be added soon.',
+    link_discord: 'Students’ Discord Server',
     label_note: 'Your note or reason', optional_tag: '(optional)',
     placeholder_note: 'e.g. The fabric is hot and tiring in summer…',
     note_hint: 'Your note is shown publicly only after it is reviewed. Do not write personal information or insult anyone.',
     err_note: 'Invalid note: up to 250 characters, with no links or symbols.',
-    grades: ['', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade', '7th Grade', '8th Grade', '9th Grade', '10th Grade', '11th Grade', '12th Grade']
+    grades: ['', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade', '7th Grade', '8th Grade', '9th Grade', '10th Grade']
   }
 };
 
@@ -798,7 +818,7 @@ const makeHashCode = (str) => {
 };
 
 /* ================= Separate Page Navigation ================= */
-const SUBPAGES = ['analytics', 'why-started', 'privacy', 'discord'];
+const SUBPAGES = ['why-started', 'privacy', 'discord'];
 function showPage(pageName) {
   const target = SUBPAGES.includes(pageName) ? pageName : 'home';
   state.page = target;
@@ -887,21 +907,21 @@ function renderStatus() {
 
 const gradeLabel = (g) => I18N[lang].grades[g] || String(g);
 function populateGrades() {
-  const maxG = (state.stats && Number(state.stats.grade_max)) || CONFIG.GRADE_MAX;
-  const minG = (state.stats && Number(state.stats.grade_min)) || CONFIG.GRADE_MIN;
+  const maxG = CONFIG.GRADE_MAX;
+  const minG = CONFIG.GRADE_MIN;
   const sel = $('#grade'), val = sel.value;
   sel.replaceChildren(
     new Option(t('select_grade_default'), ''),
     ...Array.from({ length: maxG - minG + 1 }, (_, i) => new Option(gradeLabel(minG + i), minG + i))
   );
-  if (val) sel.value = val;
+  if (val && Number(val) <= maxG) sel.value = val;
 
   const wSel = $('#wall-grade'), wVal = wSel.value;
   wSel.replaceChildren(
     new Option(t('all_grades'), ''),
     ...Array.from({ length: maxG - minG + 1 }, (_, i) => new Option(gradeLabel(minG + i), minG + i))
   );
-  if (wVal) wSel.value = wVal;
+  if (wVal && Number(wVal) <= maxG) wSel.value = wVal;
 }
 
 function renderLifecycle() {
@@ -981,9 +1001,11 @@ function renderAnalytics() {
 
   const byGrade = s.by_grade ? { ...s.by_grade } : {};
   if (!Object.keys(byGrade).length && rows.length) {
-    rows.forEach((r) => { if (r.grade) byGrade[r.grade] = (byGrade[r.grade] || 0) + 1; });
+    rows.forEach((r) => { if (r.grade && r.grade <= CONFIG.GRADE_MAX) byGrade[r.grade] = (byGrade[r.grade] || 0) + 1; });
   }
-  const entries = Object.entries(byGrade).filter(([, n]) => Number(n) > 0).sort((a, b) => Number(a[0]) - Number(b[0]));
+  const entries = Object.entries(byGrade)
+    .filter(([g, n]) => Number(g) >= CONFIG.GRADE_MIN && Number(g) <= CONFIG.GRADE_MAX && Number(n) > 0)
+    .sort((a, b) => Number(a[0]) - Number(b[0]));
   const maxGradeCount = Math.max(1, ...entries.map(([, n]) => Number(n)));
   $('#grade-bars').replaceChildren(...(entries.length ? entries.map(([g, n]) => {
     const card = el('div', 'rounded-xl border border-denim/10 bg-chalk/40 p-2.5');
@@ -996,6 +1018,30 @@ function renderAnalytics() {
     card.append(top, bar);
     return card;
   }) : [el('p', 'col-span-full text-xs text-denim-soft', t('no_signatures'))]));
+
+  // Updates Board on Main Page (Shows DB updates if published, or single clean launch milestone)
+  const dbUpdates = (s.updates && Array.isArray(s.updates) && s.updates.length) ? s.updates : [
+    {
+      title_ar: I18N.ar.default_update_title,
+      title_en: I18N.en.default_update_title,
+      body_ar: I18N.ar.default_update_body,
+      body_en: I18N.en.default_update_body,
+      created_at: null
+    }
+  ];
+  $('#updates-count').textContent = fmt(dbUpdates.length);
+  $('#updates-list').replaceChildren(...dbUpdates.map((u) => {
+    const li = el('li', 'relative rounded-xl border border-denim/10 bg-chalk/30 p-3.5');
+    const dot = el('span', 'absolute -start-[21px] top-4 h-2.5 w-2.5 rounded-full border-2 border-white bg-thread');
+    const head = el('div', 'flex flex-wrap items-center justify-between gap-2');
+    const title = lang === 'en' && u.title_en ? u.title_en : u.title_ar;
+    const body = lang === 'en' && u.body_en ? u.body_en : u.body_ar;
+    head.append(el('h3', 'font-display text-sm font-bold text-denim-deep', title));
+    if (u.created_at) head.append(el('time', 'text-[11px] text-denim-soft', ago(u.created_at)));
+    const p = el('p', 'mt-1 text-xs leading-relaxed text-denim-soft', body);
+    li.append(dot, head, p);
+    return li;
+  }));
 }
 
 function animateCount(from, to) {
@@ -1010,9 +1056,16 @@ function animateCount(from, to) {
   })(t0);
 }
 
+function resolveGoal(rawGoal) {
+  const g = Number(rawGoal);
+  // Normalize old 500 or 150 default to 200 unless explicitly set to another custom number
+  if (!g || g === 500 || g === 150) return CONFIG.DEFAULT_GOAL;
+  return g;
+}
+
 function renderStats(animate) {
   const s = state.stats; if (!s) return;
-  const n = Math.max(0, Number(s.total) || 0), goal = Number(s.goal) > 0 ? Number(s.goal) : 150;
+  const n = Math.max(0, Number(s.total) || 0), goal = resolveGoal(s.goal);
   const from = state.count; state.count = n;
   const pct = Math.min(100, (n / goal) * 100);
   $('#goal').textContent = fmt(goal);
@@ -1198,6 +1251,7 @@ function applyLanguage() {
   updatePublicPreview();
   renderReceipt();
   renderLifecycle();
+  renderAnalytics();
   setBusy(state.sending);
   say('');
   renderStatus(); renderStats(false); renderList();
@@ -1228,9 +1282,8 @@ function setBusy(b) {
 
 const NAME_OK = /^[\p{L}\p{M}][\p{L}\p{M} .'’-]*$/u;
 function validate(v) {
-  const maxG = (state.stats && Number(state.stats.grade_max)) || CONFIG.GRADE_MAX;
   if (v.name.split(' ').length < 2 || v.name.length < 4 || v.name.length > 60 || !NAME_OK.test(v.name) || /(.)\1{4,}/.test(v.name)) return ['name', t('err_name')];
-  if (!(v.grade >= CONFIG.GRADE_MIN && v.grade <= maxG)) return ['grade', t('err_grade')];
+  if (!(v.grade >= CONFIG.GRADE_MIN && v.grade <= CONFIG.GRADE_MAX)) return ['grade', t('err_grade')];
   if (!v.parent_consent) return ['parent_consent', t('err_consent')];
   if (v.note && (v.note.length > 250 || /[<>{}|\\^`]|www|https?:|\.com|\.net|\.org|@/i.test(v.note))) return ['note', t('err_note')];
   return null;
